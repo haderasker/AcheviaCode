@@ -5,6 +5,7 @@ php_flag opcache.enable Off
     </IfModule>
 
     RewriteEngine On
+    RewriteBase /crs/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
