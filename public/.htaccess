@@ -5,7 +5,6 @@
     </IfModule>
 
     RewriteEngine On
-    RewriteBase /crs/
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
