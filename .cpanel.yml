@@ -1,4 +1,4 @@
 ---
 deployment:
   tasks:
-    - echo "hello world"
+    - export DEPLOYPATH=/home/user/public_html/
