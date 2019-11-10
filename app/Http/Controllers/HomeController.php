@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Action;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    private $action;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Action $action)
     {
-        $this->middleware('auth');
+        $this->action = $action;
     }
 
     /**

@@ -18,7 +18,18 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('userName')->nullable();
+            $table->string('phone')->nullable()->unique();
+            $table->unsignedBigInteger('roleId');
+            $table->unsignedBigInteger('teamId')->nullable();
+            $table->unsignedBigInteger('mangerId')->nullable();
+            $table->boolean('userStatus')->nullable(); //0 client , 1 duplicated
+            $table->boolean('assign')->nullable();
+            $table->boolean('saleManPunished')->nullable();
+            $table->boolean('saleManAssignedToClient')->nullable();
+            $table->integer('saleManSendingMsgLimit')->nullable();
+            $table->integer('active')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

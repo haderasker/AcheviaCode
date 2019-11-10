@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Action;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('layouts/aside', function ($view) {
+            $list = Action::all()->toArray();
+            $view->with('list', $list);
+        });
     }
 }
