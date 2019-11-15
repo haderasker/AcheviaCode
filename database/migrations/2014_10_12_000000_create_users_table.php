@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('roleId');
             $table->unsignedBigInteger('teamId')->nullable();
             $table->unsignedBigInteger('mangerId')->nullable();
-            $table->boolean('userStatus')->nullable(); //0 client , 1 duplicated
+            $table->boolean('userStatus')->nullable();
             $table->boolean('assign')->nullable();
             $table->boolean('saleManPunished')->nullable();
             $table->boolean('saleManAssignedToClient')->nullable();

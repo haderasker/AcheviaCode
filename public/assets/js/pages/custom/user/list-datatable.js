@@ -191,6 +191,11 @@ var KTUserListDatatable = function () {
                     // callback function support for column rendering
                     template: function (row) {
                         var status = {
+                            0: {
+                                'title': 'new',
+                                'class': ' btn-label-brand'
+                            },
+
                             null: {
                                 'title': 'new',
                                 'class': ' btn-label-brand'

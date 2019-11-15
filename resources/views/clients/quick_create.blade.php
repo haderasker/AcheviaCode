@@ -1,66 +1,13 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-
-@include("layouts.head")
-<!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-    <!-- Styles -->
-    <style>
-        html, body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Nunito', sans-serif;
-            font-weight: 200;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .full-height {
-            height: 100vh;
-        }
-
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
-
-        .position-ref {
-            position: relative;
-        }
-
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
-
-        .content {
-            text-align: center;
-        }
-
-        .alert {
-            display: block !important;
-        }
-
-    </style>
-    <!--begin::Page Custom Styles(used by this page) -->
-    <link href="{{url('assets/css/pages/wizard/wizard-4.css')}}" rel="stylesheet" type="text/css"/>
-
-</head>
-<body>
-{{--<div class="flex-center position-ref full-height">--}}
-    {{--@if (Route::has('login'))--}}
-        {{--<div class="top-right links">--}}
-            {{--@auth--}}
-                {{--<a href="{{ url('/home') }}">Home</a>--}}
-            {{--@else--}}
-                {{--<a href="{{ route('login') }}">Login</a>--}}
-            {{--@endauth--}}
-        {{--</div>--}}
-    {{--@endif--}}
+@extends('layouts.app')
+<!--begin::Page Custom Styles(used by this page) -->
+<link href="{{url('assets/css/pages/wizard/wizard-4.css')}}" rel="stylesheet" type="text/css"/>
+<style>
+    .alert{
+        display:block !important;
+    }
+</style>
+<!--end::Page Custom Styles -->
+@section('content')
 
     <div class="kt-grid kt-grid--hor kt-grid--root">
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
@@ -85,10 +32,25 @@
                                     </div>
                                     <div class="kt-wizard-v4__nav-label">
                                         <div class="kt-wizard-v4__nav-label-title">
-                                            New Client
+                                            Profile
                                         </div>
                                         <div class="kt-wizard-v4__nav-label-desc">
-                                             Information
+                                            User's Personal Information
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="kt-wizard-v4__nav-item nav-item" data-ktwizard-type="step">
+                                <div class="kt-wizard-v4__nav-body">
+                                    <div class="kt-wizard-v4__nav-number">
+                                        2
+                                    </div>
+                                    <div class="kt-wizard-v4__nav-label">
+                                        <div class="kt-wizard-v4__nav-label-title">
+                                            Review
+                                        </div>
+                                        <div class="kt-wizard-v4__nav-label-desc">
+                                            Review your Details
                                         </div>
                                     </div>
                                 </div>
@@ -103,12 +65,12 @@
                                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
 
                                     <!--begin: Form Wizard Form-->
-                                    <form class="kt-form" id="kt_user_add_form"  action="{{url('/client-landing-page')}}">
+                                    <form class="kt-form" id="kt_user_add_form" action="{{url('/client-quick-store')}}">
+                                    @csrf
                                     <!--begin: Form Wizard Step 1-->
-                                        @csrf
                                         <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
                                              data-ktwizard-state="current">
-                                            <div class="kt-heading kt-heading--md"> Client Details:</div>
+                                            <div class="kt-heading kt-heading--md">User's Profile Details:</div>
                                             <div class="kt-section kt-section--first">
                                                 <div class="kt-wizard-v4__form">
                                                     <div class="row">
@@ -118,13 +80,12 @@
                                                                        type="text" value="5">
 
                                                                 <input name="createdBy" hidden class="form-control"
-                                                                       type="text" value="0">
+                                                                       type="text" value="{{Auth()->id()}}">
 
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Name</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input id="name" name="name"
-                                                                               class="form-control"
+                                                                        <input id="name" name="name" class="form-control"
                                                                                type="text" value="{{ old('name') }}">
                                                                     </div>
                                                                 </div>
@@ -137,8 +98,7 @@
                                                                                         class="input-group-text"><i
                                                                                             class="la la-phone"></i></span>
                                                                             </div>
-                                                                            <input type="text" class="form-control"
-                                                                                   id="phone"
+                                                                            <input type="text" class="form-control" id="phone"
                                                                                    name="phone"
                                                                                    value="{{ old('phone') }}"
                                                                                    aria-describedby="basic-addon1">
@@ -154,8 +114,7 @@
                                                                                         class="input-group-text"><i
                                                                                             class="la la-at"></i></span>
                                                                             </div>
-                                                                            <input id="email" type="text"
-                                                                                   class="form-control"
+                                                                            <input  id="email" type="text" class="form-control"
                                                                                    value="{{ old('email') }}"
                                                                                    name="email"
                                                                                    aria-describedby="basic-addon1">
@@ -199,21 +158,42 @@
 
                                         <!--end: Form Wizard Step 1-->
 
+                                        <!--begin: Form Wizard Step 4-->
+                                        <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
+                                            <div class="kt-heading kt-heading--md">Review your Details and Submit</div>
+                                            <div class="kt-form__section kt-form__section--first">
+                                                <div class="kt-wizard-v4__review">
+                                                    <div class="kt-wizard-v4__review-item">
+                                                        <div class="kt-wizard-v4__review-title">
+                                                            Your Account Details
+                                                        </div>
+                                                        <div class="kt-wizard-v4__review-content">
+                                                            <p id="myName"></p>
+                                                            <p> Phone: <span id="myPhone" ></span> </p>
+                                                            <p>Email: <span id="myEmail" ></span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <!--end: Form Wizard Step 4-->
 
                                         <!--begin: Form Actions -->
                                         <div class="kt-form__actions">
-                                            {{--<div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"--}}
-                                                 {{--data-ktwizard-type="action-prev">--}}
-                                                {{--Previous--}}
-                                            {{--</div>--}}
+                                            <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                                 data-ktwizard-type="action-prev">
+                                                Previous
+                                            </div>
                                             <div class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
                                                  data-ktwizard-type="action-submit">
                                                 Submit
                                             </div>
-                                            {{--<div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"--}}
-                                                 {{--data-ktwizard-type="action-next">--}}
-                                                {{--Next Step--}}
-                                            {{--</div>--}}
+                                            <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"
+                                                 data-ktwizard-type="action-next">
+                                                Next Step
+                                            </div>
                                         </div>
 
                                         <!--end: Form Actions -->
@@ -230,15 +210,12 @@
             <!-- end:: Content -->
         </div>
 
-        @include("layouts.footer")
-
     </div>
     <!-- end:: Page -->
-    @include("layouts.scripts")
+@endsection
 
-    <script> window.HREF = "{{ url('/') }}"; </script>
+@section('script')
+    <script> window.HREF ="{{ url('/home') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
+@endsection
 
-
-</body>
-</html>

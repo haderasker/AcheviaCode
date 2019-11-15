@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ImportClients;
 use App\Models\Action;
 use App\Models\ClientDetail;
+use App\Models\ClientHistory;
 use App\Models\Method;
 use App\Models\Project;
 use App\Models\ProjectCity;
 use App\Models\Team;
 use App\User;
-use App\Models\ClientHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class ClientController extends Controller
@@ -83,8 +85,8 @@ class ClientController extends Controller
             'address' => $request->address,
             'notes' => $request->notes,
             'gender' => $request->gender,
-            'interestsUserProjects' => $request->interestsUserProjects,
-            'typeClient' => $request->typeClient,
+            'interestsUserProjects' => $request->projectId,
+            'typeClient' => 0,
             'addedClientFrom' => $request->addedClientFrom,
             'addedClientPlatform' => $request->addedClientPlatform,
             'addedClientLink' => $request->addedClientLink,
@@ -106,6 +108,42 @@ class ClientController extends Controller
     }
 
     /**
+     * view create page to store user
+     */
+    public function quickCreate()
+    {
+
+        return View('clients.quick_create');
+    }
+
+    /**
+     * store user
+     */
+    public function quickStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|unique:users|max:255',
+            'phone' => 'required',
+            'roleId' => 'required',
+            'createdBy' => 'required',
+        ]);
+
+        $created = $this->user->save($request);
+        $clientDetailsData = array(
+            'userId' => $created->id,
+            'jobTitle' => $request->jobTitle,
+            'gender' => $request->gender,
+            'typeClient' => 0,
+        );
+//
+//        //insert record
+        $creatClient = $this->clientModel->create($clientDetailsData);
+
+        return $creatClient;
+    }
+
+    /**
      * view edit page to update user
      */
     public function edit($id)
@@ -113,23 +151,34 @@ class ClientController extends Controller
         $requestData = $this->model->where('id', $id)->with('detail')->whereHas('detail')->first()->toArray();
         $methods = Method::all()->toArray();
         $actions = Action::all()->toArray();
+        if ($requestData['detail']['projectId']) {
+            $cities = [];
+            $project = $this->project::find($requestData['detail']['projectId']);
+            $projectName = $project->name;
+            $cityName = ProjectCity::where('id', $project->cityId)->first()['name'];
 
-        $project = $this->project::find($requestData['detail']['projectId']);
+            $teams = $project->teams()->get()->toArray();
 
-        $teams = $project->teams()->get()->toArray();
+            foreach ($teams as $team) {
 
-        foreach ($teams as $team) {
+                $team = Team::find($team['id']);
 
-            $team = Team::find($team['id']);
+                $allSales = $team->sales()->get(['id', 'name'])->toArray();
 
-            $allSales = $team->sales()->get(['id', 'name'])->toArray();
-
-            foreach ($allSales as $sale) {
-                $sales[$sale['id']]['id'] = $sale['id'];
-                $sales[$sale['id']]['name'] = $sale['name'];
+                foreach ($allSales as $sale) {
+                    $sales[$sale['id']]['id'] = $sale['id'];
+                    $sales[$sale['id']]['name'] = $sale['name'];
+                }
             }
+        } else {
+            $projectName = '';
+            $cityName = '';
+            $cities = $this->city->all()->toArray();
+            $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         }
-        return View('clients.edit', compact('requestData', 'sales', 'actions', 'methods'));
+
+        return View('clients.edit', compact('requestData', 'cityName', 'projectName', 'sales', 'actions', 'methods', 'cities'));
+
     }
 
     /**
@@ -137,38 +186,132 @@ class ClientController extends Controller
      */
     public function update(Request $request)
     {
-
 //        $updated = $this->user->updateUser($id, $request);
 
         $client = $this->clientModel->where('userId', $request->id)->first()->toArray();
 
-        $notificationDate = date("Y-m-d", strtotime($request->notificationDate));
+        $notificationDate = $client['newActionDate'];
+        $notificationTime = $client['notificationTime'];
+        if ($request->notificationDate != null) {
+            $notificationDate = date("Y-m-d", strtotime($request->notificationDate));
+        }
+        if ($request->notificationTime != null) {
+            $notificationTime = $request->notificationTime;
+        }
+
         $transferred = 0;
         if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
             $transferred = 1;
         }
-        $newActionDate = null;
-        $newActionTime = null;
-        if ($client['actionId'] == null && $client['newActionDate'] == null  && $client['newActionTime'] == null && $request->actionId != '0' ) {
+        $newActionDate = $client['newActionDate'];
+        $newActionTime = $client['newActionTime'];
+        if ($client['actionId'] == null && $client['newActionDate'] == null && $client['newActionTime'] == null && $request->actionId != '0') {
             $newActionDate = now()->format('Y-m-d');
-            $newActionTime = now()->format('H:i:s') ;
+            $newActionTime = now()->format('H:i:s');
         }
+        $lastAssign = 0;
+        if ($request->assignToSaleManId != 0) {
+            $lastAssign = 1;
+        }
+        $assignedDate = $client['assignedDate'];
+        $assignedTime = $client['assignedTime'];
+        if ($client['assignToSaleManId'] == 0 && $client['assignedDate'] == null && $client['assignedTime'] == null && $request->assignToSaleManId != 0) {
+            $assignedDate = now()->format('Y-m-d');
+            $assignedTime = now()->format('H:i:s');
+        }
+
+        $via_method = $client['viaMethodId'];
+        if ($request->via_method) {
+            $via_method = $request->via_method;
+        }
+
+        $actionId = $client['actionId'];
+        if ($request->actionId != 0) {
+            $actionId = $request->actionId;
+        }
+
+        $summery = $client['summery'];
+        if ($request->summery) {
+            $summery = $request->summery;
+        }
+        $jobTitle = $client['jobTitle'];
+        if ($request->jobTitle) {
+
+            $jobTitle = $request->jobTitle;
+        }
+
+        $projectId = $client['projectId'];
+        if ($request->projectId) {
+
+            $projectId = $request->projectId;
+        }
+
+        $projectCity = $client['projectCity'];
+        if ($request->projectCity) {
+
+            $projectCity = $request->projectCity;
+        }
+
+        $address = $client['address'];
+        if ($request->address) {
+
+            $address = $request->address;
+        }
+
+        $ZipCode = $client['ZipCode'];
+        if ($request->ZipCode) {
+
+            $ZipCode = $request->ZipCode;
+        }
+
+        $region = $client['region'];
+        if ($request->region) {
+
+            $region = $request->region;
+        }
+
+        $country = $client['country'];
+        if ($request->country) {
+
+            $country = $request->country;
+        }
+        $city = $client['city'];
+        if ($request->city) {
+
+            $city = $request->city;
+        }
+
         $clientDetailsData = array(
-            'viaMethodId' => $request->via_method,
-            'actionId' => $request->actionId,
+            'assignToSaleManId' => $request->assignToSaleManId,
+            'notes' => $request->notes,
+            'space' => $request->space,
+            'viaMethodId' => $via_method,
+            'actionId' => $actionId,
+            'summery' => $summery,
             'newActionDate' => $newActionDate,
             'newActionTime' => $newActionTime,
-            'summery' => $request->summery,
             'notificationDate' => $notificationDate,
-            'notificationTime' => $request->notificationTime,
-            'assignToSaleManId' => $request->assignToSaleManId,
+            'notificationTime' => $notificationTime,
             'transferred' => $transferred,
+            'projectId' => $projectId,
+            'interestsUserProjects' => $projectId,
+            'projectCity' => $projectCity,
+            'address' => $address,
+            'ZipCode' => $ZipCode,
+            'region' => $region,
+            'country' => $country,
+            'city' => $city,
+            'typeClient' => 0,
+            'jobTitle' => $jobTitle,
+            'lastAssigned' => $lastAssign,
+            'assignedDate' => $assignedDate,
+            'assignedTime' => $assignedTime,
         );
 
         //update record
         $this->clientModel->where('userId', $request->id)->update($clientDetailsData);
 
-        $history =  ClientHistory::create(['userId' => $request->id , 'actionId' =>$request->actionId ]);
+        $history = ClientHistory::create(['userId' => $request->id, 'actionId' => $request->actionId]);
 
         return redirect('/')->with('success', 'Updated successfully');
     }
@@ -198,10 +341,20 @@ class ClientController extends Controller
     /**
      * upload user
      */
-    public function upload()
+    public function upload(Request $request)
     {
+        $file = $request->file('file');
+        $ext = $file->getClientOriginalExtension();
 
-        return redirect('/clients')->with('success', 'Deleted successfully');
+        if ($ext != 'csv') {
+            return back()->with('failed', 'Please Upload File With CSV Extension.');
+        }
+
+
+        $data = Excel::import(new ImportClients($request->all()), request()->file('file'));
+        dd($data);
+
+        return redirect('/home')->with('success', 'Insert Record successfully');
     }
 
     public function dropDown(Request $request)

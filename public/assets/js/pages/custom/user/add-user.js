@@ -50,7 +50,6 @@ var KTUserAdd = function () {
             $('#mySpace').text(space);
             $('#interest').val(interest);
 
-
             KTUtil.scrollTop();
 
         });
@@ -67,10 +66,7 @@ var KTUserAdd = function () {
                 profile_avatar: {
                     //required: true
                 },
-                profile_first_name: {
-                    required: true
-                },
-                profile_last_name: {
+                profile_name: {
                     required: true
                 },
                 profile_phone: {
@@ -80,6 +76,7 @@ var KTUserAdd = function () {
                     required: true,
                     email: true
                 }
+
             },
 
             // Display error
@@ -93,6 +90,7 @@ var KTUserAdd = function () {
                     "buttonStyling": false,
                     "confirmButtonClass": "btn btn-brand btn-sm btn-bold"
                 });
+                console.log('fff');
             },
 
             // Submit valid form
@@ -116,12 +114,14 @@ var KTUserAdd = function () {
                 // Get some values from elements on the page:
                 var form = $(this);
                 var url = form.attr('action');
+                console.log(url);
                 // See: http://malsup.com/jquery/form/#ajaxSubmit
                 formEl.ajaxSubmit({
                     type: "POST",
                     url: url,
                     data: form.serialize(), // serializes the form's elements.
                     success: function (data) {
+                        console.log(data);
                         KTApp.unprogress(btn);
                         //KTApp.unblock(formEl);
                         swal.fire({

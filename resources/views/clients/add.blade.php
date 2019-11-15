@@ -708,7 +708,7 @@
 @endsection
 
 @section('script')
-    <script> window.HREF ="{{ url('/') }}"; </script>
+    <script> window.HREF ="{{ url('/home') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function (e) {

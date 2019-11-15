@@ -7,8 +7,34 @@
         <div id="kt_aside_menu" class="kt-aside-menu " data-ktmenu-vertical="1" data-ktmenu-scroll="1"
              data-ktmenu-dropdown-timeout="500">
             <ul class="kt-menu__nav ">
-                <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/')}}" class="kt-menu__link "><i
+                <li class="kt-menu__item" aria-haspopup="true"><a href="{{url('/home')}}" class="kt-menu__link"><i
                                 class="kt-menu__link-icon flaticon2-protection"></i><span class="kt-menu__link-text">Dashboard</span></a>
+                </li>
+                <li class="kt-menu__item" aria-haspopup="true"
+                    data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
+                                class="kt-menu__link-icon flaticon2-group"><span></span></i><span
+                                class="kt-menu__link-text">Clients</span><i
+                                class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                    <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
+                        <ul class="kt-menu__subnav">
+                            <li class="kt-menu__item " aria-haspopup="true"><a
+                                        href="{{url('client-create')}}" class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon-user-add"><span></span></i><span
+                                            class="kt-menu__link-text">Add New Client</span></a>
+                            </li>
+                            <li class="kt-menu__item " aria-haspopup="true"><a
+                                        href="{{url('client-upload-view')}}" class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon-upload-1"><span></span></i><span
+                                            class="kt-menu__link-text">Upload Clients</span></a>
+                            </li>
+                            <li class="kt-menu__item " aria-haspopup="true"><a
+                                        href="{{url('client-quick-create')}}" class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon-upload-1"><span></span></i><span
+                                            class="kt-menu__link-text">Quick Add Clients</span></a>
+                            </li>
+
+                        </ul>
+                    </div>
                 </li>
                 <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                     data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
@@ -20,30 +46,6 @@
                                         class="kt-menu__link"><span class="kt-menu__link-text">Sales System</span><span
                                             class="kt-menu__link-badge"><span
                                                 class="kt-badge kt-badge--brand"></span></span></span></li>
-                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                                data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-                                                                      class="kt-menu__link kt-menu__toggle"><i
-                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span
-                                            class="kt-menu__link-text">Clients</span><i
-                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item " aria-haspopup="true"><a
-                                                    href="{{url('client-create')}}" class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-user-add"><span></span></i><span
-                                                        class="kt-menu__link-text">Add New Client</span></a></li>
-                                        <li class="kt-menu__item " aria-haspopup="true"><a
-                                                    href="{{url('client-upload-view')}}" class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-upload-1"><span></span></i><span
-                                                        class="kt-menu__link-text">Upload Clients</span></a></li>
-                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('clients')}}"--}}
-                                                                                           {{--class="kt-menu__link "><i--}}
-                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span--}}
-                                                        {{--class="kt-menu__link-text">view Clients</span></a></li>--}}
-
-                                    </ul>
-                                </div>
-                            </li>
 
                             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                                 data-ktmenu-submenu-toggle="hover"><a href="javascript:;"

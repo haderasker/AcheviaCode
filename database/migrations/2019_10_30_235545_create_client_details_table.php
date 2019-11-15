@@ -16,7 +16,7 @@ class CreateClientDetailsTable extends Migration
         Schema::create('client_details', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('userId');
-            $table->unsignedBigInteger('projectId');
+            $table->unsignedBigInteger('projectId')->nullable();
             $table->unsignedBigInteger('viaMethodId')->nullable();
             $table->unsignedBigInteger('actionId')->nullable();
             $table->string('projectCity')->nullable();
@@ -30,7 +30,7 @@ class CreateClientDetailsTable extends Migration
             $table->string('clientAgeRange')->nullable();
             $table->string('summery')->nullable();
             $table->string('interestsUserProjects')->nullable();
-            $table->integer('typeClient')->nullable();
+            $table->integer('typeClient')->nullable(); //0 client , 1 duplicated
             $table->string('ZipCode')->nullable();
             $table->string('ip')->nullable();
             $table->string('region')->nullable();
@@ -39,7 +39,7 @@ class CreateClientDetailsTable extends Migration
             $table->boolean('canView')->nullable();
             $table->string('linkView')->nullable();
             $table->integer('limitView')->nullable();
-            $table->integer('addedClientFrom')->nullable();
+            $table->string('addedClientFrom')->nullable();
             $table->string('addedClientPlatform')->nullable();
             $table->string('addedClientLink')->nullable();
             $table->unsignedBigInteger('assignToSaleManId')->default(0);

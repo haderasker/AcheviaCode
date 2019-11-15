@@ -4,7 +4,7 @@
     <!-- begin:: Aside -->
     <div class="kt-header__brand kt-grid__item  " id="kt_header_brand">
         <div class="kt-header__brand-logo">
-            <a href="{{url('/')}}">
+            <a href="{{url('/home')}}">
                 <img alt="Logo" src="{{url('assets/media/logos/logo-6.png')}}" />
             </a>
         </div>

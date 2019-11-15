@@ -51,7 +51,7 @@ class UserController extends Controller
             'phone' => $request->phone,
             'teamId' => $request->teamId,
             'mangerId' => $request->mangerId,
-            'userStatus' => 0 ,
+            'userStatus' => 1 ,
             'assign' => $request->assign,
             'password' => $request->password,
             'saleManPunished' => $request->saleManPunished,
@@ -61,6 +61,7 @@ class UserController extends Controller
         );
 
         $created = $this->model->create($userData);
+
         return $created;
     }
 

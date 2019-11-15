@@ -11,12 +11,14 @@
 |
 */
 
+Route::get('/', 'HomeController@welCome');
+Route::post('client-landing-page', 'HomeController@landingStore');
 
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
 
     /**
      * action routes
@@ -86,11 +88,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('api/dropdown/sales', 'ClientController@dropDownSale');
     Route::get('client-create', 'ClientController@create');
     Route::post('client-store', 'ClientController@store');
+    Route::get('client-quick-create', 'ClientController@quickCreate');
+    Route::post('client-quick-store', 'ClientController@quickStore');
     Route::get('client-upload-view', 'ClientController@uploadView');
     Route::post('client-upload', 'ClientController@upload');
     Route::get('client-edit/{id}', 'ClientController@edit');
     Route::post('client-update', 'ClientController@update');
     Route::delete('client-delete/{id}', 'ClientController@destroy');
+
 
     /**
      * client actions routes
