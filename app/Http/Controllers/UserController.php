@@ -42,27 +42,36 @@ class UserController extends Controller
      */
     public function save($request)
     {
-        $userData = array(
-            'name' => $request->name,
-            'email' => $request->email,
-            'roleId' => $request->roleId,
-            'createdBy' => $request->createdBy,
-            'userName' => $request->userName,
-            'phone' => $request->phone,
-            'teamId' => $request->teamId,
-            'mangerId' => $request->mangerId,
-            'userStatus' => 1 ,
-            'assign' => $request->assign,
-            'password' => $request->password,
-            'saleManPunished' => $request->saleManPunished,
-            'saleManAssignedToClient' => $request->saleManAssignedToClien,
-            'saleManSendingMsgLimit' => $request->saleManSendingMsgLimit,
-            'active' => 1,
-        );
+        $phone = $request->countryCode . ltrim($request->phone, '0');
+        $userExist = $this->model->where('phone', $phone)->orWhere('email', $request->email)->first();
+        if ($userExist) {
+            $model = $this->model->find($userExist['id']);
+            $countDuplicated = $userExist['duplicated'];
+            $model->duplicated = $countDuplicated + 1;
+            $user = $model->save();
+            return  ['user' => $model, 'exist' => 'yes'];
 
-        $created = $this->model->create($userData);
-
-        return $created;
+        } else {
+            $userData = array(
+                'name' => $request->name,
+                'email' => $request->email,
+                'roleId' => $request->roleId,
+                'createdBy' => $request->createdBy,
+                'userName' => $request->userName,
+                'phone' => $phone,
+                'teamId' => $request->teamId,
+                'mangerId' => $request->mangerId,
+                'userStatus' => 1,
+                'assign' => $request->assign,
+                'password' => $request->password,
+                'saleManPunished' => $request->saleManPunished,
+                'saleManAssignedToClient' => $request->saleManAssignedToClien,
+                'saleManSendingMsgLimit' => $request->saleManSendingMsgLimit,
+                'active' => 1,
+            );
+            $user = $this->model->create($userData);
+            return  ['user' => $user, 'exist' => 'no'];
+        }
     }
 
     /**

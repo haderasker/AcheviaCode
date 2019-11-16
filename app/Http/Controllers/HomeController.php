@@ -48,24 +48,30 @@ class HomeController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|unique:users|max:255',
-            'phone' => 'required',
+            'email' => 'required|max:100',
+            'phone' => 'required|numeric|regex:/[0-9]/',
             'roleId' => 'required',
+            'countryCode' => 'required',
         ]);
 
         $created = $this->user->save($request);
-        $clientDetailsData = array(
-            'userId' => $created->id,
-            'jobTitle' => $request->jobTitle,
-            'gender' => $request->gender,
-            'typeClient' => 0,
-            'addedClientFrom' => 'landingPage',
-            'addedClientLink' => url('/'),
-        );
+        $user = $created['user'];
+        $exist = $created['exist'];
+        if ($exist == 'no') {
+            $clientDetailsData = array(
+                'userId' => $user->id,
+                'jobTitle' => $request->jobTitle,
+                'gender' => $request->gender,
+                'typeClient' => 0,
+                'addedClientFrom' => 'landingPage',
+                'addedClientLink' => url('/'),
+            );
+            $user = ClientDetail::create($clientDetailsData);
+        }
 //
 //        //insert record
-        $creatClient = ClientDetail::create($clientDetailsData);
 
-        return $creatClient;
+
+        return $user;
     }
 }

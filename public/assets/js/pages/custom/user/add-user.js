@@ -114,7 +114,6 @@ var KTUserAdd = function () {
                 // Get some values from elements on the page:
                 var form = $(this);
                 var url = form.attr('action');
-                console.log(url);
                 // See: http://malsup.com/jquery/form/#ajaxSubmit
                 formEl.ajaxSubmit({
                     type: "POST",

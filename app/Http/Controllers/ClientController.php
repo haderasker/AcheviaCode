@@ -63,48 +63,53 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|unique:users|max:255',
+            'email' => 'required|max:100',
             'userName' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|numeric|regex:/[0-9]/',
             'roleId' => 'required',
             'createdBy' => 'required',
             'projectId' => 'integer',
+            'countryCode' => 'required',
         ]);
 
         $created = $this->user->save($request);
-        $lastAssign = 0;
-        if ($request->assignToSaleManId != 0) {
-            $lastAssign = 1;
-        }
-        $clientDetailsData = array(
-            'userId' => $created->id,
-            'projectId' => $request->projectId,
-            'projectCity' => $request->projectCity,
-            'space' => $request->space,
-            'jobTitle' => $request->jobTitle,
-            'address' => $request->address,
-            'notes' => $request->notes,
-            'gender' => $request->gender,
-            'interestsUserProjects' => $request->projectId,
-            'typeClient' => 0,
-            'addedClientFrom' => $request->addedClientFrom,
-            'addedClientPlatform' => $request->addedClientPlatform,
-            'addedClientLink' => $request->addedClientLink,
-            'ZipCode' => $request->ZipCode,
-            'ip' => $request->ip,
-            'region' => $request->region,
-            'country' => $request->country,
-            'city' => $request->city,
-            'assignToSaleManId' => $request->assignToSaleManId,
-            'lastAssigned' => $lastAssign,
-            'assignedDate' => now()->format('Y-m-d'),
-            'assignedTime' => now()->format('H:i:s'),
-        );
+        $user = $created['user'];
+        $exist = $created['exist'];
+        if ($exist == 'no') {
+            $lastAssign = 0;
+            if ($request->assignToSaleManId != 0) {
+                $lastAssign = 1;
+            }
+            $clientDetailsData = array(
+                'userId' => $user->id,
+                'projectId' => $request->projectId,
+                'projectCity' => $request->projectCity,
+                'space' => $request->space,
+                'jobTitle' => $request->jobTitle,
+                'address' => $request->address,
+                'notes' => $request->notes,
+                'gender' => $request->gender,
+                'interestsUserProjects' => $request->projectId,
+                'typeClient' => 0,
+                'addedClientFrom' => $request->addedClientFrom,
+                'addedClientPlatform' => $request->addedClientPlatform,
+                'addedClientLink' => $request->addedClientLink,
+                'ZipCode' => $request->ZipCode,
+                'ip' => $request->ip,
+                'region' => $request->region,
+                'country' => $request->country,
+                'city' => $request->city,
+                'assignToSaleManId' => $request->assignToSaleManId,
+                'lastAssigned' => $lastAssign,
+                'assignedDate' => now()->format('Y-m-d'),
+                'assignedTime' => now()->format('H:i:s'),
+            );
 //
 //        //insert record
-        $creatClient = $this->clientModel->create($clientDetailsData);
+            $user = $this->clientModel->create($clientDetailsData);
+        }
 
-        return $creatClient;
+        return $user;
     }
 
     /**
@@ -123,24 +128,29 @@ class ClientController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|unique:users|max:255',
-            'phone' => 'required',
+            'email' => 'required|max:100',
             'roleId' => 'required',
             'createdBy' => 'required',
+            'phone' => 'required|numeric|regex:/[0-9]/',
+            'countryCode' => 'required',
         ]);
 
         $created = $this->user->save($request);
-        $clientDetailsData = array(
-            'userId' => $created->id,
-            'jobTitle' => $request->jobTitle,
-            'gender' => $request->gender,
-            'typeClient' => 0,
-        );
+        $user = $created['user'];
+        $exist = $created['exist'];
+        if ($exist == 'no') {
+            $clientDetailsData = array(
+                'userId' => $user->id,
+                'jobTitle' => $request->jobTitle,
+                'gender' => $request->gender,
+                'typeClient' => 0,
+            );
 //
 //        //insert record
-        $creatClient = $this->clientModel->create($clientDetailsData);
+            $user = $this->clientModel->create($clientDetailsData);
+        }
 
-        return $creatClient;
+        return $user;
     }
 
     /**
@@ -313,7 +323,7 @@ class ClientController extends Controller
 
         $history = ClientHistory::create(['userId' => $request->id, 'actionId' => $request->actionId]);
 
-        return redirect('/')->with('success', 'Updated successfully');
+        return redirect('/home')->withMessage('Updated successfully');
     }
 
     /**
@@ -326,7 +336,7 @@ class ClientController extends Controller
 
         $model->delete();
 
-        return redirect('/clients')->with('success', 'Deleted successfully');
+        return redirect('/home')->withMessage('Deleted successfully');
     }
 
     /**
@@ -350,11 +360,9 @@ class ClientController extends Controller
             return back()->with('failed', 'Please Upload File With CSV Extension.');
         }
 
-
         $data = Excel::import(new ImportClients($request->all()), request()->file('file'));
-        dd($data);
 
-        return redirect('/home')->with('success', 'Insert Record successfully');
+        return redirect('/home')->withMessage('Insert Records successfully');
     }
 
     public function dropDown(Request $request)

@@ -107,11 +107,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('action-client/{id}', 'ClientActionController@actionClient');
     Route::get('history-clients/{id}', 'ClientActionController@history');
     Route::get('client/get_history/{id}', 'ClientActionController@getHistory');
+    Route::get('duplicated-clients', 'ClientActionController@duplicated');
+    Route::get('client/get_duplicated_data', 'ClientActionController@getDuplicatedData');
+
 //    Route::get('following-clients', 'ClientActionController@following');
 //    Route::get('coming-visit-clients', 'ClientActionController@comingVisit');
 //    Route::get('cancellation-clients', 'ClientActionController@cancellation');
 //    Route::get('done-deal-clients', 'ClientActionController@doneDeal');
-//    Route::get('duplicated-clients', 'ClientActionController@duplicated');
 //    Route::get('meeting-clients', 'ClientActionController@meeting');
 //    Route::get('not-interested-clients', 'ClientActionController@notInterested');
 

@@ -63,6 +63,7 @@
                                                             class="kt-menu__link-text">{{$one['name']}}</span></a></li>
                                         @endforeach
                                             <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>
+                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">Duplicated Clients</span></a></li>
                                             <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>
 
                                     </ul>

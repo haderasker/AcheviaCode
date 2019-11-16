@@ -207,15 +207,45 @@ class ClientActionController extends Controller
 //        return View('client_action.all_clients', compact('requestData'));
 //    }
 //
-//    /**
-//     * view  index duplicated
-//     */
-//    public function duplicated()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
+    /**
+     * view  index duplicated
+     */
+    public function duplicated()
+    {
+        $actionId = 'duplicated';
+
+        return View('client_action.duplicated', compact('actionId'));
+    }
+
+    public function getDuplicatedData()
+    {
+        $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail')->get()->toArray();
+
+        $key = 0;
+        foreach ($data as $one) {
+            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+            $data[$key]['detail']['projectName'] = $projectName;
+            $data[$key]['detail']['saleName'] = $saleName;
+            $key = $key + 1;
+        }
+
+        $meta = [
+            "page" => 1,
+            "pages" => 1,
+            "perpage" => -1,
+            "total" => 40,
+            "sort" => "asc",
+            "field" => "RecordID",
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
+    }
 //
 //    /**
 //     * view  index meeting
