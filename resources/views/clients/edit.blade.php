@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
 
     <!-- begin:: Content -->
     <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
@@ -432,7 +437,7 @@
                                                     @else
                                                         <select id="cityId" name="projectCity"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected>Select City</option>
+                                                            <option value="0" selected>Select City</option>
                                                             @foreach($cities as $city)
                                                                 <option value="{{$city['id']}}">{{$city['name']}}</option>
                                                             @endforeach
@@ -450,7 +455,7 @@
                                                     @else
                                                         <select id="projectId" name="projectId"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected>Select Project</option>
+                                                            <option selected value="0">Select Project</option>
                                                         </select>
                                                     @endif
 
@@ -488,7 +493,7 @@
                                     <div class="kt-separator kt-separator--border-dashed kt-separator--space-lg"></div>
                                     <div class="kt-section">
                                         <div class="kt-section__body">
-                                            <input name="id" class="form-control" type="text" hidden
+                                            <input name="_id" class="form-control" type="text" hidden
                                                    value="{{$requestData['id']}}">
                                             <h3 class="kt-section__title kt-section__title-lg">Additional Fields
                                                 :</h3>

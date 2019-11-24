@@ -38,18 +38,29 @@ class ImportClients implements ToModel
             return $userExist;
         }
 
+        $phone =  $row[$cols['codeCol'] - 1] .  $row[$cols['phoneCol'] - 1];
+
         $userData = array(
             'name' => $row[$cols['nameCol'] - 1],
-            'phone' => $row[$cols['phoneCol'] - 1],
+            'phone' => $phone,
             'email' => $row[$cols['emailCol'] - 1],
             'roleId' => 5,
             'createdBy' => Auth::user()->id,
+
         );
+
         $user = User::create($userData);
 
         $clientDetailsData = array(
             'userId' => $user->id,
             'typeClient' => 0,
+            'jobTitle' => $row[$cols['jobCol'] - 1],
+            'notes' => $row[$cols['notesCol'] - 1],
+            'platform'=> $cols['platformCol'],
+            'projectId'=> $cols['projectCol'],
+            'campaignId'=> $cols['campaignCol'] ,
+            'marketerId'=> $cols['marketerCol'] ,
+            'assignToSaleManId' => $cols['saleCol'],
         );
 //
 //        //insert record

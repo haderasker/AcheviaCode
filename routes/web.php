@@ -86,6 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('clients', 'ClientController@index');
     Route::get('api/dropdown', 'ClientController@dropDown');
     Route::get('api/dropdown/sales', 'ClientController@dropDownSale');
+    Route::get('api/dropdown/marketer', 'ClientController@dropDownMarketer');
     Route::get('client-create', 'ClientController@create');
     Route::post('client-store', 'ClientController@store');
     Route::get('client-quick-create', 'ClientController@quickCreate');
@@ -109,6 +110,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('client/get_history/{id}', 'ClientActionController@getHistory');
     Route::get('duplicated-clients', 'ClientActionController@duplicated');
     Route::get('client/get_duplicated_data', 'ClientActionController@getDuplicatedData');
+    Route::get('transfered-clients', 'ClientActionController@transfered');
+    Route::get('client/get_transfered_data', 'ClientActionController@getTransferedData');
+    Route::get('new-requests', 'ClientActionController@newRequests');
+    Route::get('client/get_new_requests_data', 'ClientActionController@getNewRequestsData');
 
 //    Route::get('following-clients', 'ClientActionController@following');
 //    Route::get('coming-visit-clients', 'ClientActionController@comingVisit');

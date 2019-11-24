@@ -92,7 +92,7 @@
 @section('script')
     <script> HREF = "{{ url('client/get_duplicated_data') }}"; </script>
     <script> URL = "{{ url('/') }}"; </script>
-    <script src="{{url('assets/js/pages/custom/user/list-datatable.js')}}" type="text/javascript"></script>
+    <script src="{{url('assets/js/pages/custom/user/list-datatable_original.js')}}" type="text/javascript"></script>
 
 @endsection
 

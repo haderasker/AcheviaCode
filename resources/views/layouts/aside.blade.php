@@ -36,60 +36,110 @@
                         </ul>
                     </div>
                 </li>
+                {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
+                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i--}}
+                {{--class="kt-menu__link-icon flaticon2-user-1"></i><span class="kt-menu__link-text">Sales System</span><span--}}
+                {{--class="kt-menu__link-badge"></span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
+                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
+                {{--<ul class="kt-menu__subnav">--}}
+                {{--<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span--}}
+                {{--class="kt-menu__link"><span class="kt-menu__link-text">Sales System</span><span--}}
+                {{--class="kt-menu__link-badge"><span--}}
+                {{--class="kt-badge kt-badge--brand"></span></span></span></li>--}}
+
+                {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
+                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;"--}}
+                {{--class="kt-menu__link kt-menu__toggle"><i--}}
+                {{--class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span--}}
+                {{--class="kt-menu__link-text">Sales Status</span><i--}}
+                {{--class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
+                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
+                {{--<ul class="kt-menu__subnav">--}}
+                {{--@foreach($list as $one)--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a--}}
+                {{--href="{{url('action-client/' . $one['id'])}}"--}}
+                {{--class="kt-menu__link "><i--}}
+                {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span--}}
+                {{--class="kt-menu__link-text">{{$one['name']}}</span></a></li>--}}
+                {{--@endforeach--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">Duplicated Clients</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>--}}
+
+                {{--</ul>--}}
+                {{--</div>--}}
+                {{--</li>--}}
+
+                {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span class="kt-menu__link-text">Actions</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
+                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
+                {{--<ul class="kt-menu__subnav">--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('following-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-refresh-arrow"><span></span></i><span class="kt-menu__link-text">Following</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('meeting-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-clock"><span></span></i><span class="kt-menu__link-text">Meeting</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('coming-visit-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span class="kt-menu__link-text">Coming Visit</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('done-deal-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-checkmark"><span></span></i><span class="kt-menu__link-text">Deal Done</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('cancellation-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-cancel"><span></span></i><span class="kt-menu__link-text">Cancellation</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('not-interested-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-danger"><span></span></i><span class="kt-menu__link-text">Not Interested</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-copy"><span></span></i><span class="kt-menu__link-text">Duplicated</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>--}}
+                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('history-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-statistics"><span></span></i><span class="kt-menu__link-text">History Clients</span></a></li>--}}
+                {{--</ul>--}}
+                {{--</div>--}}
+                {{--</li>--}}
+                {{--</ul>--}}
+                {{--</div>--}}
+                {{--</li>--}}
                 <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                     data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
-                                class="kt-menu__link-icon flaticon2-user-1"></i><span class="kt-menu__link-text">Sales System</span><span
-                                class="kt-menu__link-badge"></span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>
+                                class="kt-menu__link-icon flaticon-settings-1"><span></span></i><span
+                                class="kt-menu__link-text">Sales Status</span><i
+                                class="kt-menu__ver-arrow la la-angle-right"></i></a>
                     <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
                         <ul class="kt-menu__subnav">
-                            <li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span
-                                        class="kt-menu__link"><span class="kt-menu__link-text">Sales System</span><span
-                                            class="kt-menu__link-badge"><span
-                                                class="kt-badge kt-badge--brand"></span></span></span></li>
+                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-requests')}}"
+                                                                               class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span
+                                            class="kt-menu__link-text">New Requests</span></a></li>
+                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}"
+                                                                               class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span
+                                            class="kt-menu__link-text">My New Clients</span></a></li>
+                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}"
+                                                                               class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span
+                                            class="kt-menu__link-text">Duplicated Requests</span></a></li>
+                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('transfered-clients')}}"
+                                                                               class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span
+                                            class="kt-menu__link-text">Re Assigned</span></a></li>
+                            <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
+                            @foreach($list as $one)
+                                @if($one['order'] == 6)
+                                    <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
+                                    <li class="kt-menu__item " aria-haspopup="true"><a
+                                                href="{{url('action-client/' . $one['id'])}}"
+                                                class="kt-menu__link "><i
+                                                    class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span
+                                                    class="kt-menu__link-text">{{$one['name']}}</span></a>
+                                    </li>
+                                @else
+                                    <li class="kt-menu__item " aria-haspopup="true"><a
+                                                href="{{url('action-client/' . $one['id'])}}"
+                                                class="kt-menu__link "><i
+                                                    class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span
+                                                    class="kt-menu__link-text">{{$one['name']}}</span></a>
+                                    </li>
+                                @endif
+                            @endforeach
+                            <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
+                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}"
+                                                                               class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span
+                                            class="kt-menu__link-text">All Clients</span></a></li>
 
-                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                                data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-                                                                      class="kt-menu__link kt-menu__toggle"><i
-                                            class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span
-                                            class="kt-menu__link-text">Actions</span><i
-                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        @foreach($list as $one)
-                                            <li class="kt-menu__item " aria-haspopup="true"><a
-                                                        href="{{url('action-client/' . $one['id'])}}"
-                                                        class="kt-menu__link "><i
-                                                            class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span
-                                                            class="kt-menu__link-text">{{$one['name']}}</span></a></li>
-                                        @endforeach
-                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>
-                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">Duplicated Clients</span></a></li>
-                                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>
-
-                                    </ul>
-                                </div>
-                            </li>
-
-                            {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span class="kt-menu__link-text">Actions</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
-                            {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
-                            {{--<ul class="kt-menu__subnav">--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('following-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-refresh-arrow"><span></span></i><span class="kt-menu__link-text">Following</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('meeting-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-clock"><span></span></i><span class="kt-menu__link-text">Meeting</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('coming-visit-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span class="kt-menu__link-text">Coming Visit</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('done-deal-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-checkmark"><span></span></i><span class="kt-menu__link-text">Deal Done</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('cancellation-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-cancel"><span></span></i><span class="kt-menu__link-text">Cancellation</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('not-interested-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-danger"><span></span></i><span class="kt-menu__link-text">Not Interested</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-copy"><span></span></i><span class="kt-menu__link-text">Duplicated</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>--}}
-                            {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('history-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-statistics"><span></span></i><span class="kt-menu__link-text">History Clients</span></a></li>--}}
-                            {{--</ul>--}}
-                            {{--</div>--}}
-                            {{--</li>--}}
                         </ul>
                     </div>
                 </li>
-
 
                 <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                     data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
@@ -101,13 +151,16 @@
                                         class="kt-menu__link"><span class="kt-menu__link-text">Reports</span><span
                                             class="kt-menu__link-badge"><span
                                                 class="kt-badge kt-badge--brand"></span></span></span></li>
-                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-reports/'.Auth()->id())}}" class="kt-menu__link "><i
+                            <li class="kt-menu__item " aria-haspopup="true"><a
+                                        href="{{url('all-reports/'.Auth()->id())}}" class="kt-menu__link "><i
                                             class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
                                             class="kt-menu__link-text">All Reports</span></a></li>
-                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('team-report/'.Auth()->id())}}" class="kt-menu__link "><i
+                            <li class="kt-menu__item " aria-haspopup="true"><a
+                                        href="{{url('team-report/'.Auth()->id())}}" class="kt-menu__link "><i
                                             class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
                                             class="kt-menu__link-text">Team Report</span></a></li>
-                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('sale-man-report/'.Auth()->id())}}" class="kt-menu__link "><i
+                            <li class="kt-menu__item " aria-haspopup="true"><a
+                                        href="{{url('sale-man-report/'.Auth()->id())}}" class="kt-menu__link "><i
                                             class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
                                             class="kt-menu__link-text">SaleMan Report</span></a></li>
                         </ul>

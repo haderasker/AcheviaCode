@@ -61,7 +61,7 @@ class HomeController extends Controller
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'jobTitle' => $request->jobTitle,
-                'gender' => $request->gender,
+                'notes' => $request->notes,
                 'typeClient' => 0,
                 'addedClientFrom' => 'landingPage',
                 'addedClientLink' => url('/'),

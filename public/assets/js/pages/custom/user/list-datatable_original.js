@@ -1,16 +1,18 @@
+
+
 "use strict";
 // Class definition
 
 var KTUserListDatatable = function () {
 
-    // variables
+// variables
     var datatable;
 
-    // init
+// init
     var init = function () {
-        // init the datatables. Learn more: https://keenthemes.com/metronic/?page=docs&section=datatable
+// init the datatables. Learn more: https://keenthemes.com/metronic/?page=docs&section=datatable
         datatable = $('#kt_apps_user_list_datatable').KTDatatable({
-            // datasource definition
+// datasource definition
             data: {
                 type: 'remote',
                 source: {
@@ -27,13 +29,13 @@ var KTUserListDatatable = function () {
             },
 
 
-            // layout definition
+// layout definition
             layout: {
                 scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
                 footer: false, // display/hide footer
             },
 
-            // column sorting
+// column sorting
             sortable: true,
 
             pagination: true,
@@ -43,13 +45,19 @@ var KTUserListDatatable = function () {
                 delay: 400,
             },
 
-            // columns definition
+// columns definition
             columns: [
+// {
+//     field: 'id',
+//     title: '#',
+//     sortable: false,
+//     width: 20,
+//     textAlign: 'center',
+// },
                 {
                     field: "name",
-                    title: "Client Info",
-                    width:240,
-                    // callback function support for column rendering
+                    title: "User",
+// callback function support for column rendering
                     template: function (data, i) {
                         console.log(data);
                         var pos = data.roleId;
@@ -74,22 +82,14 @@ var KTUserListDatatable = function () {
                         var output = '';
 
                         output = '<div class="kt-user-card-v2">\
-                        		<!--<div class="kt-user-card-v2__pic">\
-                        				<div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
-                        			</div>\-->\
-                        			<div class="kt-user-card-v2__details">\
-                        			<p class="kt-user-card-v2__name">Name : ' + data.name + '</p>\
-                        			<p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Phone : ' + data.phone + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Space : ' + data.detail.space + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Address : ' + data.detail.address + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.detail.saleName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
-                        		</div>\
-                        		</div>';
+    <div class="kt-user-card-v2__pic">\
+        <div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
+    </div>\
+    <div class="kt-user-card-v2__details">\
+        <a href="#" class="kt-user-card-v2__name">' + data.name + '</a>\
+        <span class="kt-user-card-v2__desc">' + position[pos] + '</span>\
+    </div>\
+</div>';
 
                         return output;
 
@@ -97,66 +97,65 @@ var KTUserListDatatable = function () {
                 },
 
 
-                // {
-                //     field: 'jobTitle',
-                //     title: 'Job Title',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.jobTitle + '</span>';
-                //     },
-                // },
-                // {
-                //     field: 'projectId',
-                //     title: 'Project',
-                //
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.projectName + '</span>';
-                //     },
-                //
-                // },
-                //
-                // {
-                //     field: 'space',
-                //     title: 'Space',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.space + '</span>';
-                //     },
-                // },
+// {
+//     field: 'jobTitle',
+//     title: 'Job Title',
+//     template: function (data) {
+//         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.jobTitle + '</span>';
+//     },
+// },
+                {
+                    field: 'projectId',
+                    title: 'Project',
+
+                    template: function (data) {
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.projectName + '</span>';
+                    },
+
+                },
+
+                {
+                    field: 'space',
+                    title: 'Space',
+                    template: function (data) {
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.space + '</span>';
+                    },
+                },
 
 
-                // {
-                //     field: 'notes',
-                //     title: 'Notes',
-                //
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.notes + '</span>';
-                //     },
-                //
-                // },
+// {
+//     field: 'notes',
+//     title: 'Notes',
+//
+//     template: function (data) {
+//         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.notes + '</span>';
+//     },
+//
+// },
 
-                // {
-                //     field: 'assignToSaleManId',
-                //     title: 'Assign To',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.saleName + '</span>';
-                //     },
-                // },
-                //
-                //
-                // {
-                //     field: 'assignedDate',
-                //     title: 'Assign Data',
-                //     type: 'date',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.assignedDate + '</span>';
-                //     },
-                // },
+                {
+                    field: 'assignToSaleManId',
+                    title: 'Assign To',
+                    template: function (data) {
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.saleName + '</span>';
+                    },
+                },
+
+
+                {
+                    field: 'assignedDate',
+                    title: 'Assign Data',
+                    type: 'date',
+                    template: function (data) {
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.assignedDate + '</span>';
+                    },
+                },
 
                 {
                     field: "actionId",
-                    title: "Last Action",
-                    width:200,
-                    // callback function support for column rendering
-                    template: function (data) {
+                    title: "Status",
+// callback function support for column rendering
+                    template: function (row) {
                         var status = {
                             0: {
                                 'title': 'new',
@@ -194,75 +193,7 @@ var KTUserListDatatable = function () {
                             },
 
                         };
-
-                        var methods = {
-
-                            null: {
-                                'title': 'Not Yet',
-                            },
-
-                            1: {
-                                'title': 'Phone',
-                            },
-                            2: {
-                                'title': 'Whats Up',
-                            },
-                            3: {
-                                'title': 'Email',
-                            },
-                            4: {
-                                'title': 'Visit',
-                            },
-
-                        };
-
-
-                        var summery = {
-
-                            null: {
-                                'title': 'Not Yet',
-                            },
-
-                            1: {
-                                'title': 'Replied',
-                            },
-                            2: {
-                                'title': 'Switched Off',
-                            },
-                            3: {
-                                'title': 'No Answer',
-                            },
-                            4: {
-                                'title': 'Wrong Number',
-                            },
-
-                        };
-
-                        var output = '';
-
-                        output = '<div class="kt-user-card-v2">\
-                        			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.detail.actionId].class + '">' + status[data.detail.actionId].title + ' At ' + data.detail.notificationDate + ' ' + data.detail.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
-                        		</div>\
-                        		</div>';
-
-                        return output;
-
-                    }
-                },
-
-                {
-                    field: 'id',
-                    title: 'New Action',
-                    width:650,
-
-                    template: function (data) {
-
-
-                        return window.output(data);
-
+                        return '<span class="btn btn-bold btn-sm btn-font-sm ' + status[row.detail.actionId].class + '">' + status[row.detail.actionId].title + '</span>';
                     }
                 },
 
@@ -275,60 +206,59 @@ var KTUserListDatatable = function () {
                     overflow: 'visible',
                     template: function (data) {
                         return '\
-							<div class="dropdown">\
-								<a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
-									<i class="flaticon-more-1"></i>\
-								</a>\
-								<div class="dropdown-menu dropdown-menu-right">\
-									<ul class="kt-nav">\
-										<!-- <li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-expand"></i>\
-												<span class="kt-nav__link-text">View</span>\
-											</a>\
-										</li>\ -->\
-										<li class="kt-nav__item">\
-											<a href="' + URL + '/client-edit/' + data.id + '" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-contract"></i>\
-												<span class="kt-nav__link-text">Edit</span>\
-											</a>\
-										</li>\
-										<li class="kt-nav__item">\
-										<a href="' + URL + '/history-clients/' + data.id + '" class="kt-nav__link">\
-                                          <i class="kt-nav__link-icon flaticon2-trash"></i>\
-                                            <span class="kt-nav__link-text">History</span>\
-                                            </a>\
-										    </li>\
-									<!--	<li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-mail-1"></i>\
-												<span class="kt-nav__link-text">Export</span>\
-											</a>\
-										</li>\-->\
-									</ul>\
-								</div>\
-							</div>\
-						';
+<div class="dropdown">\
+    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
+        <i class="flaticon-more-1"></i>\
+    </a>\
+    <div class="dropdown-menu dropdown-menu-right">\
+        <ul class="kt-nav">\
+            <!-- <li class="kt-nav__item">\
+                <a href="#" class="kt-nav__link">\
+                    <i class="kt-nav__link-icon flaticon2-expand"></i>\
+                    <span class="kt-nav__link-text">View</span>\
+                </a>\
+            </li>\ -->\
+            <li class="kt-nav__item">\
+                <a href="' + URL + '/client-edit/' + data.id + '" class="kt-nav__link">\
+                    <i class="kt-nav__link-icon flaticon2-contract"></i>\
+                    <span class="kt-nav__link-text">Edit</span>\
+                </a>\
+            </li>\
+            <li class="kt-nav__item">\
+                <a href="' + URL + '/history-clients/' + data.id + '" class="kt-nav__link">\
+                    <i class="kt-nav__link-icon flaticon2-trash"></i>\
+                    <span class="kt-nav__link-text">History</span>\
+                </a>\
+            </li>\
+            <!--	<li class="kt-nav__item">\
+                    <a href="#" class="kt-nav__link">\
+                        <i class="kt-nav__link-icon flaticon2-mail-1"></i>\
+                        <span class="kt-nav__link-text">Export</span>\
+                    </a>\
+                </li>\-->\
+        </ul>\
+    </div>\
+</div>\
+';
                     },
-                }
-            ]
-        });
-    };
-
-
-    // search
-    var search = function () {
-        $('#kt_form_status').on('change', function () {
-            datatable.search($(this).val().toLowerCase(), 'actionId');
+                }]
         });
     }
 
-    // selection
-    var selection = function () {
-        // init form controls
-        //$('#kt_form_status, #kt_form_type').selectpicker();
 
-        // event handler on check and uncheck on records
+// search
+    var search = function () {
+        $('#kt_form_status').on('change', function () {
+            datatable.search($(this).val().toLowerCase(), 'Status');
+        });
+    }
+
+// selection
+    var selection = function () {
+// init form controls
+//$('#kt_form_status, #kt_form_type').selectpicker();
+
+// event handler on check and uncheck on records
         datatable.on('kt-datatable--on-check kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
             var checkedNodes = datatable.rows('.kt-datatable__row--active').nodes(); // get selected records
             var count = checkedNodes.length; // selected records count
@@ -345,11 +275,11 @@ var KTUserListDatatable = function () {
         });
     }
 
-    // fetch selected records
+// fetch selected records
     var selectedFetch = function () {
-        // event handler on selected records fetch modal launch
+// event handler on selected records fetch modal launch
         $('#kt_datatable_records_fetch_modal').on('show.bs.modal', function (e) {
-            // show loading dialog
+// show loading dialog
             var loading = new KTDialog({'type': 'loader', 'placement': 'top center', 'message': 'Loading ...'});
             loading.show();
 
@@ -357,12 +287,12 @@ var KTUserListDatatable = function () {
                 loading.hide();
             }, 1000);
 
-            // fetch selected IDs
+// fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
                 return $(chk).val();
             });
 
-            // populate selected IDs
+// populate selected IDs
             var c = document.createDocumentFragment();
 
             for (var i = 0; i < ids.length; i++) {
@@ -378,18 +308,18 @@ var KTUserListDatatable = function () {
         });
     };
 
-    // selected records status update
+// selected records status update
     var selectedStatusUpdate = function () {
         $('#kt_subheader_group_actions_status_change').on('click', "[data-toggle='status-change']", function () {
             var status = $(this).find(".kt-nav__link-text").html();
 
-            // fetch selected IDs
+// fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
                 return $(chk).val();
             });
 
             if (ids.length > 0) {
-                // learn more: https://sweetalert2.github.io/
+// learn more: https://sweetalert2.github.io/
                 swal.fire({
                     buttonsStyling: false,
 
@@ -412,8 +342,8 @@ var KTUserListDatatable = function () {
                             confirmButtonText: "OK",
                             confirmButtonClass: "btn btn-sm btn-bold btn-brand",
                         })
-                        // result.dismiss can be 'cancel', 'overlay',
-                        // 'close', and 'timer'
+// result.dismiss can be 'cancel', 'overlay',
+// 'close', and 'timer'
                     } else if (result.dismiss === 'cancel') {
                         swal.fire({
                             title: 'Cancelled',
@@ -429,16 +359,16 @@ var KTUserListDatatable = function () {
         });
     }
 
-    // selected records delete
+// selected records delete
     var selectedDelete = function () {
         $('#kt_subheader_group_actions_delete_all').on('click', function () {
-            // fetch selected IDs
+// fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
                 return $(chk).val();
             });
 
             if (ids.length > 0) {
-                // learn more: https://sweetalert2.github.io/
+// learn more: https://sweetalert2.github.io/
                 swal.fire({
                     buttonsStyling: false,
 
@@ -461,8 +391,8 @@ var KTUserListDatatable = function () {
                             confirmButtonText: "OK",
                             confirmButtonClass: "btn btn-sm btn-bold btn-brand",
                         })
-                        // result.dismiss can be 'cancel', 'overlay',
-                        // 'close', and 'timer'
+// result.dismiss can be 'cancel', 'overlay',
+// 'close', and 'timer'
                     } else if (result.dismiss === 'cancel') {
                         swal.fire({
                             title: 'Cancelled',
@@ -480,12 +410,12 @@ var KTUserListDatatable = function () {
 
     var updateTotal = function () {
         datatable.on('kt-datatable--on-layout-updated', function () {
-            //$('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
+//$('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
         });
     };
 
     return {
-        // public functions
+// public functions
         init: function () {
             init();
             search();

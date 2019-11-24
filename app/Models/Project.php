@@ -26,4 +26,9 @@ class Project extends Model
     {
         return $this->belongsTo('App\Models\ProjectCity','cityId');
     }
+
+    public function campaigns()
+    {
+        return $this->hasMany('App\Models\Campaign','projectId');
+    }
 }

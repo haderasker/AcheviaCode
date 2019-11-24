@@ -17,8 +17,10 @@ class ClientDetail extends Model
         'typeClient','ZipCode', 'ip','region', 'country','city','canView','linkView', 'limitView',
         'addedClientFrom', 'addedClientPlatform','addedClientLink', 'assignedTime', 'assignedDate',
         'lastAssigned','assignToSaleManId', 'notificationTime',
-        'notificationDate', 'transferred',
-    ];
+        'notificationDate', 'transferred','campaignId','marketerId','platform',
+        'property','propertyLocation','propertyUtility','areaFrom','areaTo','budget',
+        'deliveryDateId','convertProject1','convertProject2',
+        ];
 
     protected $table = 'client_details';
 

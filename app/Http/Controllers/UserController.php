@@ -57,7 +57,7 @@ class UserController extends Controller
                 'email' => $request->email,
                 'roleId' => $request->roleId,
                 'createdBy' => $request->createdBy,
-                'userName' => $request->userName,
+                'userName' => '',
                 'phone' => $phone,
                 'teamId' => $request->teamId,
                 'mangerId' => $request->mangerId,

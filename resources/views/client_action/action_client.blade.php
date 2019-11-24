@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
 
     <!-- begin:: Content Head -->
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -91,6 +96,83 @@
 
 @section('script')
     <script> HREF = "{{ url('client/get_data/'.$actionId) }}"; </script>
+    <script>
+        function output(data) {
+            return '<form class="kt-form" id="updateForm" method="POST" action="{{url('/client-update')}}">\n' +
+                '    @csrf\n' +
+                '                    <input name="_id" type="text" hidden value="'+data.id+'">\n' +
+                '                    <div class="form-group row">\n' +
+                '                        <div class="col-lg-4">\n' +
+                '                            <div class="input-group date">\n' +
+                '                                <input type="date" class="form-control"\n' +
+                '                                       placeholder="Select date" id="kt_datepicker_2"\n' +
+                '                                       name="notificationDate"/>\n' +
+                '                                <div class="input-group-append">\n' +
+                '                                    <span class="input-group-text">\n' +
+                '                                        <i class="la la-calendar-check-o"></i>\n' +
+                '                                    </span>\n' +
+                '                                </div>\n' +
+                '                            </div>\n' +
+                '                        </div>\n' +
+                '                        <div class="col-lg-4">\n' +
+                '                            <div class="input-group timepicker">\n' +
+                '                                <input class="form-control" id="kt_timepicker_2"\n' +
+                '                                       placeholder="Select time" type="time"\n' +
+                '                                       name="notificationTime"/>\n' +
+                '                                <div class="input-group-append">\n' +
+                '                                    <span class="input-group-text">\n' +
+                '                                        <i class="la la-clock-o"></i>\n' +
+                '                                    </span>\n' +
+                '                                </div>\n' +
+                '                            </div>\n' +
+                '                        </div>\n' +
+                                        '<div class="col-lg-4">\n' +
+                '                            <select class="form-control" id="" name="actionId">\n' +
+                '                                <option selected value="0">Select Action</option>\n' +
+                '                                @foreach($actions as $action)\n' +
+                '                                    <option value="{{$action['id']}}">{{$action['name']}}</option>\n' +
+                '                                @endforeach\n' +
+                '                            </select>\n' +
+                '                        </div>\n' +
+                '                    </div>\n' +
+                '                        <div class="form-group row">\n' +
+                '                            <div class="col-lg-3">\n' +
+                '                                <select id="" name="assignToSaleManId" class="form-control">\n' +
+                '                                    <option  value="0" selected>Assigned To</option>\n' +
+                '                                    @foreach($sales as $sale)\n' +
+                '                                        <option value="{{$sale['id']}}">{{$sale['name']}}</option>\n' +
+                '                                    @endforeach\n' +
+                '                                </select>\n' +
+                '                            </div>\n' +
+                                        '<div class="col-3">\n'+
+                                        '<select class="form-control" id="" name="via_method">\n' +
+                                        ' <option selected value="0">Select Method</option>\n' +
+                                        ' @foreach($methods as $method)\n'+
+                                        '<option value="{{$method['id']}}">{{$method['name']}}</option>\n' +
+                                        ' @endforeach \n'+
+                                        '</select>\n' +
+                                        ' </div>\n'+
+                                        '<div class="col-lg-3">\n' +
+                                        ' <select id="" name="summery" class="form-control">\n' +
+                                        '<option selected value="0">Select Summery</option>\n' +
+                                        '<option value="1"> Replied </option>\n' +
+                                        ' <option value="2"> Switched Off </option>\n' +
+                                        '<option value="3"> No Answer </option>\n' +
+                                        '<option value="4"> Wrong Number </option>\n' +
+                                        ' </select>\n' +
+                                        '</div>\n' +
+                                        '<div class="btn-group col-lg-3">\n' +
+                                        '<button type="submit" class="btn btn-brand" id="">\n' +
+                                        '<span class="kt-hidden-mobile">Save</span>\n' +
+                                        '</button>\n' +
+                                        '</div>\n' +
+                                        '</div>\n' +
+                '                        </div>\n' +
+
+                '                    </div>\n' +
+                             '</form>\n';
+        }
+    </script>
     <script> URL  = "{{ url('/') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/list-datatable.js')}}" type="text/javascript"></script>
 

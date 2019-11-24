@@ -90,7 +90,7 @@
 
 
 @section('script')
-    <script> HREF = "{{ url('client/get_all_data') }}"; </script>
+    <script> HREF = "{{ url('client/get_transfered_data') }}"; </script>
     <script> URL = "{{ url('/') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/list-datatable_original.js')}}" type="text/javascript"></script>
 

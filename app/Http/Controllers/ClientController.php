@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ImportClients;
 use App\Models\Action;
+use App\Models\Campaign;
 use App\Models\ClientDetail;
 use App\Models\ClientHistory;
 use App\Models\Method;
@@ -14,6 +15,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\DeliveryDate;
 
 
 class ClientController extends Controller
@@ -50,9 +52,9 @@ class ClientController extends Controller
     public function create()
     {
         $projects = $this->project->all()->toArray();
-        $cities = $this->city->all()->toArray();
+        $dates = DeliveryDate::all()->toArray();
 
-        return View('clients.add', compact('projects', 'cities'));
+        return View('clients.add', compact('projects','dates'));
 
     }
 
@@ -64,7 +66,6 @@ class ClientController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|max:100',
-            'userName' => 'required',
             'phone' => 'required|numeric|regex:/[0-9]/',
             'roleId' => 'required',
             'createdBy' => 'required',
@@ -83,26 +84,38 @@ class ClientController extends Controller
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'projectId' => $request->projectId,
-                'projectCity' => $request->projectCity,
+                'projectCity' => 0,
                 'space' => $request->space,
                 'jobTitle' => $request->jobTitle,
-                'address' => $request->address,
+                'address' => '',
                 'notes' => $request->notes,
-                'gender' => $request->gender,
+                'gender' => 0,
                 'interestsUserProjects' => $request->projectId,
                 'typeClient' => 0,
                 'addedClientFrom' => $request->addedClientFrom,
                 'addedClientPlatform' => $request->addedClientPlatform,
                 'addedClientLink' => $request->addedClientLink,
-                'ZipCode' => $request->ZipCode,
+                'ZipCode' => '',
                 'ip' => $request->ip,
-                'region' => $request->region,
-                'country' => $request->country,
-                'city' => $request->city,
+                'region' => '',
+                'country' => '',
+                'city' => '',
                 'assignToSaleManId' => $request->assignToSaleManId,
                 'lastAssigned' => $lastAssign,
                 'assignedDate' => now()->format('Y-m-d'),
                 'assignedTime' => now()->format('H:i:s'),
+                'platform'=> $request->platform,
+                'campaignId'=> $request->campaignId,
+                'marketerId'=> $request->marketerId,
+                'property'=> $request->property,
+                'propertyLocation'=> $request->propertyLocation,
+                'propertyUtility'=> $request->propertyUtility,
+                'areaFrom'=> $request->areaFrom,
+                'areaTo'=> $request->areaTo,
+                'budget'=> $request->budget,
+                'deliveryDateId'=> $request->deliveryDateId,
+                'convertProject1'=> $request->convertProject1,
+                'convertProject2'=> $request->convertProject2,
             );
 //
 //        //insert record
@@ -117,8 +130,8 @@ class ClientController extends Controller
      */
     public function quickCreate()
     {
-
-        return View('clients.quick_create');
+        $projects = $this->project->all()->toArray();
+        return View('clients.quick_create',compact('projects'));
     }
 
     /**
@@ -142,8 +155,14 @@ class ClientController extends Controller
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'jobTitle' => $request->jobTitle,
-                'gender' => $request->gender,
+                'notes' => $request->notes,
                 'typeClient' => 0,
+                'projectId'=> $request->projectId,
+                'platform'=> $request->platform,
+                'campaignId'=> $request->campaignId,
+                'marketerId'=> $request->marketerId,
+                'assignToSaleManId' => $request->assignToSaleManId,
+
             );
 //
 //        //insert record
@@ -197,8 +216,7 @@ class ClientController extends Controller
     public function update(Request $request)
     {
 //        $updated = $this->user->updateUser($id, $request);
-
-        $client = $this->clientModel->where('userId', $request->id)->first()->toArray();
+        $client = $this->clientModel->where('userId', $request->_id)->first()->toArray();
 
         $notificationDate = $client['newActionDate'];
         $notificationTime = $client['notificationTime'];
@@ -251,13 +269,13 @@ class ClientController extends Controller
         }
 
         $projectId = $client['projectId'];
-        if ($request->projectId) {
+        if ($request->projectId != 0) {
 
             $projectId = $request->projectId;
         }
 
         $projectCity = $client['projectCity'];
-        if ($request->projectCity) {
+        if ($request->projectCity != 0) {
 
             $projectCity = $request->projectCity;
         }
@@ -291,10 +309,27 @@ class ClientController extends Controller
             $city = $request->city;
         }
 
+        $notes = $client['notes'];
+        if ($request->notes) {
+
+            $notes = $request->notes;
+        }
+
+        $space = $client['space'];
+        if ($request->space) {
+
+            $space = $request->space;
+        }
+
+        $assignToSaleManId = $client['assignToSaleManId'];
+        if ($request->assignToSaleManId != 0) {
+            $assignToSaleManId = $request->assignToSaleManId;
+        }
+
         $clientDetailsData = array(
-            'assignToSaleManId' => $request->assignToSaleManId,
-            'notes' => $request->notes,
-            'space' => $request->space,
+            'assignToSaleManId' => $assignToSaleManId,
+            'notes' => $notes,
+            'space' => $space,
             'viaMethodId' => $via_method,
             'actionId' => $actionId,
             'summery' => $summery,
@@ -319,11 +354,11 @@ class ClientController extends Controller
         );
 
         //update record
-        $this->clientModel->where('userId', $request->id)->update($clientDetailsData);
+        $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
 
-        $history = ClientHistory::create(['userId' => $request->id, 'actionId' => $request->actionId]);
+        $history = ClientHistory::create(['userId' => $request->_id, 'actionId' => $request->actionId]);
 
-        return redirect('/home')->withMessage('Updated successfully');
+        return redirect()->back()->withMessage('Updated successfully');
     }
 
     /**
@@ -344,8 +379,8 @@ class ClientController extends Controller
      */
     public function uploadView()
     {
-
-        return View('clients.upload');
+        $projects = $this->project->all()->toArray();
+        return View('clients.upload',compact('projects'));
     }
 
     /**
@@ -365,14 +400,24 @@ class ClientController extends Controller
         return redirect('/home')->withMessage('Insert Records successfully');
     }
 
-    public function dropDown(Request $request)
+//    public function dropDown(Request $request)
+//    {
+//        $cityId = $request->option;
+//
+//        $city = $this->city::find($cityId);
+//        $projects = $city->project();
+//
+//        return Response::make($projects->get(['id', 'name']));
+//
+//    }
+    public function dropDownMarketer(Request $request)
     {
-        $cityId = $request->option;
+        $campaignId = $request->option;
 
-        $city = $this->city::find($cityId);
-        $projects = $city->project();
+        $campaign = Campaign::find($campaignId);
+        $marketers = $campaign->marketers();
 
-        return Response::make($projects->get(['id', 'name']));
+        return Response::make($marketers->get(['id', 'name']));
 
     }
 
@@ -397,8 +442,13 @@ class ClientController extends Controller
             }
         }
 
+        $campaigns = $project->campaigns()->get()->toArray();
 
-        return $sales;
+
+        return [
+            'sales' => $sales,
+            'campaigns' => $campaigns,
+        ];
 
     }
 
