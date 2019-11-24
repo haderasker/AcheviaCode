@@ -202,11 +202,11 @@ class ClientController extends Controller
         } else {
             $projectName = '';
             $cityName = '';
-            $cities = $this->city->all()->toArray();
+            $projects = $this->project->all()->toArray();
             $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         }
 
-        return View('clients.edit', compact('requestData', 'cityName', 'projectName', 'sales', 'actions', 'methods', 'cities'));
+        return View('clients.edit', compact('requestData', 'cityName', 'projectName', 'sales', 'actions', 'methods', 'projects'));
 
     }
 
