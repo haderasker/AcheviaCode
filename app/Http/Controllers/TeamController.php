@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Team;
 use App\Models\ProjectTeam;
 use Illuminate\Http\Request;
+use App\User;
 
 class TeamController extends Controller
 {
@@ -32,13 +33,42 @@ class TeamController extends Controller
         return View('teams.view', compact('requestData'));
     }
 
+    public function getAllData(){
+
+        $data = $this->model->all()->toArray();
+        $key = 0;
+        foreach ($data as $one) {
+            $teamLeaderName = User::where('id',$one['teamLeaderId'])->pluck('name','id')->toArray();
+            $data[$key]['teamLeaderName'] = $teamLeaderName[$one['teamLeaderId']];
+            $key = $key + 1;
+        }
+
+        $meta = [
+            "page" => 1,
+            "pages" => 1,
+            "perpage" => -1,
+            "total" => 40,
+            "sort" => "asc",
+            "field" => "RecordID",
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
+
+    }
+
     /**
      * view create page to store team
      */
     public function create()
     {
 
-        return View('teams.add');
+        $teamleaders = User::where('roleId', 3)->get()->toArray();
+        return View('teams.add',compact('teamleaders'));
     }
 
     /**
@@ -55,11 +85,6 @@ class TeamController extends Controller
         $model->name = $request->name;
         $model->teamLeaderId = $request->teamLeaderId;
         $model->save();
-
-        if($request->projectId){
-            $model->projects()->create($request->projectId);
-        }
-
 
         return redirect('/teams')->with('success','Stored successfully');
     }

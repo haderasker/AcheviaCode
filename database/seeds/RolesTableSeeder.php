@@ -22,16 +22,36 @@ class RolesTableSeeder extends Seeder
 
         DB::table('roles')->insert([
             'id' => 3,
-            'name' => 'teamLeader',
+            'name' => 'Sales Team Leader',
         ]);
         DB::table('roles')->insert([
             'id' => 4,
-            'name' => 'saleMan',
+            'name' => 'sale Man',
         ]);
 
         DB::table('roles')->insert([
             'id' => 5,
             'name' => 'client',
         ]);
+        DB::table('roles')->insert([
+            'id' => 6,
+            'name' => ' Marketer',
+        ]);
+
+         DB::table('roles')->insert([
+            'id' => 7,
+            'name' => 'Moderation',
+        ]);
+
+        DB::table('roles')->insert([
+            'id' => 8,
+            'name' => ' Sales Manager',
+        ]);
+
+        DB::table('roles')->insert([
+            'id' => 9,
+            'name' => ' Marketing Manager',
+        ]);
+
     }
 }

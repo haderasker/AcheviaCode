@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'userName', 'phone', 'roleId', 'teamId',  'mangerId', 'userStatus',
-        'assign', 'saleManPunished', 'saleManAssignedToClient', 'saleManSendingMsgLimit', 'active','createdBy',
+        'assign', 'saleManPunished', 'saleManAssignedToClient', 'saleManSendingMsgLimit', 'active','createdBy','image'
     ];
 
     /**
@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->hasOne('App\Models\role');
+        return $this->belongsTo('App\Models\role','roleId');
     }
 
     public function detail()

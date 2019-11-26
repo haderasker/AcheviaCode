@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\ProjectCity;
+use App\Models\ProjectLink;
+use App\Models\ProjectTeam;
+use App\Models\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class ProjectController extends Controller
 {
@@ -29,13 +34,45 @@ class ProjectController extends Controller
         return View('projects.view', compact('requestData'));
     }
 
+    public function getAllData(){
+
+        $data = $this->model->all()->toArray();
+
+        $meta = [
+            "page" => 1,
+            "pages" => 1,
+            "perpage" => -1,
+            "total" => 40,
+            "sort" => "asc",
+            "field" => "RecordID",
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
+
+    }
+
     /**
      * view create page to store project
      */
     public function create()
     {
+       $teams = Team::all()->toArray();
+        return View('projects.add',compact('teams'));
+    }
 
-        return View('projects.add');
+        public function dropDownCity(Request $request)
+    {
+        $country = $request->option;
+
+        $cities = ProjectCity::where('country' , $country )->get();
+
+       return $cities;
+
     }
 
     /**
@@ -44,13 +81,44 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:projects|max:255',
+            'name' => 'required',
         ]);
 
-        $model =$this->model;
-        $model->name = $request->name;
-        $model->description = $request->description;
-        $model->save();
+        $imageName = time().'.'.$request->image->extension();
+
+        $request->image->move(public_path('images'), $imageName);
+
+        $data = array(
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => $imageName,
+            'country' => $request->country,
+            'cityId' => $request->cityId,
+            'location' => $request->location,
+
+        );
+//
+//        //insert record
+        $project = $this->model->create($data);
+
+//        foreach ($request->links as $link){
+//            $linkData = [
+//                'link' => $link,
+//                'projectId' =>$project->id,
+//            ];
+//
+//            ProjectLink::create($linkData);
+//        }
+
+        foreach ($request->teams as $team){
+
+            $teamData = [
+                'teamId' => $team,
+                'projectId' =>$project->id,
+            ];
+
+            ProjectTeam::create($teamData);
+        }
 
         return redirect('/projects')->with('success','Stored successfully');
     }

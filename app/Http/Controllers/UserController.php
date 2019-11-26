@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Models\Role;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -34,7 +36,32 @@ class UserController extends Controller
      */
     public function create()
     {
-        return View('users.add');
+        $roles = Role::all()->toArray();
+        return View('users.add',compact('roles'));
+    }
+
+    public function getAllData(){
+
+        $data = $this->model->with('role')->whereHas('role')->get()->toArray();
+
+        $key = 0;
+
+        $meta = [
+            "page" => 1,
+            "pages" => 1,
+            "perpage" => -1,
+            "total" => 40,
+            "sort" => "asc",
+            "field" => "RecordID",
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
+
     }
 
     /**
@@ -52,8 +79,12 @@ class UserController extends Controller
             return  ['user' => $model, 'exist' => 'yes'];
 
         } else {
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
             $userData = array(
                 'name' => $request->name,
+                'password' => Hash::make($request->password),
+                'image' => $imageName,
                 'email' => $request->email,
                 'roleId' => $request->roleId,
                 'createdBy' => $request->createdBy,
@@ -63,7 +94,6 @@ class UserController extends Controller
                 'mangerId' => $request->mangerId,
                 'userStatus' => 1,
                 'assign' => $request->assign,
-                'password' => $request->password,
                 'saleManPunished' => $request->saleManPunished,
                 'saleManAssignedToClient' => $request->saleManAssignedToClien,
                 'saleManSendingMsgLimit' => $request->saleManSendingMsgLimit,
@@ -82,7 +112,6 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|unique:users|max:255',
-            'userName' => 'required',
             'phone' => 'required',
             'roleId' => 'required',
             'createdBy' => 'required',

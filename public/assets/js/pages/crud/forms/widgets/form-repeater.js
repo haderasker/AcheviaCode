@@ -3,7 +3,7 @@ var KTFormRepeater = function() {
 
     // Private functions
     var demo1 = function() {
-        $('#kt_repeater_1').repeater({
+     $('#kt_repeater_1').repeater({
             initEmpty: false,
            
             defaultValues: {
@@ -19,6 +19,8 @@ var KTFormRepeater = function() {
             }   
         });
     }
+
+
 
     var demo2 = function() {
         $('#kt_repeater_2').repeater({

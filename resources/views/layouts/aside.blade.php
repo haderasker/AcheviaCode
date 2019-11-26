@@ -36,59 +36,7 @@
                         </ul>
                     </div>
                 </li>
-                {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
-                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i--}}
-                {{--class="kt-menu__link-icon flaticon2-user-1"></i><span class="kt-menu__link-text">Sales System</span><span--}}
-                {{--class="kt-menu__link-badge"></span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
-                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
-                {{--<ul class="kt-menu__subnav">--}}
-                {{--<li class="kt-menu__item  kt-menu__item--parent" aria-haspopup="true"><span--}}
-                {{--class="kt-menu__link"><span class="kt-menu__link-text">Sales System</span><span--}}
-                {{--class="kt-menu__link-badge"><span--}}
-                {{--class="kt-badge kt-badge--brand"></span></span></span></li>--}}
 
-                {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
-                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;"--}}
-                {{--class="kt-menu__link kt-menu__toggle"><i--}}
-                {{--class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span--}}
-                {{--class="kt-menu__link-text">Sales Status</span><i--}}
-                {{--class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
-                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
-                {{--<ul class="kt-menu__subnav">--}}
-                {{--@foreach($list as $one)--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a--}}
-                {{--href="{{url('action-client/' . $one['id'])}}"--}}
-                {{--class="kt-menu__link "><i--}}
-                {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span--}}
-                {{--class="kt-menu__link-text">{{$one['name']}}</span></a></li>--}}
-                {{--@endforeach--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">Duplicated Clients</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>--}}
-
-                {{--</ul>--}}
-                {{--</div>--}}
-                {{--</li>--}}
-
-                {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span class="kt-menu__link-text">Actions</span><i class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
-                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
-                {{--<ul class="kt-menu__subnav">--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('new-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-avatar"><span></span></i><span class="kt-menu__link-text">New Clients</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('following-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-refresh-arrow"><span></span></i><span class="kt-menu__link-text">Following</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('meeting-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-clock"><span></span></i><span class="kt-menu__link-text">Meeting</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('coming-visit-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span class="kt-menu__link-text">Coming Visit</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('done-deal-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-checkmark"><span></span></i><span class="kt-menu__link-text">Deal Done</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('cancellation-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-cancel"><span></span></i><span class="kt-menu__link-text">Cancellation</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('not-interested-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-danger"><span></span></i><span class="kt-menu__link-text">Not Interested</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('duplicated-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-copy"><span></span></i><span class="kt-menu__link-text">Duplicated</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('all-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon2-group"><span></span></i><span class="kt-menu__link-text">All Clients</span></a></li>--}}
-                {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('history-clients')}}" class="kt-menu__link "><i class="kt-menu__link-bullet kt-menu__link-icon flaticon-statistics"><span></span></i><span class="kt-menu__link-text">History Clients</span></a></li>--}}
-                {{--</ul>--}}
-                {{--</div>--}}
-                {{--</li>--}}
-                {{--</ul>--}}
-                {{--</div>--}}
-                {{--</li>--}}
                 <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                     data-ktmenu-submenu-toggle="hover"><a href="javascript:;" class="kt-menu__link kt-menu__toggle"><i
                                 class="kt-menu__link-icon flaticon-settings-1"><span></span></i><span
@@ -214,25 +162,25 @@
                                 </div>
                             </li>
 
-                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                                data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-                                                                      class="kt-menu__link kt-menu__toggle"><i
-                                            class="kt-menu__link-bullet  kt-menu__link-icon flaticon-list-1"><span></span></i><span
-                                            class="kt-menu__link-text">Project Cities</span><i
-                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item " aria-haspopup="true"><a
-                                                    href="{{url('city-create')}}" class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-plus"><span></span></i><span
-                                                        class="kt-menu__link-text">Add Project City</span></a></li>
-                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/cities')}}"
-                                                                                           class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span
-                                                        class="kt-menu__link-text">view Project Cities</span></a></li>
-                                    </ul>
-                                </div>
-                            </li>
+                            {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
+                                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;"--}}
+                                                                      {{--class="kt-menu__link kt-menu__toggle"><i--}}
+                                            {{--class="kt-menu__link-bullet  kt-menu__link-icon flaticon-list-1"><span></span></i><span--}}
+                                            {{--class="kt-menu__link-text">Project Cities</span><i--}}
+                                            {{--class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
+                                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
+                                    {{--<ul class="kt-menu__subnav">--}}
+                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a--}}
+                                                    {{--href="{{url('city-create')}}" class="kt-menu__link "><i--}}
+                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-plus"><span></span></i><span--}}
+                                                        {{--class="kt-menu__link-text">Add Project City</span></a></li>--}}
+                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/cities')}}"--}}
+                                                                                           {{--class="kt-menu__link "><i--}}
+                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span--}}
+                                                        {{--class="kt-menu__link-text">view Project Cities</span></a></li>--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
+                            {{--</li>--}}
 
                             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                                 data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
@@ -254,46 +202,46 @@
                                 </div>
                             </li>
 
-                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                                data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-                                                                      class="kt-menu__link kt-menu__toggle"><i
-                                            class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span
-                                            class="kt-menu__link-text">Actions</span><i
-                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item " aria-haspopup="true"><a
-                                                    href="{{url('action-create')}}" class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-plus"><span></span></i><span
-                                                        class="kt-menu__link-text">Add Action</span></a></li>
-                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/actions')}}"
-                                                                                           class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span
-                                                        class="kt-menu__link-text">view Actions</span></a></li>
-                                    </ul>
-                                </div>
-                            </li>
+                            {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
+                                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;"--}}
+                                                                      {{--class="kt-menu__link kt-menu__toggle"><i--}}
+                                            {{--class="kt-menu__link-bullet  kt-menu__link-icon flaticon-settings-1"><span></span></i><span--}}
+                                            {{--class="kt-menu__link-text">Actions</span><i--}}
+                                            {{--class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
+                                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
+                                    {{--<ul class="kt-menu__subnav">--}}
+                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a--}}
+                                                    {{--href="{{url('action-create')}}" class="kt-menu__link "><i--}}
+                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-plus"><span></span></i><span--}}
+                                                        {{--class="kt-menu__link-text">Add Action</span></a></li>--}}
+                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/actions')}}"--}}
+                                                                                           {{--class="kt-menu__link "><i--}}
+                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span--}}
+                                                        {{--class="kt-menu__link-text">view Actions</span></a></li>--}}
+                                    {{--</ul>--}}
+                                {{--</div>--}}
+                            {{--</li>--}}
 
-                            <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
-                                data-ktmenu-submenu-toggle="hover"><a href="javascript:;"
-                                                                      class="kt-menu__link kt-menu__toggle"><i
-                                            class="kt-menu__link-bullet  kt-menu__link-icon flaticon-list-1"><span></span></i><span
-                                            class="kt-menu__link-text">Methods</span><i
-                                            class="kt-menu__ver-arrow la la-angle-right"></i></a>
-                                <div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>
-                                    <ul class="kt-menu__subnav">
-                                        <li class="kt-menu__item " aria-haspopup="true"><a
-                                                    href="{{url('method-create')}}" class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-plus"><span></span></i><span
-                                                        class="kt-menu__link-text">Add Method</span></a></li>
-                                        <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/methods')}}"
-                                                                                           class="kt-menu__link "><i
-                                                        class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span
-                                                        class="kt-menu__link-text">view Methods</span></a></li>
+                            {{--<li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"--}}
+                                {{--data-ktmenu-submenu-toggle="hover"><a href="javascript:;"--}}
+                                                                      {{--class="kt-menu__link kt-menu__toggle"><i--}}
+                                            {{--class="kt-menu__link-bullet  kt-menu__link-icon flaticon-list-1"><span></span></i><span--}}
+                                            {{--class="kt-menu__link-text">Methods</span><i--}}
+                                            {{--class="kt-menu__ver-arrow la la-angle-right"></i></a>--}}
+                                {{--<div class="kt-menu__submenu "><span class="kt-menu__arrow"></span>--}}
+                                    {{--<ul class="kt-menu__subnav">--}}
+                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a--}}
+                                                    {{--href="{{url('method-create')}}" class="kt-menu__link "><i--}}
+                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-plus"><span></span></i><span--}}
+                                                        {{--class="kt-menu__link-text">Add Method</span></a></li>--}}
+                                        {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('/methods')}}"--}}
+                                                                                           {{--class="kt-menu__link "><i--}}
+                                                        {{--class="kt-menu__link-bullet kt-menu__link-icon flaticon-eye"><span></span></i><span--}}
+                                                        {{--class="kt-menu__link-text">view Methods</span></a></li>--}}
 
-                                    </ul>
-                                </div>
-                            </li>
+                                    {{--</ul>--}}
+                                {{--</div>--}}
+                            {{--</li>--}}
 
                             <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true"
                                 data-ktmenu-submenu-toggle="hover"><a href="javascript:;"

@@ -39,6 +39,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('project-edit', 'ProjectController@edit');
     Route::patch('project-update/{id}', 'ProjectController@update');
     Route::delete('project-delete/{id}', 'ProjectController@destroy');
+    Route::get('api/dropdown/cities', 'ProjectController@dropDownCity');
+    Route::get('project/get_data', 'ProjectController@getAllData');
+
+
 
     /**
      * city routes
@@ -69,6 +73,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('team-edit', 'TeamController@edit');
     Route::patch('team-update/{id}', 'TeamController@update');
     Route::delete('team-delete/{id}', 'TeamController@destroy');
+    Route::get('team/get_data', 'TeamController@getAllData');
+
 
     /**
      * user routes
@@ -79,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('user-edit', 'UserController@edit');
     Route::patch('user-update/{id}', 'UserController@update');
     Route::delete('user-delete/{id}', 'UserController@destroy');
+    Route::get('users/get_data', 'UserController@getAllData');
 
     /**
      * client routes
