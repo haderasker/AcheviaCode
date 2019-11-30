@@ -1,6 +1,4 @@
 ---
 deployment:
   tasks:
-    - php composer install
-    - php artisan migrate:fresh
-    - php artisan db:seed
+    - php composer update
