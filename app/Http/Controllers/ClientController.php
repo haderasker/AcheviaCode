@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\DeliveryDate;
-
+use App\Events\UserSalesUpdatedEvent;
 
 class ClientController extends Controller
 {
@@ -162,7 +162,6 @@ class ClientController extends Controller
                 'campaignId'=> $request->campaignId,
                 'marketerId'=> $request->marketerId,
                 'assignToSaleManId' => $request->assignToSaleManId,
-
             );
 //
 //        //insert record
@@ -355,6 +354,9 @@ class ClientController extends Controller
 
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
+        if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
+           event(UserSalesUpdatedEvent::class);
+        }
 
         $history = ClientHistory::create(['userId' => $request->_id, 'actionId' => $request->actionId]);
 

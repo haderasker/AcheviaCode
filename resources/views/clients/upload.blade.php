@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-2 col-lg-">
+                        <div class="col-xl-2 col-lg-2">
 
                             <div class="input-group">
                                 <input id="" type="number" class="form-control" value="" name="codeCol"

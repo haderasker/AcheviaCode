@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CampaignsTableSeeder::class);
         $this->call(MarketersTableSeeder::class);
         $this->call(DeliveryDatesTableSeeder::class);
+        $this->call(SendingTypesTableSeeder::class);
     }
 }

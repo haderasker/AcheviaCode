@@ -79,12 +79,19 @@ class UserController extends Controller
             return  ['user' => $model, 'exist' => 'yes'];
 
         } else {
-            $imageName = time().'.'.$request->image->extension();
-            $request->image->move(public_path('images'), $imageName);
+            $password = null;
+            if( $request->password){
+               $password =  Hash::make($request->password);
+            }
+            $image = null;
+            if($request->image) {
+                $imageName = time() . '.' . $request->image->extension();
+                $request->image->move(public_path('images'), $imageName);
+            }
             $userData = array(
                 'name' => $request->name,
-                'password' => Hash::make($request->password),
-                'image' => $imageName,
+                'password'=>$password,
+                'image' => $image,
                 'email' => $request->email,
                 'roleId' => $request->roleId,
                 'createdBy' => $request->createdBy,
