@@ -154,7 +154,7 @@ var KTUserListDatatable = function () {
                 {
                     field: "actionId",
                     title: "Last Action",
-                    width:200,
+                    width:150,
                     // callback function support for column rendering
                     template: function (data) {
                         var status = {
