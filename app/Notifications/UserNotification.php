@@ -29,7 +29,7 @@ class UserNotification extends Notification
     public function via()
     {
 
-        return [SmsChannel::class, 'mail'];
+        return [SmsChannel::class];
     }
 
     /**
