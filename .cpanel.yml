@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - rm composer.lock
+    - rm -f composer.lock
     - php composer install
     - php composer dumpautoload -o
     - php artisan migrate:fresh
