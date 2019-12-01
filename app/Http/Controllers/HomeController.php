@@ -67,6 +67,7 @@ class HomeController extends Controller
                 'roleId' => 5,
                 'userStatus' => 1,
                 'active' => 1,
+                'createdBy' => 0,
             ];
 
             $user = User::create($userData);
