@@ -44,8 +44,7 @@ class HomeController extends Controller
 
     public function me()
     {
-        $users = User::all()->toArray();
-        return $users;
+        return  User::all();
     }
 
     /**
