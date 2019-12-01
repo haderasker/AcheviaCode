@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@welCome');
+Route::get('/me', 'HomeController@me');
 Route::post('client-landing-page', 'HomeController@landingStore');
 
 Auth::routes();
