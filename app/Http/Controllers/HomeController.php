@@ -44,8 +44,44 @@ class HomeController extends Controller
 
     public function me()
     {
-        return  User::all();
+        return User::all();
     }
+
+    public function facebookForm(Request $request)
+    {
+        $phone = $request->countryCode . ltrim($request->phone, '0');
+        $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
+        if ($userExist) {
+            $model = User::find($userExist['id']);
+            $countDuplicated = $userExist['duplicated'];
+            $model->duplicated = $countDuplicated + 1;
+            $user = $model->save();
+            return $model;
+
+        } else {
+
+            $userData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $phone,
+                'roleId' => 5,
+                'userStatus' => 1,
+                'active' => 1,
+            ];
+
+            $user = User::create($userData);
+
+            $clientDetailsData = [
+                'userId' => $user->id,
+            ];
+
+            //insert record
+            $userClient = ClientDetail::create($clientDetailsData);
+
+            return $user;
+        }
+    }
+
 
     /**
      * store user
