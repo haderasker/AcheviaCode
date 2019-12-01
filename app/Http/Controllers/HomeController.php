@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\ClientDetail;
-use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -45,7 +45,7 @@ class HomeController extends Controller
     public function me()
     {
         $users = User::all()->toArray();
-        return view('test',compact('users'));
+        return $users;
     }
 
     /**
