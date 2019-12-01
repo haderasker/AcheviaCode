@@ -40,9 +40,9 @@ class User extends Authenticatable
     ];
 
 
-    protected $dispatchesEvents = [
-        'created' => UserCreatedEvent::class,
-    ];
+//    protected $dispatchesEvents = [
+//        'created' => UserCreatedEvent::class,
+//    ];
 
 
     /**
