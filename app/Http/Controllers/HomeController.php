@@ -6,6 +6,7 @@ use App\Models\Action;
 use App\Models\ClientDetail;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -50,39 +51,25 @@ class HomeController extends Controller
 
     public function login(Request $request)
     {
-        dd($request);
-//        $validator = $this->validator(array(
-//            'userName'=>'required',
-//            'password'=>'required'));
-//        if($validator->fails())
-//            return $this->response(false, $validator->errors()->all());
-
         $user = User::where('email', $request->email)->first();
 
+        if (!$user || !(Hash::check($request->password, $user->password))) {
 
-        if (!$user || !(Hash::check($request->password ,$user->password)) )
-        {
-
-            return $this->response(false, ['message'=>'Invalid credientials']);
+            return  ['message' => 'Invalid Credentials'];
         }
 
-
-        if ($user && Hash::check($request->password ,$user->password))
-        {
+        if ($user && Hash::check($request->password, $user->password)) {
             //generate api token
             $this->reGenerateApiToken($user);
-            return $this->response(true, $user);
+            return $user;
         }
 
     }
 
     public function reGenerateApiToken($user)
     {
-
         $api_token = md5(bcrypt($user->email));
-        $user = $user->update([
-            'api_token'=>$api_token,
-        ]);
+       $user->update(['api_token' => $api_token]);
     }
 
     public function facebookForm(Request $request)
@@ -120,7 +107,6 @@ class HomeController extends Controller
             return $user;
         }
     }
-
 
 
     /**
