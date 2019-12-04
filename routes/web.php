@@ -12,8 +12,6 @@
 */
 
 Route::get('/', 'HomeController@welCome');
-Route::get('/me', 'HomeController@me');
-Route::post('/facebook-form', 'HomeController@facebookForm');
 Route::post('client-landing-page', 'HomeController@landingStore');
 
 Auth::routes();

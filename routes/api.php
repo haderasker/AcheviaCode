@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/login', 'HomeController@login');
+Route::post('/facebook-form', 'HomeController@facebookForm');
