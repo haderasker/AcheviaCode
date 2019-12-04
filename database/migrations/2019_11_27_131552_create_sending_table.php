@@ -18,7 +18,7 @@ class CreateSendingTable extends Migration
             $table->unsignedBigInteger('sendingTypeId')->nullable();
             $table->string('body')->nullable();
             $table->integer('active')->default(1);
-            $table->integer('type'); // 0 email  1 sms
+            $table->string('type')->nullable();
             $table->string('senderId')->nullable();
             $table->timestamps();
         });

@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Channels\SmsChannel;
+use App\Models\Sending;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -56,21 +57,22 @@ class UserNotification extends Notification
     }
 
     /**
-     * Get the sms representation of the notification.
+     * Get the sending representation of the notification.
      *
      * @param  mixed $notifiable
      * @return array
      */
     public function toSms($notifiable)
     {
+        $sending = Sending::where('sendingTypeId' , 1)->first();
         $phone = $notifiable['countryCode'] . ltrim($notifiable['phone'], '0');
         $myBody = [
             'username' => env('SMS_USERNAME'),
             'password' => env('SMS_PASSWORD'),
-            'sender' => env('SMS_SENDER'),
-            'language' => 1,
+            'sender' => $sending['senderId'],
+            'language' => 2,
             'mobile' => $phone,
-            'message' => 'welcome',
+            'message' => $sending['body'],
 //            'delayUntil' => $delayUntil,
         ];
 

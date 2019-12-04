@@ -95,9 +95,9 @@
 
 
 @section('script')
-    <script> HREF = "{{ url('team/get_data') }}"; </script>
+    <script> HREF = "{{ url('sms/get_data') }}"; </script>
     <script> URL  = "{{ url('/') }}"; </script>
-    <script src="{{url('assets/js/pages/custom/user/list-datatable-team.js')}}" type="text/javascript"></script>
+    <script src="{{url('assets/js/pages/custom/user/list-datatable-sms.js')}}" type="text/javascript"></script>
 
 @endsection
 

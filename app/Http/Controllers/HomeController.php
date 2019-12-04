@@ -47,6 +47,44 @@ class HomeController extends Controller
         return User::all();
     }
 
+
+    public function login(Request $request)
+    {
+        dd($request);
+//        $validator = $this->validator(array(
+//            'userName'=>'required',
+//            'password'=>'required'));
+//        if($validator->fails())
+//            return $this->response(false, $validator->errors()->all());
+
+        $user = User::where('email', $request->email)->first();
+
+
+        if (!$user || !(Hash::check($request->password ,$user->password)) )
+        {
+
+            return $this->response(false, ['message'=>'Invalid credientials']);
+        }
+
+
+        if ($user && Hash::check($request->password ,$user->password))
+        {
+            //generate api token
+            $this->reGenerateApiToken($user);
+            return $this->response(true, $user);
+        }
+
+    }
+
+    public function reGenerateApiToken($user)
+    {
+
+        $api_token = md5(bcrypt($user->email));
+        $user = $user->update([
+            'api_token'=>$api_token,
+        ]);
+    }
+
     public function facebookForm(Request $request)
     {
         $phone = $request->countryCode . ltrim($request->phone, '0');
@@ -82,6 +120,7 @@ class HomeController extends Controller
             return $user;
         }
     }
+
 
 
     /**

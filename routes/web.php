@@ -124,12 +124,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('new-requests', 'ClientActionController@newRequests');
     Route::get('client/get_new_requests_data', 'ClientActionController@getNewRequestsData');
 
-//    Route::get('following-clients', 'ClientActionController@following');
-//    Route::get('coming-visit-clients', 'ClientActionController@comingVisit');
-//    Route::get('cancellation-clients', 'ClientActionController@cancellation');
-//    Route::get('done-deal-clients', 'ClientActionController@doneDeal');
-//    Route::get('meeting-clients', 'ClientActionController@meeting');
-//    Route::get('not-interested-clients', 'ClientActionController@notInterested');
 
     /**
      * reports routes
@@ -137,6 +131,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('team-report/{id}', 'ReportController@teamReport');
     Route::get('sale-man-report/{id}', 'ReportController@saleManReport');
     Route::get('all-reports', 'ReportController@AllReports');
+
+    /**
+     * sending routes
+     */
+    Route::get('sending', 'SendingController@index');
+    Route::get('sending-create', 'SendingController@create');
+    Route::post('sending-store', 'SendingController@store');
+    Route::get('sending-edit/{id}', 'SendingController@edit');
+    Route::post('sending-update', 'SendingController@update');
+    Route::get('sms/get_data', 'SendingController@getAllData');
 
 
 });

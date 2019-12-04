@@ -32,10 +32,10 @@
                                     </div>
                                     <div class="kt-wizard-v4__nav-label">
                                         <div class="kt-wizard-v4__nav-label-title">
-                                            Team
+                                            Sending Message
                                         </div>
                                         <div class="kt-wizard-v4__nav-label-desc">
-                                             Information
+                                            Information
                                         </div>
                                     </div>
                                 </div>
@@ -51,41 +51,67 @@
                                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
 
                                     <!--begin: Form Wizard Form-->
-                                    <form class="kt-form" id="" method="POST" action="{{url('/team-store')}}">
+                                    <form class="kt-form" id="" method="POST" action="{{url('/sending-update')}}">
                                     @csrf
                                     <!--begin: Form Wizard Step 1-->
                                         <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
                                              data-ktwizard-state="current">
-                                            <div class="kt-heading kt-heading--md">Team Details:</div>
+                                            <div class="kt-heading kt-heading--md">Sending Message Details:</div>
                                             <div class="kt-section kt-section--first">
                                                 <div class="kt-wizard-v4__form">
                                                     <div class="row">
                                                         <div class="col-xl-12">
                                                             <div class="kt-section__body">
 
-                                                                <div class="form-group row">
-                                                                    <label class="col-xl-3 col-lg-3 col-form-label">
-                                                                       Team Name</label>
-                                                                    <div class="col-lg-9 col-xl-9">
-                                                                        <input id="" name="name" class="form-control"
-                                                                               type="text" value="{{ old('name') }}">
-                                                                    </div>
-                                                                </div>
-
-
+                                                                <input id="" name="id"
+                                                                       class="form-control"
+                                                                       type="text"
+                                                                       value="{{ $requestData['id'] }}" hidden>
                                                                 <div class="form-group row">
                                                                     <label class="col-form-label col-lg-3 col-sm-12">Select
-                                                                        TeamLeader </label>
+                                                                        sending Type </label>
                                                                     <div class=" col-lg-9 col-md-9 col-sm-12">
                                                                         <select class="form-control kt-select2"
-                                                                                id="kt_select2_3" name="teamLeaderId">
-                                                                            <option value="0">Select Team Leader</option>
-                                                                        @foreach($teamleaders as $teamleader)
-                                                                                <option value="{{$teamleader['id']}}">{{$teamleader['name']}}</option>
+                                                                                id="kt_select2_3" name="sendingTypeId">
+                                                                            @foreach($sendingTypes as $type)
+                                                                                <option value="{{$type['id']}}" {{ $type['id'] == $requestData['sendingTypeId'] ? 'selected' : '' }}>{{$type['name']}}</option>
                                                                             @endforeach
                                                                         </select>
                                                                     </div>
                                                                 </div>
+
+                                                                <div class="form-group row">
+                                                                    <label class="col-xl-3 col-lg-3 col-form-label">
+                                                                        Sender </label>
+                                                                    <div class="col-lg-9 col-xl-9">
+                                                                        <input id="" name="senderId"
+                                                                               class="form-control"
+                                                                               type="text"
+                                                                               value="{{ $requestData['senderId'] }}">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group row">
+                                                                    <label class="col-xl-3 col-lg-3 col-form-label">
+                                                                        Message </label>
+                                                                    <div class="col-lg-9 col-xl-9">
+                                                                        <input id="" name="body" class="form-control"
+                                                                               type="text" value="{{ $requestData['body'] }}">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group row">
+                                                                    <label class="col-form-label col-lg-3 col-sm-12">Select
+                                                                        Type </label>
+                                                                    <div class=" col-lg-9 col-md-9 col-sm-12">
+                                                                        <select class="form-control kt-select2"
+                                                                                id="kt_select2_3" name="type">
+                                                                            <option value="email"  {{$requestData['type'] == 'email' ? 'selected' : '' }}>Email</option>
+                                                                            <option value="sms" {{$requestData['type'] == 'sms' ? 'selected' : '' }}>Sms</option>
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
 
                                                             </div>
                                                         </div>
@@ -97,12 +123,15 @@
                                         <div class="kt-form__actions">
                                             <div class="row">
                                                 <div class="col-lg-9 ml-lg-auto">
-                                                    <button type="submit" class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u">Submit</button>
+                                                    <button type="submit"
+                                                            class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u">
+                                                        Submit
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                    <!--end: Form Actions -->
+                                        <!--end: Form Actions -->
                                     </form>
 
                                     <!--end: Form Wizard Form-->
@@ -120,9 +149,4 @@
     <!-- end:: Page -->
 @endsection
 
-@section('script')
-    <script> window.HREF = "{{ url('/home') }}"; </script>
-    <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
-
-@endsection
 
