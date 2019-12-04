@@ -43,11 +43,6 @@ class HomeController extends Controller
         return view('welcome');
     }
 
-    public function me()
-    {
-        return User::all();
-    }
-
 
     public function login(Request $request)
     {
@@ -74,7 +69,7 @@ class HomeController extends Controller
 
     public function facebookForm(Request $request)
     {
-        $phone = $request->countryCode . ltrim($request->phone, '0');
+        $phone =  ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
         if ($userExist) {
             $model = User::find($userExist['id']);
