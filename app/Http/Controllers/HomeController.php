@@ -50,7 +50,7 @@ class HomeController extends Controller
 
         if (!$user || !(Hash::check($request->password, $user->password))) {
 
-            return  ['message' => 'Invalid Credentials'];
+            return ['message' => 'Invalid Credentials'];
         }
 
         if ($user && Hash::check($request->password, $user->password)) {
@@ -64,12 +64,14 @@ class HomeController extends Controller
     public function reGenerateApiToken($user)
     {
         $api_token = md5(bcrypt($user->email));
-       $user->update(['api_token' => $api_token]);
+        $user->api_token = $api_token;
+        $user->save();
+
     }
 
     public function facebookForm(Request $request)
     {
-        $phone =  ltrim($request->phone, '+');
+        $phone = ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
         if ($userExist) {
             $model = User::find($userExist['id']);
