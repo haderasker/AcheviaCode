@@ -64,20 +64,20 @@ class UserNotification extends Notification
      */
     public function toSms($notifiable)
     {
-        $sending = Sending::where('sendingTypeId' , 1)->first();
-        $phone = $notifiable['countryCode'] . ltrim($notifiable['phone'], '0');
-        $myBody = [
-            'username' => env('SMS_USERNAME'),
-            'password' => env('SMS_PASSWORD'),
-            'sender' => $sending['senderId'],
-            'language' => 2,
-            'mobile' => $phone,
-            'message' => $sending['body'],
+        $sending = Sending::where('sendingTypeId', 1)->first();
+        if ($sending && $sending['active'] == 1) {
+            $phone = $notifiable['countryCode'] . ltrim($notifiable['phone'], '0');
+            $myBody = [
+                'username' => env('SMS_USERNAME'),
+                'password' => env('SMS_PASSWORD'),
+                'sender' => $sending['senderId'],
+                'language' => 2,
+                'mobile' => $phone,
+                'message' => $sending['body'],
 //            'delayUntil' => $delayUntil,
-        ];
-
-        return $myBody;
-
+            ];
+            return $myBody;
+        }
     }
 
 
