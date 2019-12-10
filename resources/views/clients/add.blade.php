@@ -367,7 +367,6 @@
                                                             <option selected>Assigned To</option>
                                                         </select>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -391,7 +390,7 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Property </label>
 
-                                                                    <select id="" name="property"
+                                                                    <select id="property" name="property"
                                                                             class="form-control col-lg-9 col-xl-9">
                                                                         <option selected>Select Property</option>
                                                                         <option value="residential"> Residential
@@ -429,31 +428,33 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Area</label>
                                                                     <div class="col-lg-4 col-xl-4">
-                                                                        <input id="" class="form-control"
+                                                                        <input id="from" class="form-control"
                                                                                name="areaFrom"
-                                                                               type="number" value="{{old('areaFrom')}}" placeholder="From">
+                                                                               type="number" value="{{old('areaFrom')}}"
+                                                                               placeholder="From">
                                                                     </div>
                                                                     <div class="col-xs-1 col-lg-1  col-lg-offset-1 col-xs-offset-1"></div>
                                                                     <div class="col-lg-4 col-xl-4">
-                                                                        <input id="" class="form-control"
+                                                                        <input id="to" class="form-control"
                                                                                name="areaTo"
-                                                                               type="number" value="{{old('areaTo')}}" placeholder="To">
+                                                                               type="number" value="{{old('areaTo')}}"
+                                                                               placeholder="To">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Approximate Budget</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input id="" class="form-control"
+                                                                        <input id="budget" class="form-control"
                                                                                name="budget"
-                                                                               type="number" value="{{old('budget')}}">
+                                                                               type="text" value="{{old('budget')}}">
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Delivery Date</label>
-                                                                    <select id="" name="deliveryDateId"
+                                                                    <select id="date" name="deliveryDateId"
                                                                             class="form-control col-lg-9 col-xl-9">
                                                                         <option selected>Select Delivery Date
                                                                         </option>
@@ -464,7 +465,8 @@
                                                                 </div>
 
                                                                 <div class="form-group row">
-                                                                    <label class="col-xl-3 col-lg-3 col-form-label">Convert to
+                                                                    <label class="col-xl-3 col-lg-3 col-form-label">Convert
+                                                                        to
                                                                         Project 1</label>
 
                                                                     <select id="projectId" name="convertProject1"
@@ -477,7 +479,8 @@
                                                                 </div>
 
                                                                 <div class="form-group row">
-                                                                    <label class="col-xl-3 col-lg-3 col-form-label">Convert To Project 2
+                                                                    <label class="col-xl-3 col-lg-3 col-form-label">Convert
+                                                                        To Project 2
                                                                         Project</label>
 
                                                                     <select id="projectId" name="convertProject2"
@@ -510,33 +513,37 @@
                                                         </div>
                                                         <input type="text" name="interestsUserProjects" id="interest"
                                                                hidden>
+
                                                         <div class="kt-wizard-v4__review-content">
-                                                            <p id="myName"></p>
+                                                            <p> Name: <span id="myName"></span></p>
                                                             <p> Phone: <span id="myPhone"></span></p>
                                                             <p>Email: <span id="myEmail"></span></p>
                                                         </div>
                                                     </div>
-                                                    {{--<div class="kt-wizard-v4__review-item">--}}
-                                                    {{--<div class="kt-wizard-v4__review-title">--}}
-                                                    {{--Your Address Details--}}
-                                                    {{--</div>--}}
-                                                    {{--<div class="kt-wizard-v4__review-content">--}}
-                                                    {{--<p id="myAdd"></p>--}}
-                                                    {{--<p> <span id="myCountry"></span>,--}}
-                                                    {{--<span id="myCity"></span>,--}}
-                                                    {{--<span id="myRegion"></span>,--}}
-                                                    {{--</p>--}}
-                                                    {{--</div>--}}
-                                                    {{--</div>--}}
                                                     <div class="kt-wizard-v4__review-item">
                                                         <div class="kt-wizard-v4__review-title">
-                                                            Interested Details
+                                                            Interested Information
                                                         </div>
                                                         <div class="kt-wizard-v4__review-content">
                                                             <p>Project: <span id="myProject"></span></p>
-                                                            {{--<p> Space: <span id="mySpace"></span>M</p>--}}
+                                                            <p>Campaign: <span id="myCampaign"></span></p>
+                                                            <p>Marketer: <span id="myMarketer"></span></p>
+                                                            <p>AssignTo: <span id="mySale"></span></p>
                                                         </div>
                                                     </div>
+                                                    <div class="kt-wizard-v4__review-item">
+                                                        <div class="kt-wizard-v4__review-title">
+                                                            Customer Question
+                                                        </div>
+                                                        <div class="kt-wizard-v4__review-content">
+                                                            <p id=""></p>
+                                                            <p>Property: <span id="myProperty"></span></p>
+                                                            <p>Budget: <span id="myBudget"></span></p>
+                                                            <p>Date: <span id="myDate"></span></p>
+                                                            <p>Area: <span id="myArea"></span></p>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

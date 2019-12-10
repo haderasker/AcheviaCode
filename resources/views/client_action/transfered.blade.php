@@ -18,7 +18,8 @@
                             <input type="text" class="form-control" placeholder="Search..." id="generalSearch">
                             <span class="kt-input-icon__icon kt-input-icon__icon--right">
 													<span>
-														<svg xmlns="http://www.w3.org/2000/svg" width="24px"
+														<svg xmlns="http://www.w3.org/2000/svg"
+                                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
                                                              height="24px" viewBox="0 0 24 24" version="1.1"
                                                              class="kt-svg-icon">
 															<g stroke="none" stroke-width="1" fill="none"
@@ -37,6 +38,40 @@
                         </div>
                     </form>
                 </div>
+                @if((Auth::user()->role->name == 'admin'))
+                    <div class="kt-subheader__group" id="kt_subheader_group_actions">
+                        <div class="kt-subheader__desc"><span id="kt_subheader_group_selected_rows"></span> Selected:
+                        </div>
+                        <div class="btn-toolbar kt-margin-l-20">
+                            <div class="dropdown" id="kt_subheader_group_actions_status_change">
+                                <button type="button" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle"
+                                        data-toggle="dropdown">
+                                    Select SalesMan
+                                </button>
+                                <div class="dropdown-menu">
+                                    <ul class="kt-nav">
+                                        <li class="kt-nav__section kt-nav__section--first">
+                                            <span class="kt-nav__section-text"> Select SalesMan:</span>
+                                        </li>
+
+                                        @foreach($sales as $sale)
+                                            <li class="kt-nav__item">
+                                                <a class="kt-nav__link" data-toggle="status-change"
+                                                   data-status="{{$sale['id']}}">
+                                                <span class="kt-nav__link-text">
+                                                    <span class="sale kt-badge kt-badge--unified-success kt-badge--inline kt-badge--bold">
+                                                        {{$sale['name']}}
+                                                    </span>
+                                                </span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
 
         </div>
@@ -92,6 +127,7 @@
 @section('script')
     <script> HREF = "{{ url('client/get_transfered_data') }}"; </script>
     <script> URL = "{{ url('/') }}"; </script>
+    <script> user = "{{ Auth::user()->role->name }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/list-datatable_original.js')}}" type="text/javascript"></script>
 
 @endsection

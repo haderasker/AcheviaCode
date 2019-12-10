@@ -5,6 +5,8 @@ namespace App\Listeners;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\UserSalesUpdatedEvent;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\UserNotification;
 
 class UserSalesUpdatedSMSListener
 {
@@ -26,6 +28,6 @@ class UserSalesUpdatedSMSListener
      */
     public function handle(UserSalesUpdatedEvent $event)
     {
-        $user = $event->user;
+
     }
 }

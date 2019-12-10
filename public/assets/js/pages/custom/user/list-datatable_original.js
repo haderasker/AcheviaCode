@@ -1,5 +1,3 @@
-
-
 "use strict";
 // Class definition
 
@@ -47,13 +45,17 @@ var KTUserListDatatable = function () {
 
 // columns definition
             columns: [
-// {
-//     field: 'id',
-//     title: '#',
-//     sortable: false,
-//     width: 20,
-//     textAlign: 'center',
-// },
+                {
+                    field: 'id',
+                    title: '#',
+                    sortable: false,
+                    width: 20,
+                    textAlign: 'center',
+                    selector: {
+                        class: 'kt-checkbox--solid'
+                    },
+
+                },
                 {
                     field: "name",
                     title: "User",
@@ -113,15 +115,6 @@ var KTUserListDatatable = function () {
                     },
 
                 },
-
-                {
-                    field: 'space',
-                    title: 'Space',
-                    template: function (data) {
-                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.space + '</span>';
-                    },
-                },
-
 
 // {
 //     field: 'notes',
@@ -256,24 +249,26 @@ var KTUserListDatatable = function () {
 // selection
     var selection = function () {
 // init form controls
-//$('#kt_form_status, #kt_form_type').selectpicker();
+        $('#kt_form_status, #kt_form_type').selectpicker();
 
 // event handler on check and uncheck on records
-        datatable.on('kt-datatable--on-check kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
+        datatable.on('kt-datatable--on-check  kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
             var checkedNodes = datatable.rows('.kt-datatable__row--active').nodes(); // get selected records
             var count = checkedNodes.length; // selected records count
 
-            $('#kt_subheader_group_selected_rows').html(count);
-
-            if (count > 0) {
-                $('#kt_subheader_search').addClass('kt-hidden');
-                $('#kt_subheader_group_actions').removeClass('kt-hidden');
-            } else {
-                $('#kt_subheader_search').removeClass('kt-hidden');
-                $('#kt_subheader_group_actions').addClass('kt-hidden');
+            var x = $('#kt_subheader_group_selected_rows').html(count);
+            if (window.user == 'admin') {
+                if (count > 0) {
+                    $('#kt_subheader_search').addClass('kt-hidden');
+                    $('#kt_subheader_group_actions').removeClass('kt-hidden');
+                } else {
+                    $('#kt_subheader_search').removeClass('kt-hidden');
+                    $('#kt_subheader_group_actions').addClass('kt-hidden');
+                }
             }
         });
     }
+
 
 // fetch selected records
     var selectedFetch = function () {
@@ -285,7 +280,7 @@ var KTUserListDatatable = function () {
 
             setTimeout(function () {
                 loading.hide();
-            }, 1000);
+            }, 50000);
 
 // fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
@@ -310,8 +305,10 @@ var KTUserListDatatable = function () {
 
 // selected records status update
     var selectedStatusUpdate = function () {
-        $('#kt_subheader_group_actions_status_change').on('click', "[data-toggle='status-change']", function () {
-            var status = $(this).find(".kt-nav__link-text").html();
+        $('#kt_subheader_group_actions_status_change a.kt-nav__link').on('click', function () {
+            var sale = $(this).data('status');
+            var status = $(this).find('.sale').text();
+
 
 // fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
@@ -323,7 +320,7 @@ var KTUserListDatatable = function () {
                 swal.fire({
                     buttonsStyling: false,
 
-                    html: "Are you sure to update " + ids.length + " selected records status to " + status + " ?",
+                    html: "Are you sure to Assign " + ids.length + " selected records  to " + status + " ?",
                     type: "info",
 
                     confirmButtonText: "Yes, update!",
@@ -334,14 +331,32 @@ var KTUserListDatatable = function () {
                     cancelButtonClass: "btn btn-sm btn-bold btn-default"
                 }).then(function (result) {
                     if (result.value) {
-                        swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your selected records statuses have been updated!',
-                            type: 'success',
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        })
+
+                        $.ajax({
+                            type: "GET",
+                            url: URL + '/assign-user',
+                            data: {
+                                ids: ids.toArray(),
+                                sale: sale
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                swal.fire({
+                                    title: 'Assigned!',
+                                    text: 'Your selected records statuses have been updated!',
+                                    type: 'success',
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    confirmButtonClass: "btn btn-sm btn-bold btn-brand",
+                                })
+                                    .then((success) => {
+                                        if (success) {
+                                            location.reload();
+                                        }
+                                    });
+                            },
+                        });
+
 // result.dismiss can be 'cancel', 'overlay',
 // 'close', and 'timer'
                     } else if (result.dismiss === 'cancel') {
@@ -352,7 +367,12 @@ var KTUserListDatatable = function () {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        });
+                        })
+                            .then((success) => {
+                                if (success) {
+                                    location.reload();
+                                }
+                            });
                     }
                 });
             }
@@ -410,7 +430,7 @@ var KTUserListDatatable = function () {
 
     var updateTotal = function () {
         datatable.on('kt-datatable--on-layout-updated', function () {
-//$('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
+            $('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
         });
     };
 

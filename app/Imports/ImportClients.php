@@ -12,6 +12,9 @@ use App\Models\ClientDetail;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
+use App\Models\UserNote;
+use App\Models\ClientHistory;
+
 
 class ImportClients implements ToModel
 {
@@ -30,15 +33,14 @@ class ImportClients implements ToModel
     public function model(array $row)
     {
         $cols = $this->myData;
-        $userExist = User::where('phone', $row[$cols['phoneCol'] - 1])->orWhere('email', $row[$cols['emailCol'] - 1])->first();
+        $phone = $row[$cols['codeCol'] - 1] . $row[$cols['phoneCol'] - 1];
+        $userExist = User::where('phone', $phone)->orWhere('email', $row[$cols['emailCol'] - 1])->first();
 
         if ($userExist) {
             $userExist->duplicated = $userExist->duplicated + 1;
 
             return $userExist;
         }
-
-        $phone =  $row[$cols['codeCol'] - 1] .  $row[$cols['phoneCol'] - 1];
 
         $userData = array(
             'name' => $row[$cols['nameCol'] - 1],
@@ -48,23 +50,34 @@ class ImportClients implements ToModel
             'createdBy' => Auth::user()->id,
 
         );
+        $job = '';
+        $note = '';
+
+        if ($row[$cols['jobCol']]) {
+            $job = $row[$cols['jobCol'] - 1];
+        }
+        if ($row[$cols['notesCol']]) {
+            $note = $row[$cols['notesCol'] - 1];
+        }
 
         $user = User::create($userData);
 
         $clientDetailsData = array(
             'userId' => $user->id,
             'typeClient' => 0,
-            'jobTitle' => $row[$cols['jobCol'] - 1],
-            'notes' => $row[$cols['notesCol'] - 1],
-            'platform'=> $cols['platformCol'],
-            'projectId'=> $cols['projectCol'],
-            'campaignId'=> $cols['campaignCol'] ,
-            'marketerId'=> $cols['marketerCol'] ,
+            'jobTitle' => $job,
+            'notes' => $note,
+            'platform' => $cols['platformCol'],
+            'projectId' => $cols['projectCol'],
+            'campaignId' => $cols['campaignCol'],
+            'marketerId' => $cols['marketerCol'],
             'assignToSaleManId' => $cols['saleCol'],
         );
 //
 //        //insert record
         $user = ClientDetail::create($clientDetailsData);
+        $history = ClientHistory::create(['userId' => $user->id, 'actionId' => 0]);
+        $note = UserNote::create(['userId' => $user->id, 'note' => $note]);
 
         return $user;
     }

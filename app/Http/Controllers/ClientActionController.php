@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\ClientDetail;
+use App\Models\Method;
 use App\Models\Project;
 use App\User;
-use App\Models\Method;
-use App\Models\ProjectCity;
-use App\Models\Team;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientActionController extends Controller
 {
@@ -31,14 +31,197 @@ class ClientActionController extends Controller
     public function allClients()
     {
         $actionId = 'all';
+        $sales = User::where('roleId', 4)->get()->toArray();
 
-        return View('client_action.all_clients', compact('actionId'));
+        return View('client_action.all_clients', compact('actionId', 'sales'));
     }
 
     public function getAllData()
     {
-        $data = $this->model->with('detail')->whereHas('detail')->get()->toArray();
+        if ((Auth::user()->role->name == 'admin')) {
+            $data = $this->model->with('detail')->whereHas('detail')->get()->toArray();
 
+            $key = 0;
+            foreach ($data as $one) {
+                $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+                $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+                $data[$key]['detail']['projectName'] = $projectName;
+                $data[$key]['detail']['saleName'] = $saleName;
+                $key = $key + 1;
+            }
+
+            $meta = [
+                "page" => 1,
+                "pages" => 1,
+                "perpage" => -1,
+                "total" => 40,
+                "sort" => "asc",
+                "field" => "RecordID",
+            ];
+
+            $requestData = [
+                'meta' => $meta,
+                'data' => $data,
+            ];
+
+            return $requestData;
+        }
+    }
+
+    /**
+     * view  index newRequests
+     */
+    public function newRequests()
+    {
+        $actionId = 0;
+        $sales = User::where('roleId', 4)->get()->toArray();
+
+        return View('client_action.new_requests', compact('actionId', 'sales'));
+    }
+
+    /**
+     * view  index newClients
+     */
+    public function getNewRequestsData()
+    {
+        if ((Auth::user()->role->name == 'admin')) {
+            $data = $this->model->with('detail')->whereHas('detail', function ($q) {
+                $q->where('actionId', null)->where('assignToSaleManId', '=', 0);
+            })->get()->toArray();
+
+            $key = 0;
+            foreach ($data as $one) {
+                $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+                $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+                $data[$key]['detail']['projectName'] = $projectName;
+                $data[$key]['detail']['saleName'] = $saleName;
+                $key = $key + 1;
+            }
+
+            $meta = [
+                "page" => 1,
+                "pages" => 1,
+                "perpage" => -1,
+                "total" => 40,
+                "sort" => "asc",
+                "field" => "id",
+            ];
+
+            $requestData = [
+                'meta' => $meta,
+                'data' => $data,
+            ];
+
+            return $requestData;
+        }
+    }
+
+
+    /**
+     * view  index newClients
+     */
+    public function newClients()
+    {
+        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
+        $actionId = 0;
+        $methods = Method::all()->toArray();
+        $actions = Action::all()->sortBy('order')->toArray();
+        if ((Auth::user()->role->name == 'sale Man')) {
+            $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
+        }
+        return View('client_action.new_clients', compact('sales', 'actionId', 'actions', 'methods'));
+    }
+
+
+    /**
+     * view  index actionClient
+     */
+    public function actionClient($id)
+    {
+        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
+        $actionId = $id;
+//        $requestData = $this->getData($actionId)['data'];
+        $methods = Method::all()->toArray();
+        $actions = Action::all()->sortBy('order')->toArray();
+        if ((Auth::user()->role->name == 'sale Man')) {
+            $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
+        }
+        return View('client_action.action_client', compact('sales', 'actionId', 'actions', 'methods'));
+
+    }
+
+
+    /**
+     * view  index get data
+     */
+    public function getData($id)
+    {
+        $userId = Auth::user()->id;
+
+        if ($id == 0) {
+            $id = null;
+        }
+
+        if ((Auth::user()->role->name == 'admin')) {
+            $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id) {
+                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0);
+            })->get()->toArray();
+
+        } elseif ((Auth::user()->role->name == 'sale Man')) {
+            $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id, $userId) {
+                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId);
+            })->get()->toArray();
+        }
+
+        $key = 0;
+        foreach ($data as $one) {
+            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+            $data[$key]['detail']['projectName'] = $projectName;
+            $data[$key]['detail']['saleName'] = $saleName;
+            $key = $key + 1;
+        }
+
+        $meta = [
+            "page" => 1,
+            "pages" => 1,
+            "perpage" => -1,
+            "total" => 40,
+            "sort" => "asc",
+            "field" => "id",
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
+    }
+
+
+    /**
+     * view  index duplicated
+     */
+    public function duplicated()
+    {
+        $actionId = 'duplicated';
+        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
+
+        return View('client_action.duplicated', compact('actionId', 'sales'));
+    }
+
+    public function getDuplicatedData()
+    {
+        $userId = Auth::user()->id;
+
+        if ((Auth::user()->role->name == 'admin')) {
+            $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail')->get()->toArray();
+        } elseif ((Auth::user()->role->name == 'sale Man')) {
+            $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail', function ($q) use ($userId) {
+                $q->where('assignToSaleManId', $userId);
+            })->get()->toArray();
+        }
         $key = 0;
         foreach ($data as $one) {
             $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
@@ -65,26 +248,30 @@ class ClientActionController extends Controller
         return $requestData;
     }
 
-
     /**
-     * view  index allClients
+     * view  index transfered
      */
-    public function newRequests()
+    public function transfered()
     {
-        $actionId = 0;
+        $actionId = 'transfered';
+        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
 
-        return View('client_action.new_requests', compact('actionId'));
+        return View('client_action.transfered', compact('actionId', 'sales'));
     }
 
-    /**
-     * view  index newClients
-     */
-    public function getNewRequestsData()
+    public function getTransferedData()
     {
-        $data = $this->model->with('detail')->whereHas('detail', function ($q) {
-            $q->where('actionId', null)->where('assignToSaleManId', '=' , 0);
-        })->get()->toArray();
+        $userId = Auth::user()->id;
 
+        if ((Auth::user()->role->name == 'admin')) {
+            $data = $this->model->with('detail')->whereHas('detail', function ($q) {
+                $q->where('transferred', 1);
+            })->get()->toArray();
+        } elseif ((Auth::user()->role->name == 'sale Man')) {
+            $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($userId) {
+                $q->where('transferred', 1)->where('assignToSaleManId', $userId);
+            })->get()->toArray();
+        }
         $key = 0;
         foreach ($data as $one) {
             $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
@@ -93,14 +280,13 @@ class ClientActionController extends Controller
             $data[$key]['detail']['saleName'] = $saleName;
             $key = $key + 1;
         }
-
         $meta = [
             "page" => 1,
             "pages" => 1,
             "perpage" => -1,
             "total" => 40,
             "sort" => "asc",
-            "field" => "id",
+            "field" => "RecordID",
         ];
 
         $requestData = [
@@ -110,73 +296,6 @@ class ClientActionController extends Controller
 
         return $requestData;
     }
-
-
-
-    /**
-     * view  index actionClient
-     */
-    public function actionClient($id)
-    {
-        $actionId = $id;
-//        $requestData = $this->getData($actionId)['data'];
-        $methods = Method::all()->toArray();
-        $actions = Action::all()->toArray();
-        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
-        return View('client_action.action_client', compact('sales','actionId',  'actions', 'methods'));
-
-    }
-
-    /**
-     * view  index newClients
-     */
-    public function newClients()
-    {
-        $actionId = 0;
-        $methods = Method::all()->toArray();
-        $actions = Action::all()->toArray();
-        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
-        return View('client_action.new_clients',  compact('sales','actionId',  'actions', 'methods'));
-    }
-
-    /**
-     * view  index newClients
-     */
-    public function getData($id)
-    {
-        if ($id == 0) {
-            $id = null;
-        }
-        $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id) {
-            $q->where('actionId', $id)->where('assignToSaleManId', '!=' , 0);
-        })->get()->toArray();
-
-        $key = 0;
-        foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
-            $key = $key + 1;
-        }
-
-        $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
-            "sort" => "asc",
-            "field" => "id",
-        ];
-
-        $requestData = [
-            'meta' => $meta,
-            'data' => $data,
-        ];
-
-        return $requestData;
-    }
-
 
     /**
      * view  index history
@@ -219,149 +338,36 @@ class ClientActionController extends Controller
         return $requestData;
     }
 
-    /**
-     * view  index duplicated
-     */
-    public function duplicated()
+    public function assignUser(Request $request)
     {
-        $actionId = 'duplicated';
+        $request->validate([
+            'ids' => 'required',
+            'sale' => 'required',
+        ]);
 
-        return View('client_action.duplicated', compact('actionId'));
+        $clients = $request->ids;
+        $saleId = $request->sale;
+        foreach ($clients as $client) {
+            ClientDetail::where('userId', $client)->update(['assignToSaleManId' => $saleId]);
+        }
+        return 'done';
     }
 
-    public function getDuplicatedData()
+    public function loadHistory(Request $request)
     {
-        $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail')->get()->toArray();
+        $id = $request->option;
 
+        $user = $this->model->where('id', $id)->with('history')->whereHas('history')->first()->toArray();
+        $data = $user['history'];
         $key = 0;
         foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
+            $actionName = Action::where('id', $one['actionId'])->first()['name'];
+            $name = $user['name'];
+            $data[$key]['actionName'] = $actionName;
+            $data[$key]['name'] = $name;
             $key = $key + 1;
         }
-
-        $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
-            "sort" => "asc",
-            "field" => "RecordID",
-        ];
-
-        $requestData = [
-            'meta' => $meta,
-            'data' => $data,
-        ];
-
-        return $requestData;
+        return $data;
     }
-
-    /**
-     * view  index duplicated
-     */
-    public function transfered()
-    {
-        $actionId = 'transfered';
-
-        return View('client_action.transfered', compact('actionId'));
-    }
-
-    public function getTransferedData()
-    {
-        $data = $this->model->with('detail')->whereHas('detail', function ($q) {
-            $q->where('transferred', 1);
-        })->get()->toArray();
-
-        $key = 0;
-        foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
-            $key = $key + 1;
-        }
-
-        $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
-            "sort" => "asc",
-            "field" => "RecordID",
-        ];
-
-        $requestData = [
-            'meta' => $meta,
-            'data' => $data,
-        ];
-
-        return $requestData;
-    }
-
-//    /**
-//     * view  index following
-//     */
-//    public function following()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
-//
-//    /**
-//     * view  index cancellation
-//     */
-//    public function cancellation()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
-//
-//    /**
-//     * view  index comingVisit
-//     */
-//    public function comingVisit()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
-//
-//    /**
-//     * view  index doneDeal
-//     */
-//    public function doneDeal()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
-//
-//    /**
-//     * view  index meeting
-//     */
-//    public function meeting()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
-//
-//
-//
-//    /**
-//     * view  index notInterested
-//     */
-//    public function notInterested()
-//    {
-//        $requestData = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-//
-//        return View('client_action.all_clients', compact('requestData'));
-//    }
-
 
 }

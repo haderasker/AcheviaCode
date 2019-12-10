@@ -46,53 +46,24 @@ var KTUserListDatatable = function () {
             // columns definition
             columns: [
                 {
+                    field: 'id',
+                    title: '#',
+                    sortable: false,
+                    width: 20,
+                    textAlign: 'center',
+                    selector: {
+                        class: 'kt-checkbox--solid'
+                    }
+                },
+
+                {
                     field: "name",
                     title: "Client Info",
-                    width:240,
+                    width: 240,
                     // callback function support for column rendering
                     template: function (data, i) {
-                        console.log(data);
-                        var pos = data.roleId;
-                        var position = [
-                            'none',
-                            'Root',
-                            'Admin',
-                            'TeamLeader',
-                            'SaleMan',
-                            'Client',
-                        ];
-                        var stateNo = KTUtil.getRandomInt(0, 6);
-                        var states = [
-                            'success',
-                            'brand',
-                            'danger',
-                            'warning',
-                            'primary',
-                            'info'
-                        ];
-                        var state = states[stateNo];
-                        var output = '';
 
-                        output = '<div class="kt-user-card-v2">\
-                        		<!--<div class="kt-user-card-v2__pic">\
-                        				<div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
-                        			</div>\-->\
-                        			<div class="kt-user-card-v2__details">\
-                        			<p class="kt-user-card-v2__name">Name : ' + data.name + '</p>\
-                        			<p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Phone : ' + data.phone + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Space : ' + data.detail.space + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Address : ' + data.detail.address + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.detail.saleName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
-                        		</div>\
-                        		</div>';
-
-                        return output;
-
+                        return window.info(data);
                     }
                 },
 
@@ -154,109 +125,19 @@ var KTUserListDatatable = function () {
                 {
                     field: "actionId",
                     title: "Last Action",
-                    width:150,
+                    width: 150,
+                    class: 'last',
                     // callback function support for column rendering
                     template: function (data) {
-                        var status = {
-                            0: {
-                                'title': 'new',
-                                'class': ' btn-label-brand'
-                            },
 
-                            null: {
-                                'title': 'new',
-                                'class': ' btn-label-brand'
-                            },
-
-                            1: {
-                                'title': 'done',
-                                'class': ' btn-label-success'
-                            },
-                            2: {
-                                'title': 'following',
-                                'class': ' btn-label-danger'
-                            },
-                            3: {
-                                'title': 'comingVisit',
-                                'class': ' btn-label-info'
-                            },
-                            4: {
-                                'title': 'meeting',
-                                'class': ' btn-label-info'
-                            },
-                            5: {
-                                'title': 'cancellation',
-                                'class': ' btn-label-warning'
-                            },
-                            6: {
-                                'title': 'notInterested',
-                                'class': ' btn-label-warning'
-                            },
-
-                        };
-
-                        var methods = {
-
-                            null: {
-                                'title': 'Not Yet',
-                            },
-
-                            1: {
-                                'title': 'Phone',
-                            },
-                            2: {
-                                'title': 'Whats Up',
-                            },
-                            3: {
-                                'title': 'Email',
-                            },
-                            4: {
-                                'title': 'Visit',
-                            },
-
-                        };
-
-
-                        var summery = {
-
-                            null: {
-                                'title': 'Not Yet',
-                            },
-
-                            1: {
-                                'title': 'Replied',
-                            },
-                            2: {
-                                'title': 'Switched Off',
-                            },
-                            3: {
-                                'title': 'No Answer',
-                            },
-                            4: {
-                                'title': 'Wrong Number',
-                            },
-
-                        };
-
-                        var output = '';
-
-                        output = '<div class="kt-user-card-v2">\
-                        			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.detail.actionId].class + '">' + status[data.detail.actionId].title + ' At ' + data.detail.notificationDate + ' ' + data.detail.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
-                        		</div>\
-                        		</div>';
-
-                        return output;
-
+                        return window.last(data);
                     }
                 },
 
                 {
-                    field: 'id',
+                    field: '',
                     title: 'New Action',
-                    width:650,
+                    width: 650,
 
                     template: function (data) {
 
@@ -330,22 +211,25 @@ var KTUserListDatatable = function () {
 
         // event handler on check and uncheck on records
         datatable.on('kt-datatable--on-check kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
-            var checkedNodes = datatable.rows('.kt-datatable__row--active').nodes(); // get selected records
-            var count = checkedNodes.length; // selected records count
+                var checkedNodes = datatable.rows('.kt-datatable__row--active').nodes(); // get selected records
+                var count = checkedNodes.length; // selected records count
 
-            $('#kt_subheader_group_selected_rows').html(count);
+                $('#kt_subheader_group_selected_rows').html(count);
 
-            if (count > 0) {
-                $('#kt_subheader_search').addClass('kt-hidden');
-                $('#kt_subheader_group_actions').removeClass('kt-hidden');
-            } else {
-                $('#kt_subheader_search').removeClass('kt-hidden');
-                $('#kt_subheader_group_actions').addClass('kt-hidden');
+                if (window.user == 'admin') {
+                    if (count > 0) {
+                        $('#kt_subheader_search').addClass('kt-hidden');
+                        $('#kt_subheader_group_actions').removeClass('kt-hidden');
+                    } else {
+                        $('#kt_subheader_search').removeClass('kt-hidden');
+                        $('#kt_subheader_group_actions').addClass('kt-hidden');
+                    }
+                }
             }
-        });
+        );
     }
 
-    // fetch selected records
+// fetch selected records
     var selectedFetch = function () {
         // event handler on selected records fetch modal launch
         $('#kt_datatable_records_fetch_modal').on('show.bs.modal', function (e) {
@@ -378,22 +262,25 @@ var KTUserListDatatable = function () {
         });
     };
 
-    // selected records status update
+// selected records status update
+// selected records status update
     var selectedStatusUpdate = function () {
-        $('#kt_subheader_group_actions_status_change').on('click', "[data-toggle='status-change']", function () {
-            var status = $(this).find(".kt-nav__link-text").html();
+        $('#kt_subheader_group_actions_status_change a.kt-nav__link').on('click', function () {
+            var sale = $(this).data('status');
+            var status = $(this).find('.sale').text();
 
-            // fetch selected IDs
+
+// fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
                 return $(chk).val();
             });
 
             if (ids.length > 0) {
-                // learn more: https://sweetalert2.github.io/
+// learn more: https://sweetalert2.github.io/
                 swal.fire({
                     buttonsStyling: false,
 
-                    html: "Are you sure to update " + ids.length + " selected records status to " + status + " ?",
+                    html: "Are you sure to Assign " + ids.length + " selected records  to " + status + " ?",
                     type: "info",
 
                     confirmButtonText: "Yes, update!",
@@ -404,16 +291,34 @@ var KTUserListDatatable = function () {
                     cancelButtonClass: "btn btn-sm btn-bold btn-default"
                 }).then(function (result) {
                     if (result.value) {
-                        swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your selected records statuses have been updated!',
-                            type: 'success',
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        })
-                        // result.dismiss can be 'cancel', 'overlay',
-                        // 'close', and 'timer'
+
+                        $.ajax({
+                            type: "GET",
+                            url: URL + '/assign-user',
+                            data: {
+                                ids: ids.toArray(),
+                                sale: sale
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                swal.fire({
+                                    title: 'Assigned!',
+                                    text: 'Your selected records statuses have been updated!',
+                                    type: 'success',
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    confirmButtonClass: "btn btn-sm btn-bold btn-brand",
+                                })
+                                    .then((success) => {
+                                        if (success) {
+                                            location.reload();
+                                        }
+                                    });
+                            },
+                        });
+
+// result.dismiss can be 'cancel', 'overlay',
+// 'close', and 'timer'
                     } else if (result.dismiss === 'cancel') {
                         swal.fire({
                             title: 'Cancelled',
@@ -422,14 +327,19 @@ var KTUserListDatatable = function () {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        });
+                        })
+                            .then((success) => {
+                                if (success) {
+                                    location.reload();
+                                }
+                            });
                     }
                 });
             }
         });
     }
 
-    // selected records delete
+// selected records delete
     var selectedDelete = function () {
         $('#kt_subheader_group_actions_delete_all').on('click', function () {
             // fetch selected IDs
@@ -496,7 +406,8 @@ var KTUserListDatatable = function () {
             updateTotal();
         },
     };
-}();
+}
+();
 
 // On document ready
 KTUtil.ready(function () {

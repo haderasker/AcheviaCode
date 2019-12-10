@@ -13,9 +13,23 @@
                     </h3>
                 </div>
             </div>
-            <div class="alert alert-danger" style="display:none">
 
-            </div>
+            @if(session()->has('message'))
+                <div class="alert alert-danger">
+                    {{ session()->get('message') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <form class="kt-form kt-form--label-right" method="POST" action="{{url('client-upload')}}"
                   enctype="multipart/form-data">
                 @csrf

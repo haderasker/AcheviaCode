@@ -29,26 +29,31 @@ var KTUserAdd = function () {
             var name = $('#name').val();
             var phone = $('#phone').val();
             var email = $('#email').val();
-            var country = $('#country').children("option:selected").html();
-            var rigion = $('#rigion').val();
-            var city = $('#city').val();
-            var add = $('#add').val();
-            var projectCity = $('#cityId').children("option:selected").html();
+            var campaign = $('#campaignId').children("option:selected").html();
+            var marketer = $('#marketerId').children("option:selected").html();
+            var sale = $('#saleId').children("option:selected").html();
             var project = $('#projectId').children("option:selected").html();
             var interest = $('#projectId').children("option:selected").val();
-            var space = $('#space').val();
+            var property = $('#property').children("option:selected").html();
+            var date = $('#date').children("option:selected").html();
+            var from = $('#from').val();
+            var to = $('#to').val();
+            var budget = $('#budget').val();
+            var area = from+ ' - ' + to ;
+
 
             $('#myName').text(name);
             $('#myPhone').text(phone);
             $('#myEmail').text(email);
-            $('#myAdd').text(add);
-            $('#myCountry').text(country);
-            $('#myRegion').text(rigion);
-            $('#myCity').text(city);
-            $('#myProjectCity').text(projectCity);
+            $('#myCampaign').text(campaign);
+            $('#myMarketer').text(marketer);
+            $('#mySale').text(sale);
             $('#myProject').text(project);
-            $('#mySpace').text(space);
             $('#interest').val(interest);
+            $('#myProperty').text(property);
+            $('#myDate').text(date);
+            $('#myArea').text(area);
+            $('#myBudget').text(budget);
 
             KTUtil.scrollTop();
 
@@ -66,15 +71,18 @@ var KTUserAdd = function () {
                 profile_avatar: {
                     //required: true
                 },
-                profile_name: {
+                name: {
                     required: true
                 },
-                profile_phone: {
+                phone: {
                     required: true
                 },
-                profile_email: {
+                email: {
                     required: true,
                     email: true
+                },
+                countryCode: {
+                    required: true,
                 }
 
             },
@@ -90,7 +98,6 @@ var KTUserAdd = function () {
                     "buttonStyling": false,
                     "confirmButtonClass": "btn btn-brand btn-sm btn-bold"
                 });
-                console.log('fff');
             },
 
             // Submit valid form

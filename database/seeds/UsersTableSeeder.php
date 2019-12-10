@@ -12,18 +12,18 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => Str::random(10),
-            'userName' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
+            'name' => 'admin',
+            'userName' => 'admin',
+            'email' =>  'admin@gmail.com',
             'password' => bcrypt('12345678'),
-            'roleId' => 1,
+            'roleId' => 2,
             'createdBy' =>0,
         ]);
 
         DB::table('users')->insert([
-            'name' => Str::random(10),
-            'userName' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
+            'name' => 'saleMan',
+            'userName' => 'saleMan',
+            'email' =>  'sale@gmail.com',
             'password' => bcrypt('12345678'),
             'roleId' => 4,
             'createdBy' =>0,
@@ -31,9 +31,9 @@ class UsersTableSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'id'=>10,
-            'name' => Str::random(10),
-            'userName' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
+            'name' => 'teamLeader',
+            'userName' => 'teamLeader',
+            'email' =>  'teamLeader@gmail.com',
             'password' => bcrypt('12345678'),
             'roleId' => 3,
             'createdBy' =>0,
