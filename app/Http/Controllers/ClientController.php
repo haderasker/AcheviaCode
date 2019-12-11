@@ -78,9 +78,9 @@ class ClientController extends Controller
         $user = $created['user'];
         $exist = $created['exist'];
         if ($exist == 'no') {
-            $lastAssign = 0;
+            $saleManAssignedToClient = 0;
             if ($request->assignToSaleManId != 0) {
-                $lastAssign = 1;
+                $saleManAssignedToClient = 1;
             }
             $clientDetailsData = array(
                 'userId' => $user->id,
@@ -102,7 +102,7 @@ class ClientController extends Controller
                 'country' => '',
                 'city' => '',
                 'assignToSaleManId' => $request->assignToSaleManId,
-                'lastAssigned' => $lastAssign,
+                'lastAssigned' => $saleManAssignedToClient,
                 'assignedDate' => now()->format('Y-m-d'),
                 'assignedTime' => now()->format('H:i:s'),
                 'platform' => $request->platform,
@@ -259,9 +259,9 @@ class ClientController extends Controller
             $newActionDate = now()->format('Y-m-d');
             $newActionTime = now()->format('H:i:s');
         }
-        $lastAssign = 0;
+        $saleManAssignedToClient = 0;
         if ($request->assignToSaleManId != 0) {
-            $lastAssign = 1;
+            $saleManAssignedToClient = 1;
         }
         $assignedDate = $client['assignedDate'];
         $assignedTime = $client['assignedTime'];
@@ -323,7 +323,7 @@ class ClientController extends Controller
             'interestsUserProjects' => $projectId,
             'typeClient' => 0,
             'jobTitle' => $jobTitle,
-            'lastAssigned' => $lastAssign,
+            'lastAssigned' => $saleManAssignedToClient,
             'assignedDate' => $assignedDate,
             'assignedTime' => $assignedTime,
             'platform' => $request->platform,
@@ -384,9 +384,9 @@ class ClientController extends Controller
             $newActionDate = now()->format('Y-m-d');
             $newActionTime = now()->format('H:i:s');
         }
-        $lastAssign = 0;
+        $saleManAssignedToClient = 0;
         if ($request->assignToSaleManId != 0) {
-            $lastAssign = 1;
+            $saleManAssignedToClient = 1;
         }
         $assignedDate = $client['assignedDate'];
         $assignedTime = $client['assignedTime'];
@@ -447,7 +447,7 @@ class ClientController extends Controller
             'interestsUserProjects' => $projectId,
             'typeClient' => 0,
             'jobTitle' => $jobTitle,
-            'lastAssigned' => $lastAssign,
+            'lastAssigned' => $saleManAssignedToClient,
             'assignedDate' => $assignedDate,
             'assignedTime' => $assignedTime,
 
@@ -570,8 +570,6 @@ class ClientController extends Controller
                 $sales[Auth::user()->id]['id'] = Auth::user()->id;
                 $sales[Auth::user()->id]['name'] = Auth::user()->name;
             }
-
-
         }
 
         $campaigns = $project->campaigns()->get()->toArray();
@@ -580,6 +578,22 @@ class ClientController extends Controller
         return ['sales' => $sales,
             'campaigns' => $campaigns,];
 
+    }
+
+    public function assignUserAuto(Request $request)
+    {
+        $clients = ClientDetail::where('assignToSaleManId', 0)->get()->toArray();
+        foreach ($clients as $client) {
+
+        }
+
+
+        $clients = $request->ids;
+        $saleId = $request->sale;
+        foreach ($clients as $client) {
+            ClientDetail::where('userId', $client)->update(['assignToSaleManId' => $saleId]);
+        }
+        return 'done';
     }
 
 }

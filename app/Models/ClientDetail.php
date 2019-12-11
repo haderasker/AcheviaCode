@@ -16,7 +16,7 @@ class ClientDetail extends Model
         'notes', 'gender','newActionDate', 'newActionTime','clientAgeRange', 'summery','interestsUserProjects',
         'typeClient','ZipCode', 'ip','region', 'country','city','canView','linkView', 'limitView',
         'addedClientFrom', 'addedClientPlatform','addedClientLink', 'assignedTime', 'assignedDate',
-        'lastAssigned','assignToSaleManId', 'notificationTime',
+        'saleManAssignedToClient', 'assignToSaleManId', 'notificationTime',
         'notificationDate', 'transferred','campaignId','marketerId','platform',
         'property','propertyLocation','propertyUtility','areaFrom','areaTo','budget',
         'deliveryDateId','convertProject1','convertProject2',

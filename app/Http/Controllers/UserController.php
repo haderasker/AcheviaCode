@@ -102,7 +102,7 @@ class UserController extends Controller
                 'userStatus' => 1,
                 'assign' => $request->assign,
                 'saleManPunished' => $request->saleManPunished,
-                'saleManAssignedToClient' => $request->saleManAssignedToClien,
+                'saleManAssignedToClient' => $request->saleManAssignedToClient,
                 'saleManSendingMsgLimit' => $request->saleManSendingMsgLimit,
                 'active' => 1,
             );
@@ -158,7 +158,7 @@ class UserController extends Controller
         $model->saleManSendingMsgLimit = $request->saleManSendingMsgLimit;
         $model->assignedTime = $request->assignedTime;
         $model->assignedDate = $request->assignedDate;
-        $model->lastAssigned = $request->lastAssigned;
+        $model->saleManAssignedToClient = $request->saleManAssignedToClient;
         $model->active = 1;
 
         $updated = $model->save();

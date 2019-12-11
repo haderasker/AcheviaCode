@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateProjectsTable extends Migration
+class CreateRotationsAutoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class UpdateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->string('country')->nullable();
-            $table->string('image')->nullable();
-            $table->string('location')->nullable();
+        Schema::create('rotations_auto', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->integer('type')->default(1); //1 auto  0 manual
+            $table->timestamps();
         });
     }
 
@@ -27,6 +27,6 @@ class UpdateProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('rotations_auto');
     }
 }

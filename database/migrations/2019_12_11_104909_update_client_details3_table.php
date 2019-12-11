@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateProjectsTable extends Migration
+class UpdateClientDetails3Table extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class UpdateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::table('projects', function (Blueprint $table) {
-            $table->string('country')->nullable();
-            $table->string('image')->nullable();
-            $table->string('location')->nullable();
+        Schema::table('client_details', function (Blueprint $table) {
+            $table->integer('saleManAssignedToClient')->nullable();
         });
     }
 
@@ -27,6 +25,7 @@ class UpdateProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('client_details');
+
     }
 }

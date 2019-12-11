@@ -31,4 +31,12 @@ class Project extends Model
     {
         return $this->hasMany('App\Models\Campaign','projectId');
     }
+
+    public function parentProject(){
+        return $this->hasMany('App\Models\Project' , 'idParent');
+    }
+
+    public function childProject(){
+        return $this->belongsTo('App\Models\Project' ,'idParent');
+    }
 }

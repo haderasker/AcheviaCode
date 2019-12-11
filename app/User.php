@@ -18,7 +18,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'email', 'password', 'userName', 'phone', 'roleId', 'teamId',  'mangerId', 'userStatus',
-        'assign', 'saleManPunished', 'saleManAssignedToClient', 'saleManSendingMsgLimit', 'active','createdBy','image'
+        'assign', 'saleManPunished', 'saleManSendingMsgLimit', 'active',
+        'createdBy','image','lastAssigned', 'weight',
     ];
 
     /**
