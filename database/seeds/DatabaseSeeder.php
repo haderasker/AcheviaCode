@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MarketersTableSeeder::class);
         $this->call(DeliveryDatesTableSeeder::class);
         $this->call(SendingTypesTableSeeder::class);
+        $this->call(RotationTableSeeder::class);
     }
 }

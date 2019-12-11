@@ -9,11 +9,11 @@
 namespace App\Imports;
 
 use App\Models\ClientDetail;
+use App\Models\ClientHistory;
+use App\Models\UserNote;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
-use App\Models\UserNote;
-use App\Models\ClientHistory;
 
 
 class ImportClients implements ToModel
@@ -53,10 +53,10 @@ class ImportClients implements ToModel
         $job = '';
         $note = '';
 
-        if ($row[$cols['jobCol']]) {
+        if (@$row[$cols['jobCol']]) {
             $job = $row[$cols['jobCol'] - 1];
         }
-        if ($row[$cols['notesCol']]) {
+        if (@$row[$cols['notesCol']]) {
             $note = $row[$cols['notesCol'] - 1];
         }
 
@@ -77,8 +77,9 @@ class ImportClients implements ToModel
 //        //insert record
         $user = ClientDetail::create($clientDetailsData);
         $history = ClientHistory::create(['userId' => $user->id, 'actionId' => 0]);
-        $note = UserNote::create(['userId' => $user->id, 'note' => $note]);
-
+        if ($note != '') {
+            $note = UserNote::create(['userId' => $user->id, 'note' => $note]);
+        }
         return $user;
     }
 }

@@ -100,7 +100,6 @@ class UserController extends Controller
                 'teamId' => $request->teamId,
                 'mangerId' => $request->mangerId,
                 'userStatus' => 1,
-                'assign' => $request->assign,
                 'saleManPunished' => $request->saleManPunished,
                 'saleManAssignedToClient' => $request->saleManAssignedToClient,
                 'saleManSendingMsgLimit' => $request->saleManSendingMsgLimit,

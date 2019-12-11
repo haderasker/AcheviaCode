@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateUsers6Table extends Migration
+class UpdateUsers8Table extends Migration
 {
     /**
      * Run the migrations.
@@ -14,9 +14,7 @@ class UpdateUsers6Table extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('weight')->default(0);
-            $table->integer('lastAssigned')->default(0);
-            $table->integer('assign')->default(0);
+            $table->integer('counter')->default(0);
         });
     }
 

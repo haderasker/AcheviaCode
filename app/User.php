@@ -46,18 +46,6 @@ class User extends Authenticatable
     ];
 
 
-    /**
-     * Route notifications for the Nexmo channel.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return string
-     */
-    public function routeNotificationForNexmo($notification)
-    {
-        return $this->phone_number;
-    }
-
-
     public function getAssignedTime($value)
     {
 

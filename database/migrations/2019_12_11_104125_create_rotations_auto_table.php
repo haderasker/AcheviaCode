@@ -15,6 +15,7 @@ class CreateRotationsAutoTable extends Migration
     {
         Schema::create('rotations_auto', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name')->nullable(); //1 auto  0 manual
             $table->integer('type')->default(1); //1 auto  0 manual
             $table->timestamps();
         });

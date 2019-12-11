@@ -121,8 +121,9 @@ class ClientController extends Controller
 //
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
-
-            $note = UserNote::create(['userId' => $user['id'], 'name' => $request->notes]);
+            if ($request->notes) {
+                $note = UserNote::create(['userId' => $user['id'], 'name' => $request->notes]);
+            }
             $history = ClientHistory::create(['userId' => $user['id'], 'actionId' => 0]);
 
         }
@@ -171,7 +172,9 @@ class ClientController extends Controller
 //
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
-            $note = UserNote::create(['userId' => $user['id'], 'name' => $request->notes]);
+            if ($request->notes) {
+                $note = UserNote::create(['userId' => $user['id'], 'name' => $request->notes]);
+            }
 
             $history = ClientHistory::create(['userId' => $user['id'], 'actionId' => 0]);
 
@@ -574,26 +577,9 @@ class ClientController extends Controller
 
         $campaigns = $project->campaigns()->get()->toArray();
 
-
         return ['sales' => $sales,
             'campaigns' => $campaigns,];
 
-    }
-
-    public function assignUserAuto(Request $request)
-    {
-        $clients = ClientDetail::where('assignToSaleManId', 0)->get()->toArray();
-        foreach ($clients as $client) {
-
-        }
-
-
-        $clients = $request->ids;
-        $saleId = $request->sale;
-        foreach ($clients as $client) {
-            ClientDetail::where('userId', $client)->update(['assignToSaleManId' => $saleId]);
-        }
-        return 'done';
     }
 
 }

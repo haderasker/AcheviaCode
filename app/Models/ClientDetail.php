@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Events\ClientDetailCreatedEvent;
 
 class ClientDetail extends Model
 {
@@ -28,6 +29,10 @@ class ClientDetail extends Model
     {
         return $this->belongsTo('App\User' , 'userId');
     }
+
+    protected $dispatchesEvents = [
+        'created' => ClientDetailCreatedEvent::class,
+    ];
 
 
 }

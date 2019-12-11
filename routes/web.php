@@ -121,11 +121,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('client-form-update', 'ClientController@updateForm');
     Route::delete('client-delete/{id}', 'ClientController@destroy');
 
-    /**
-     * client rotation
-     */
 
-    Route::get('clients-rotation', 'ClientController@');
 
     /**
      * client actions routes

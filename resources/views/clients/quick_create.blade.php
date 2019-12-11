@@ -193,16 +193,16 @@
                                                                         Campaign</label>
                                                                     <select id="campaignId" name="campaignId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Campaign</option>
+                                                                        <option  value="0" selected>Select Campaign</option>
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Marketer</label>
-                                                                    <select id="marketerId" name="marketerId"
+                                                                    <select id="marketerId"  name="marketerId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Marketer</option>
+                                                                        <option  value="0" selected>Select Marketer</option>
                                                                     </select>
                                                                 </div>
 
@@ -343,7 +343,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value=''> Select Marketer </option>");
+                        marketerId.append("<option value='0'> Select Marketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });
