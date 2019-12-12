@@ -26,7 +26,6 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('mangerId')->nullable();
             $table->boolean('userStatus')->nullable();
             $table->integer('duplicated')->default(1);
-            $table->boolean('assign')->nullable();
             $table->boolean('saleManPunished')->nullable();
             $table->boolean('saleManAssignedToClient')->nullable();
             $table->integer('saleManSendingMsgLimit')->nullable();
