@@ -39,7 +39,7 @@ var KTUserAdd = function () {
             var from = $('#from').val();
             var to = $('#to').val();
             var budget = $('#budget').val();
-            var area = from+ ' - ' + to ;
+            var area = from + ' - ' + to;
 
 
             $('#myName').text(name);
@@ -83,8 +83,7 @@ var KTUserAdd = function () {
                 },
                 countryCode: {
                     required: true,
-                }
-
+                },
             },
 
             // Display error
@@ -136,16 +135,16 @@ var KTUserAdd = function () {
                             "type": "success",
                             "confirmButtonClass": "btn btn-secondary"
                         }).then((success) => {
-                            if(success) {
-                                window.location.href= window.HREF;
+                            if (success) {
+                                window.location.href = window.HREF;
                             }
                         });
                     },
 
-                    error: function(data) {
+                    error: function (data) {
                         $('.alert-danger').empty();
-                        $.each(data.responseJSON.errors, function(key, value){
-                            $('.alert-danger').append('<p>'+value+'</p>');
+                        $.each(data.responseJSON.errors, function (key, value) {
+                            $('.alert-danger').append('<p>' + value + '</p>');
                             $('.alert-danger').show();
                         });
                     }

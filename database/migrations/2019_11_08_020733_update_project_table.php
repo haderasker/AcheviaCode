@@ -14,7 +14,7 @@ class UpdateProjectTable extends Migration
     public function up()
     {
         Schema::table('projects', function (Blueprint $table) {
-            $table->unsignedBigInteger('cityId');
+            $table->unsignedBigInteger('cityId')->nullable();
         });
     }
 

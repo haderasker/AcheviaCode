@@ -70,7 +70,7 @@ class ClientController extends Controller
             'phone' => 'required|numeric|regex:/[0-9]/',
             'roleId' => 'required',
             'createdBy' => 'required',
-            'projectId' => 'integer',
+            'projectId' => 'required|integer',
             'countryCode' => 'required',
         ]);
 
@@ -152,6 +152,7 @@ class ClientController extends Controller
             'createdBy' => 'required',
             'phone' => 'required|numeric|regex:/[0-9]/',
             'countryCode' => 'required',
+            'projectId' => 'required|integer',
         ]);
 
         $created = $this->user->save($request);
@@ -517,6 +518,7 @@ class ClientController extends Controller
             'emailCol' => 'required',
             'nameCol' => 'required',
             'codeCol' => 'required',
+            'projectCol' => 'required|integer',
         ]);
 
         $data = Excel::import(new ImportClients($request->all()), request()->file('file'));

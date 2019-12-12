@@ -29,14 +29,14 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $requestData = $this->model->all()->toArray();
+        $requestData = $this->model::where('idParent' , null)->get()->toArray();
 
         return View('projects.view', compact('requestData'));
     }
 
     public function getAllData(){
 
-        $data = $this->model->all()->toArray();
+        $data = $this->model::where('idParent' , null)->get()->toArray();
 
         $meta = [
             "page" => 1,
@@ -64,6 +64,7 @@ class ProjectController extends Controller
        $teams = Team::all()->toArray();
         return View('projects.add',compact('teams'));
     }
+
 
         public function dropDownCity(Request $request)
     {
@@ -159,6 +160,57 @@ class ProjectController extends Controller
         $model->delete();
 
         return redirect('/projects')->with('success','Deleted successfully');
+    }
+
+    /**
+     * view create page to store project
+     */
+    public function createCustom()
+    {
+        $projects = Project::all()->toArray();
+        return View('projects.custom',compact('projects'));
+    }
+
+
+    public function dropDownTeams(Request $request)
+    {
+        $project = Project::find($request->option);
+        $teams = $project->teams()->get();
+        return $teams;
+
+    }
+
+    /**
+     * store project
+     */
+    public function storeCustom(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'projectId' => 'required|integer',
+            'teams' =>'required',
+        ]);
+
+
+        $data = array(
+            'name' => $request->name,
+            'idParent' => $request->projectId,
+        );
+//
+//        //insert record
+        $project = $this->model->create($data);
+
+        foreach ($request->teams as $team){
+
+            $teamData = [
+                'teamId' => $team,
+                'projectId' =>$project->id,
+            ];
+
+            ProjectTeam::create($teamData);
+        }
+
+        return redirect('/projects')->with('success','Stored successfully');
     }
 
 }

@@ -57,6 +57,12 @@ var KTUserListDatatable = function () {
                 {
                     field: "name",
                     title: "Project Name",
+                    template: function (data) {
+
+                        return '<span class="btn btn-bold btn-sm btn-font-sm"> <a href="'+ URL+'/project-custom' +'" class="kt-user-card-v2__name">' + data.name + '</a>  </span>';
+
+                    },
+
                 },
 
 

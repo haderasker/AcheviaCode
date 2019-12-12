@@ -46,68 +46,49 @@ class AssignSaleManToClientAutoListener
                     $sales[] = $team->sales()->get()->toArray();
                 }
 
-
-
-
-                dd($sales);
-            }
-        }
-
-
-        $rotationType = RotationAuto::first()['type'];
-        if ($rotationType == 1) {
-            if ($client['projectId']) {
-                $project = Project::find($client['projectId']);
-                $teams = $project->teams()->get()->toArray();
-                $sales = [];
-
-                foreach ($teams as $team) {
-
-                    $team = Team::find($team['id']);
-
-                    $allSales = $team->sales()->get()->toArray();
-                    $key = 0;
-                    foreach ($allSales as $sale) {
-                        $sales[$sale['id']]['id'] = $sale['id'];
-                        $sales[$sale['id']]['name'] = $sale['name'];
-                        $sales[$sale['id']]['lastAssigned'] = $sale['lastAssigned'];
-                        $sales[$sale['id']]['weight'] = $sale['weight'];
-                        $sales[$sale['id']]['assign'] = $sale['assign'];
-                    }
-                }
-
-
-                $notAssigned = [];
-
-                foreach ($sales as $sale) {
-                    if ($sale['lastAssigned'] == 0) {
-                        $notAssigned[] = $sale['id'];
-                    }
-                }
-                $counter = count($notAssigned);
-
-                if ($counter == 0) {
-
-                    foreach ($sales as $sale) {
-                        User::where('id', $sale['id'])->update(['lastAssigned' => 0]);
-                    }
-
-                }
-
-                foreach ($sales as $sale) {
-
+                $selectedSales = call_user_func_array("array_merge", $sales);
+                $mySelectedSales = $this->checkSales($selectedSales);
+//
+                foreach ($mySelectedSales as $sale) {
                     if (($sale['lastAssigned'] == 0 || $sale['weight'] > $sale['lastAssigned']) && $sale['assign'] == 0) {
                         ClientDetail::where('userId', $client['userId'])->update(['assignToSaleManId' => $sale['id']]);
                         User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
-
+                        return;
                     }
                 }
 
-
             }
+        }
+    }
 
+    public function checkSales($sales)
+    {
+
+        $notAssigned = [];
+        foreach ($sales as $sale) {
+
+            if ($sale['lastAssigned'] == 0) {
+                $notAssigned[] = $sale['id'];
+            }
         }
 
+        $counter = count($notAssigned);
+        if ($counter == 0) {
+            foreach ($sales as $oneSale) {
+                $user = User::where('id', $oneSale['id'])->first();
+                if ($user) {
+                   $user->lastAssigned = 0;
+                   $user->save();
+                }
+
+                $mySelectedSales[] = $user->toArray();
+            }
+        } else {
+            $mySelectedSales = $sales;
+        }
+
+        asort($mySelectedSales);
+        return $mySelectedSales;
 
     }
 }

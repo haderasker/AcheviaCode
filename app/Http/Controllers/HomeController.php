@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Action;
 use App\Models\ClientDetail;
+use App\Models\Project;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -41,7 +42,8 @@ class HomeController extends Controller
      */
     public function welCome()
     {
-        return view('welcome');
+        $projects = Project::all()->toArray();
+        return view('welcome' , compact('projects'));
     }
 
 
@@ -118,6 +120,7 @@ class HomeController extends Controller
             'phone' => 'required|numeric|regex:/[0-9]/',
             'roleId' => 'required',
             'countryCode' => 'required',
+            'projectId' => 'required|integer',
         ]);
 
         $created = $this->user->save($request);
@@ -127,6 +130,7 @@ class HomeController extends Controller
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'jobTitle' => $request->jobTitle,
+                'projectId' => $request->projectId,
                 'notes' => $request->notes,
                 'typeClient' => 0,
                 'addedClientFrom' => 'landingPage',

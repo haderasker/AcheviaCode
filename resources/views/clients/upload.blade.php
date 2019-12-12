@@ -51,39 +51,39 @@
                         <div class="col-xs-1 col-lg-1  col-lg-offset-1 col-xs-offset-1"></div>
                         <div class="col-xl-2 col-lg-2">
                             <div class="input-group">
-                                <input id="" type="number" class="form-control" value="" name="nameCol"
-                                       aria-describedby="basic-addon1" placeholder="Name Column">
+                                <input id="" type="text" class="form-control" value="" name="nameCol"
+                                       aria-describedby="basic-addon1" placeholder="Name">
                             </div>
                         </div>
 
                         <div class="col-xl-2 col-lg-2">
 
                             <div class="input-group">
-                                <input id="" type="number" class="form-control" value="" name="codeCol"
-                                       aria-describedby="basic-addon1" placeholder="code">
-                                <input id="" type="number" class="form-control" value="" name="phoneCol"
-                                       aria-describedby="basic-addon1" placeholder="phone Column">
+                                <input id="" type="text" class="form-control" value="" name="codeCol"
+                                       aria-describedby="basic-addon1" placeholder="CountryCode">
+                                <input id="" type="text" class="form-control" value="" name="phoneCol"
+                                       aria-describedby="basic-addon1" placeholder="phone">
                             </div>
 
                         </div>
                         <div class="col-xl-2 col-lg-2">
                             <div class="input-group">
-                                <input id="" type="number" class="form-control" value="" name="emailCol"
-                                       aria-describedby="basic-addon1" placeholder="Email Column">
+                                <input id="" type="text" class="form-control" value="" name="emailCol"
+                                       aria-describedby="basic-addon1" placeholder="Email">
                             </div>
 
                         </div>
                         <div class="col-xl-2 col-lg-2">
                             <div class="input-group">
-                                <input id="" type="number" class="form-control" value="" name="jobCol"
-                                       aria-describedby="basic-addon1" placeholder="JobTitle Column">
+                                <input id="" type="text" class="form-control" value="" name="jobCol"
+                                       aria-describedby="basic-addon1" placeholder="JobTitle">
                             </div>
                         </div>
 
                         <div class="col-xl-2 col-lg-2">
                             <div class="input-group">
-                                <input id="" type="number" class="form-control" value="" name="notesCol"
-                                       aria-describedby="basic-addon1" placeholder="Notes Column">
+                                <input id="" type="text" class="form-control" value="" name="notesCol"
+                                       aria-describedby="basic-addon1" placeholder="Notes">
                             </div>
                         </div>
 
