@@ -209,10 +209,9 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Platform</label>
-
                                                                     <select id="" name="platform"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Platform</option>
+                                                                        <option selected value="0">Select Platform</option>
                                                                         <option value="facebook"> FaceBook</option>
                                                                         <option value="google"> Google</option>
                                                                         <option value="instgram"> Instagram </option>
@@ -227,7 +226,7 @@
                                                                         Assigned To</label>
                                                                     <select id="saleId" name="assignToSaleManId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Assigned To</option>
+                                                                        <option selected value="0">Assigned To</option>
                                                                     </select>
                                                                 </div>
                                                                 {{--<div class="form-group row">--}}

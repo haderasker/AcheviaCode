@@ -119,7 +119,7 @@
                                                     Campaign</label>
                                                 <select id="campaignId" name="campaignId"
                                                         class="form-control col-lg-9 col-xl-9">
-                                                    <option selected > Select Campaign </option>
+                                                    <option selected  value = "0"> Select Campaign </option>
                                                 </select>
                                             </div>
 
@@ -128,7 +128,7 @@
                                                     Marketer</label>
                                                 <select id="marketerId" name="marketerId"
                                                         class="form-control col-lg-9 col-xl-9">
-                                                    <option selected >Select Marketer</option>
+                                                    <option selected value ='0' >Select Marketer</option>
                                                 </select>
                                             </div>
 
@@ -391,8 +391,6 @@
                 },
                 function (data) {
 
-                    var campaign = {{$requestData['detail']['campaignId']}} ;
-
                     var saleId = $('#saleId');
                     var campaignId = $('#campaignId');
 
@@ -424,7 +422,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value=''> Select Marketer </option>");
+                        marketerId.append("<option value='0'> Select Marketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });

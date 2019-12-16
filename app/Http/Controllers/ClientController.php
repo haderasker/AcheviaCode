@@ -240,7 +240,6 @@ class ClientController extends Controller
 
     public function updateForm(Request $request)
     {
-
 //        $updated = $this->user->updateUser($id, $request);
         $client = $this->clientModel->where('userId', $request->_id)->first()->toArray();
 
@@ -302,10 +301,23 @@ class ClientController extends Controller
 
         $notes = $client['notes'];
         if ($request->notes) {
-
             $notes = $request->notes;
         }
 
+        $marketerId = $client['marketerId'];
+        if ($request->marketerId != 0) {
+            $marketerId = $request->marketerId;
+        }
+
+        $campaignId = $client['campaignId'];
+        if ($request->campaignId != 0) {
+            $campaignId = $request->campaignId;
+        }
+
+        $platform = $client['platform'];
+        if ($request->platform != 0) {
+            $platform = $request->platform;
+        }
 
         $assignToSaleManId = $client['assignToSaleManId'];
         if ($request->assignToSaleManId != 0) {
@@ -327,12 +339,12 @@ class ClientController extends Controller
             'interestsUserProjects' => $projectId,
             'typeClient' => 0,
             'jobTitle' => $jobTitle,
-            'lastAssigned' => $saleManAssignedToClient,
+            'saleManAssignedToClient' => $saleManAssignedToClient,
             'assignedDate' => $assignedDate,
             'assignedTime' => $assignedTime,
-            'platform' => $request->platform,
-            'campaignId' => $request->campaignId,
-            'marketerId' => $request->marketerId,
+            'platform' => $platform,
+            'campaignId' => $campaignId,
+            'marketerId' => $marketerId,
             'property' => $request->property,
             'propertyLocation' => $request->propertyLocation,
             'propertyUtility' => $request->propertyUtility,
@@ -408,7 +420,6 @@ class ClientController extends Controller
         if ($request->actionId != 0) {
             $actionId = $request->actionId;
         }
-
         $summery = $client['summery'];
         if ($request->summery) {
             $summery = $request->summery;
@@ -451,7 +462,7 @@ class ClientController extends Controller
             'interestsUserProjects' => $projectId,
             'typeClient' => 0,
             'jobTitle' => $jobTitle,
-            'lastAssigned' => $saleManAssignedToClient,
+            'saleManAssignedToClient' => $saleManAssignedToClient,
             'assignedDate' => $assignedDate,
             'assignedTime' => $assignedTime,
 

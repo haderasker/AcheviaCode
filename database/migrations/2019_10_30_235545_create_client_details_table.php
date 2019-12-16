@@ -45,7 +45,6 @@ class CreateClientDetailsTable extends Migration
             $table->unsignedBigInteger('assignToSaleManId')->default(0);
             $table->time('assignedTime')->nullable();
             $table->date('assignedDate')->nullable();
-            $table->integer('lastAssigned')->nullable();
             $table->time('notificationTime')->nullable();
             $table->date('notificationDate')->nullable();
             $table->integer('transferred')->default(0); // 1 transferred 0 no
