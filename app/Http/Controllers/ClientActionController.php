@@ -38,35 +38,41 @@ class ClientActionController extends Controller
 
     public function getAllData()
     {
+        $userId = Auth::user()->id;
+
         if ((Auth::user()->role->name == 'admin')) {
             $data = $this->model->with('detail')->whereHas('detail')->get()->toArray();
-
-            $key = 0;
-            foreach ($data as $one) {
-                $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-                $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-                $data[$key]['detail']['projectName'] = $projectName;
-                $data[$key]['detail']['saleName'] = $saleName;
-                $key = $key + 1;
-            }
-
-            $meta = [
-                "page" => 1,
-                "pages" => 1,
-                "perpage" => -1,
-                "total" => 40,
-                "sort" => "asc",
-                "field" => "RecordID",
-            ];
-
-            $requestData = [
-                'meta' => $meta,
-                'data' => $data,
-            ];
-
-            return $requestData;
+        } elseif (Auth::user()->role->name == 'sale Man') {
+            $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($userId) {
+                $q->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId);
+            })->get()->toArray();
         }
+        $key = 0;
+        foreach ($data as $one) {
+            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+            $data[$key]['detail']['projectName'] = $projectName;
+            $data[$key]['detail']['saleName'] = $saleName;
+            $key = $key + 1;
+        }
+
+        $meta = [
+            "page" => 1,
+            "pages" => 1,
+            "perpage" => -1,
+            "total" => 40,
+            "sort" => "asc",
+            "field" => "RecordID",
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
     }
+
 
     /**
      * view  index newRequests

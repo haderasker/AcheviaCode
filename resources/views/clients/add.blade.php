@@ -349,7 +349,7 @@
 
                                                         <select id="" name="platform"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected>Select Platform</option>
+                                                            <option selected value="0">Select Platform</option>
                                                             <option value="facebook"> FaceBook</option>
                                                             <option value="google"> Google</option>
                                                             <option value="instgram"> Instagram</option>
@@ -586,7 +586,7 @@
 @endsection
 
 @section('script')
-    <script> window.HREF = "{{ url('/home') }}"; </script>
+    <script> window.HREF = "{{ url('/client-create') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function (e) {

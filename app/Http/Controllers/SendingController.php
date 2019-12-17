@@ -44,6 +44,7 @@ class SendingController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'senderId' => 'required',
             'sendingTypeId' =>'required',

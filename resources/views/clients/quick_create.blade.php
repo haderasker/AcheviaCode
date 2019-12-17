@@ -311,7 +311,7 @@
 @endsection
 
 @section('script')
-    <script> window.HREF ="{{ url('/home') }}"; </script>
+    <script> window.HREF ="{{ url('/client-quick-create') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function (e) {

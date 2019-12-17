@@ -72,6 +72,7 @@ class ClientController extends Controller
             'createdBy' => 'required',
             'projectId' => 'required|integer',
             'countryCode' => 'required',
+            'platform' => 'required',
         ]);
 
         $created = $this->user->save($request);
@@ -153,6 +154,7 @@ class ClientController extends Controller
             'phone' => 'required|numeric|regex:/[0-9]/',
             'countryCode' => 'required',
             'projectId' => 'required|integer',
+            'platform' => 'required',
         ]);
 
         $created = $this->user->save($request);
@@ -530,11 +532,12 @@ class ClientController extends Controller
             'nameCol' => 'required',
             'codeCol' => 'required',
             'projectCol' => 'required|integer',
+            'platformCol' => 'required',
         ]);
 
         $data = Excel::import(new ImportClients($request->all()), request()->file('file'));
 
-        return redirect('/home')->withMessage('Insert Records successfully');
+        return redirect('/client-upload-view')->withMessage('Insert Records successfully');
     }
 
 //    public function dropDown(Request $request)

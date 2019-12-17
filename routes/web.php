@@ -14,7 +14,9 @@
 Route::get('/', 'HomeController@welCome');
 Route::post('client-landing-page', 'HomeController@landingStore');
 
-Auth::routes();
+Auth::routes(['login' => false]);
+
+Route::get('/axie-panel', 'Auth\LoginController@showLoginForm')->name('axie-panel');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
@@ -22,10 +24,19 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['admin'])->group(function () {
 
         /**
+         * sending routes
+         */
+        Route::get('sending', 'SendingController@index');
+        Route::get('sending-create', 'SendingController@create');
+        Route::post('sending-store', 'SendingController@store');
+        Route::get('sending-edit/{id}', 'SendingController@edit');
+        Route::post('sending-update', 'SendingController@update');
+        Route::get('sms/get_data', 'SendingController@getAllData');
+
+        /**
          * client actions routes
          */
-        Route::get('all-clients', 'ClientActionController@allClients');
-        Route::get('client/get_all_data', 'ClientActionController@getAllData');
+
         Route::get('new-requests', 'ClientActionController@newRequests');
         Route::get('client/get_new_requests_data', 'ClientActionController@getNewRequestsData');
         Route::get('/assign-user', 'ClientActionController@assignUser');
@@ -125,10 +136,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('client-delete/{id}', 'ClientController@destroy');
 
 
-
     /**
      * client actions routes
      */
+    Route::get('all-clients', 'ClientActionController@allClients');
+    Route::get('client/get_all_data', 'ClientActionController@getAllData');
     Route::get('new-clients', 'ClientActionController@newClients');
     Route::get('client/get_data/{id}', 'ClientActionController@getData');
     Route::get('action-client/{id}', 'ClientActionController@actionClient');
@@ -140,15 +152,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('client/get_transfered_data', 'ClientActionController@getTransferedData');
     Route::get('client/load-history', 'ClientActionController@loadHistory');
 
-
-    /**
-     * sending routes
-     */
-    Route::get('sending', 'SendingController@index');
-    Route::get('sending-create', 'SendingController@create');
-    Route::post('sending-store', 'SendingController@store');
-    Route::get('sending-edit/{id}', 'SendingController@edit');
-    Route::post('sending-update', 'SendingController@update');
-    Route::get('sms/get_data', 'SendingController@getAllData');
 
 });

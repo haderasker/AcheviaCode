@@ -84,6 +84,23 @@ var KTUserAdd = function () {
                 countryCode: {
                     required: true,
                 },
+                projectId: {
+                    required: true,
+                    number: true,
+                },
+                platform: {
+                    required: true,
+                    lettersonly: true,
+                },
+            },
+
+            messages: {
+                platform: {
+                    lettersonly: "Select Platform",
+                },
+                projectId: {
+                    number: "Select Project",
+                },
             },
 
             // Display error

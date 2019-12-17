@@ -88,7 +88,8 @@ var KTUserListDatatable = function () {
         <div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
     </div>\
     <div class="kt-user-card-v2__details">\
-        <a href="#" class="kt-user-card-v2__name">' + data.name + '</a>\
+       <!-- <a href="#" class="kt-user-card-v2__name">' + data.name + '</a>-->\
+       \<span class="kt-user-card-v2__name">' + data.name + '</span>\
         <span class="kt-user-card-v2__desc">' + position[pos] + '</span>\
     </div>\
 </div>';
