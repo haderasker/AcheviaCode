@@ -1,10 +1,28 @@
 @extends('layouts.app')
 <style>
-    .last {
-        display: none !important;
-    }
+    /*.last span {*/
+        /*visibility: hidden !important;*/
+        /*width: 80px !important;*/
+    /*}*/
+
+
 </style>
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <!-- begin:: Content Head -->
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -120,6 +138,77 @@
 
 
 @section('script')
+    <script>
+        var methods = {
+
+            null: {
+                'title': 'Not Yet',
+            },
+
+            1: {
+                'title': 'Phone',
+            },
+            2: {
+                'title': 'Whats Up',
+            },
+            3: {
+                'title': 'Email',
+            },
+            4: {
+                'title': 'Visit',
+            },
+
+        };
+
+
+        var summery = {
+
+            null: {
+                'title': 'Not Yet',
+            },
+
+            1: {
+                'title': 'Replied',
+            },
+            2: {
+                'title': 'Switched Off',
+            },
+            3: {
+                'title': 'No Answer',
+            },
+            4: {
+                'title': 'Wrong Number',
+            },
+
+        };
+
+        $(document).on('click', 'button.getHistory', function () {
+
+            $.get(
+                "{{ url('client/load-history')}}",
+                {
+                    option: $(this).parent().find('input.user').val()
+                },
+                function (data) {
+
+                    var modalBody = $('#kt_modal_4 .modal-body .row');
+
+                    modalBody.empty();
+                    $.each(data, function (index, element) {
+                        modalBody.append("<div class='col-lg-3'>" +
+                            "<p>" + element.actionName + " </p>" +
+                            "<p>" + element.created_at +' | ' + methods[element.viaMethodId].title + " </p>" +
+                            "<p>" + summery[element.summery].title+ " </p>" +
+                            "<p>" + element.createdBy + " </p>" +
+                            "<p>" + element.state + " </p>" +
+                            "</div>");
+                    });
+
+                    $('#kt_modal_4').modal('show');
+                }
+            );
+        });
+    </script>
     <script> HREF = "{{ url('client/get_data/'.$actionId) }}"; </script>
     <script>
         function output(data) {
@@ -153,7 +242,7 @@
                 '                        </div>\n' +
                 '<div class="col-lg-4">\n' +
                 '                            <select class="form-control" id="" name="actionId">\n' +
-                '                                <option selected value="0">Select Action</option>\n' +
+                '                                <option selected value="">Select Action</option>\n' +
                 '                                @foreach($actions as $action)\n' +
                 '                                    <option value="{{$action['id']}}">{{$action['name']}}</option>\n' +
                 '                                @endforeach\n' +
@@ -169,7 +258,7 @@
                 '                    @if(Auth::user()->role->name == 'admin')\n' +
                 ' <div class="col-lg-3">\n' +
                 '                                <select id="" name="assignToSaleManId" class="form-control">\n' +
-                '                                    <option  value="0" selected>Assigned To</option>\n' +
+                '                                    <option  value="" selected>Assigned To</option>\n' +
                 '                                    @foreach($sales as $sale)\n' +
                 '                                        <option value="{{$sale['id']}}">{{$sale['name']}}</option>\n' +
                 '                                    @endforeach\n' +
@@ -178,7 +267,7 @@
                 '                   @endif \n' +
                 '<div class="col-3">\n' +
                 '<select class="form-control" id="" name="via_method">\n' +
-                ' <option selected value="0">Select Method</option>\n' +
+                ' <option selected value="">Select Method</option>\n' +
                 ' @foreach($methods as $method)\n' +
                 '<option value="{{$method['id']}}">{{$method['name']}}</option>\n' +
                 ' @endforeach \n' +
@@ -186,7 +275,7 @@
                 ' </div>\n' +
                 '<div class="col-lg-3">\n' +
                 ' <select id="" name="summery" class="form-control">\n' +
-                '<option selected value="0">Select Summery</option>\n' +
+                '<option selected value="">Select Summery</option>\n' +
                 '<option value="1"> Replied </option>\n' +
                 ' <option value="2"> Switched Off </option>\n' +
                 '<option value="3"> No Answer </option>\n' +
@@ -195,7 +284,7 @@
                 '</div>\n' +
                 '<div class="btn-group col-lg-3">\n' +
                 '<button type="submit" class="btn btn-brand" id="">\n' +
-                '<span class="kt-hidden-mobile">Save</span>\n' +
+                '<span class="kt-hidden-mobile">Submit</span>\n' +
                 '</button>\n' +
                 '</div>\n' +
                 '</div>\n' +
@@ -209,7 +298,10 @@
     <script>
         function last(data) {
 
-            return '';
+            return '<input type="text" hidden class="user" value="' + data.id + '"> \
+               <a  href="https://wa.me/'+ data.phone +'" class="whats btn btn-bold btn-label-success btn-lg" style="width:160px;">\
+                    <i class="fab fa-whatsapp"></i>whatsApp</a>\
+                 ';
         }
     </script>
 
@@ -242,7 +334,8 @@
                         			<div class="kt-user-card-v2__details">\
                         			<p class="kt-user-card-v2__name">Name : ' + data.name + '</p>\
                         			<p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Phone : ' + data.phone + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Phone : \
+                                           <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
                         			<p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
                         			<p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
                         			<p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
@@ -258,6 +351,7 @@
     </script>
 
     <script> URL = "{{ url('/') }}"; </script>
+    <script> title = ""; </script>
     <script> user = "{{ Auth::user()->role->name }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/list-datatable.js')}}" type="text/javascript"></script>
 

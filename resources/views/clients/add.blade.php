@@ -95,7 +95,7 @@
                                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
 
                                     <!--begin: Form Wizard Form-->
-                                    <form class="kt-form" id="kt_user_add_form" action="{{url('/client-store')}}">
+                                    <form class="kt-form" id="kt_user_add_form" method="POST" action="{{url('/client-store')}}">
                                     @csrf
                                     <!--begin: Form Wizard Step 1-->
                                         <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
@@ -330,7 +330,7 @@
                                                             Campaign</label>
                                                         <select id="campaignId" name="campaignId"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected>Select Campaign</option>
+                                                            <option selected value="0">Select Campaign</option>
                                                         </select>
                                                     </div>
 
@@ -339,7 +339,7 @@
                                                             Marketer</label>
                                                         <select id="marketerId" name="marketerId"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected>Select Marketer</option>
+                                                            <option selected value="0">Select Marketer</option>
                                                         </select>
                                                     </div>
 
@@ -456,7 +456,7 @@
                                                                         Delivery Date</label>
                                                                     <select id="date" name="deliveryDateId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Delivery Date
+                                                                        <option selected value="0">Select Delivery Date
                                                                         </option>
                                                                         @foreach($dates as $date)
                                                                             <option value="{{$date['id']}}">{{$date['name']}}</option>
@@ -471,7 +471,7 @@
 
                                                                     <select id="projectId" name="convertProject1"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Project</option>
+                                                                        <option selected value="0">Select Project</option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
                                                                         @endforeach
@@ -485,7 +485,7 @@
 
                                                                     <select id="projectId" name="convertProject2"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Project</option>
+                                                                        <option selected value="0">Select Project</option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
                                                                         @endforeach
@@ -617,7 +617,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value=''> Select Marketer </option>");
+                        marketerId.append("<option value='0'> Select Marketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });

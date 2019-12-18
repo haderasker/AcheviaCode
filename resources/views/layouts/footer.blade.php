@@ -6,8 +6,10 @@
         </div>
         <div class="kt-footer__menu">
             <a href="{{url('/home')}}" target="_blank" class="kt-footer__menu-link kt-link">Home</a>
+            @if(@Auth::user()->role->name != 'client'))
             <a href="{{url('/client-create')}}" target="_blank" class="kt-footer__menu-link kt-link">Add New Client</a>
             <a href="{{url('/client-quick-create')}}" target="_blank" class="kt-footer__menu-link kt-link">Quick Add Client</a>
+      @endif
         </div>
     </div>
 </div>

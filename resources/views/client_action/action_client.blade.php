@@ -1,9 +1,24 @@
 @extends('layouts.app')
+<style>
+    a.whats:hover {
+        background-color:#1ebea5 !important;
+    }
+</style>
 
 @section('content')
     @if(session()->has('message'))
         <div class="alert alert-success">
             {{ session()->get('message') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -192,7 +207,7 @@
                 '                        </div>\n' +
                 '<div class="col-lg-4">\n' +
                 '                            <select class="form-control" id="" name="actionId">\n' +
-                '                                <option selected value="0">Select Action</option>\n' +
+                '                                <option selected value="">Select Action</option>\n' +
                 '                                @foreach($actions as $action)\n' +
                 '                                    <option value="{{$action['id']}}">{{$action['name']}}</option>\n' +
                 '                                @endforeach\n' +
@@ -208,7 +223,7 @@
                 ' @if(Auth::user()->role->name == 'admin')\n' +
                 '                            <div class="col-lg-3">\n' +
                 '                                <select id="" name="assignToSaleManId" class="form-control">\n' +
-                '                                    <option  value="0" selected>Assigned To</option>\n' +
+                '                                    <option  value="" selected>Assigned To</option>\n' +
                 '                                    @foreach($sales as $sale)\n' +
                 '                                        <option value="{{$sale['id']}}">{{$sale['name']}}</option>\n' +
                 '                                    @endforeach\n' +
@@ -217,7 +232,7 @@
                 ' @endif \n' +
                 '<div class="col-3">\n' +
                 '<select class="form-control" id="" name="via_method">\n' +
-                ' <option selected value="0">Select Method</option>\n' +
+                ' <option selected value="">Select Method</option>\n' +
                 ' @foreach($methods as $method)\n' +
                 '<option value="{{$method['id']}}">{{$method['name']}}</option>\n' +
                 ' @endforeach \n' +
@@ -225,7 +240,7 @@
                 ' </div>\n' +
                 '<div class="col-lg-3">\n' +
                 ' <select id="" name="summery" class="form-control">\n' +
-                '<option selected value="0">Select Summery</option>\n' +
+                '<option selected value="">Select Summery</option>\n' +
                 '<option value="1"> Replied </option>\n' +
                 ' <option value="2"> Switched Off </option>\n' +
                 '<option value="3"> No Answer </option>\n' +
@@ -234,7 +249,7 @@
                 '</div>\n' +
                 '<div class="btn-group col-lg-3">\n' +
                 '<button type="submit" class="btn btn-brand" id="">\n' +
-                '<span class="kt-hidden-mobile">Save</span>\n' +
+                '<span class="kt-hidden-mobile">Submit</span>\n' +
                 '</button>\n' +
                 '</div>\n' +
                 '</div>\n' +
@@ -295,7 +310,7 @@
                     'title': 'Phone',
                 },
                 2: {
-                    'title': 'Whats Up',
+                    'title': 'WhatsApp',
                 },
                 3: {
                     'title': 'Email',
@@ -333,7 +348,14 @@
                         			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
                         			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
                         		</div>\
-                        		</div>';
+                        		</div>\
+                        		<div>\
+                        		<input type="text" hidden class="user" value="' + data.id + '"> \
+                        	<button type="button" class="getHistory btn btn-bold btn-label-brand btn-lg" style="width:160px; margin-bottom:10px">Load History</button>\
+                            <a  href="https://wa.me/'+ data.phone +'" class="whats btn btn-bold btn-label-success btn-lg" style="width:160px;">\
+                             <i class="fab fa-whatsapp"></i>whatsApp</a>\
+                              </div>';
+
         }
     </script>
 
@@ -366,7 +388,8 @@
                     <div class="kt-user-card-v2__details">\
                     <p class="kt-user-card-v2__name">Name : ' + data.name + '</p>\
                     <p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
-                    <p class="kt-user-card-v2__name"> Phone : ' + data.phone + '  </p>\
+                   <p class="kt-user-card-v2__name"> Phone : \
+                              <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
                     <p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
                     <p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
                     <p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
@@ -376,9 +399,7 @@
                     <p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
                 </div>\
                 </div>\
-                <input type="text" hidden class="user" value="' + data.id + '"> \
-                 <button type="button" class="getHistory btn btn-bold btn-label-brand btn-sm">Load History</button>\
-              ';
+                     ';
 
         }
 
@@ -386,6 +407,48 @@
     <script> URL = "{{ url('/') }}"; </script>
     <script> user = "{{ Auth::user()->role->name }}"; </script>
     <script>
+        var methods = {
+
+            null: {
+                'title': 'Not Yet',
+            },
+
+            1: {
+                'title': 'Phone',
+            },
+            2: {
+                'title': 'whatsApp',
+            },
+            3: {
+                'title': 'Email',
+            },
+            4: {
+                'title': 'Visit',
+            },
+
+        };
+
+
+        var summery = {
+
+            null: {
+                'title': 'Not Yet',
+            },
+
+            1: {
+                'title': 'Replied',
+            },
+            2: {
+                'title': 'Switched Off',
+            },
+            3: {
+                'title': 'No Answer',
+            },
+            4: {
+                'title': 'Wrong Number',
+            },
+
+        };
 
         $(document).on('click', 'button.getHistory', function () {
 
@@ -402,8 +465,10 @@
                     $.each(data, function (index, element) {
                         modalBody.append("<div class='col-lg-3'>" +
                             "<p>" + element.actionName + " </p>" +
-                            "<p>" + element.created_at + " </p>" +
-
+                            "<p>" + element.created_at +' | ' + methods[element.viaMethodId].title + " </p>" +
+                            "<p>" + summery[element.summery].title+ " </p>" +
+                            "<p>" + element.createdBy + " </p>" +
+                            "<p>" + element.state + " </p>" +
                             "</div>");
                     });
 
@@ -412,6 +477,7 @@
             );
         });
     </script>
+    <script> title = "Last Action"; </script>
     <script src="{{url('assets/js/pages/custom/user/list-datatable.js')}}" type="text/javascript"></script>
 
 @endsection

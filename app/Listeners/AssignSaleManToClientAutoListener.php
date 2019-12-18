@@ -8,6 +8,8 @@ use App\Models\Project;
 use App\Models\RotationAuto;
 use App\Models\Team;
 use App\User;
+use App\Models\ClientHistory;
+use Illuminate\Support\Facades\Auth;
 
 class AssignSaleManToClientAutoListener
 {
@@ -40,10 +42,11 @@ class AssignSaleManToClientAutoListener
                 $teams = $project->teams()->get()->toArray();
                 $sales = [];
                 foreach ($teams as $team) {
-
                     $team = Team::find($team['id']);
-
+                    $teamleader = User::where('id',  $team['teamLeaderId'])->get()->toArray();
+                    $sales[] = $teamleader;
                     $sales[] = $team->sales()->get()->toArray();
+
                 }
 
                 $selectedSales = call_user_func_array("array_merge", $sales);
@@ -52,6 +55,12 @@ class AssignSaleManToClientAutoListener
                 foreach ($mySelectedSales as $sale) {
                     if (($sale['lastAssigned'] == 0 || $sale['weight'] > $sale['lastAssigned']) && $sale['assign'] == 0) {
                         ClientDetail::where('userId', $client['userId'])->update(['assignToSaleManId' => $sale['id']]);
+                        $history = ClientHistory::create([
+                            'userId' => $client['userId'],
+                            'actionId' => 0,
+                            'createdBy' => Auth::user()->id,
+                            'state' =>  'assigned',
+                        ]);
                         User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
                         return;
                     }

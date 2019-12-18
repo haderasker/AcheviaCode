@@ -212,9 +212,11 @@ class ClientActionController extends Controller
     public function duplicated()
     {
         $actionId = 'duplicated';
+        $methods = Method::all()->toArray();
+        $actions = Action::all()->sortBy('order')->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
 
-        return View('client_action.duplicated', compact('actionId', 'sales'));
+        return View('client_action.duplicated', compact('actionId', 'sales','actions','methods'));
     }
 
     public function getDuplicatedData()
@@ -260,9 +262,11 @@ class ClientActionController extends Controller
     public function transfered()
     {
         $actionId = 'transfered';
+        $methods = Method::all()->toArray();
+        $actions = Action::all()->sortBy('order')->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
 
-        return View('client_action.transfered', compact('actionId', 'sales'));
+        return View('client_action.transfered', compact('actionId', 'sales', 'actions' , 'methods'));
     }
 
     public function getTransferedData()
@@ -368,8 +372,10 @@ class ClientActionController extends Controller
         $key = 0;
         foreach ($data as $one) {
             $actionName = Action::where('id', $one['actionId'])->first()['name'];
+            $createdBy = User::where('id',$one['createdBy'])->first()['name'];
             $name = $user['name'];
             $data[$key]['actionName'] = $actionName;
+            $data[$key]['createdBy'] = $createdBy;
             $data[$key]['name'] = $name;
             $key = $key + 1;
         }

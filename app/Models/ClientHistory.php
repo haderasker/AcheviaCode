@@ -12,7 +12,7 @@ class ClientHistory extends Model
      * @var array
      */
     protected $fillable = [
-        'userId', 'actionId',
+        'userId', 'actionId','createdBy' , 'viaMethodId', 'summery','state',
     ];
 
     protected $table = 'client_history';

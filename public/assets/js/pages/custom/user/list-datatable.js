@@ -124,8 +124,8 @@ var KTUserListDatatable = function () {
 
                 {
                     field: "actionId",
-                    title: "Last Action",
-                    width: 150,
+                    title: window.title,
+                    width: 230,
                     class: 'last',
                     // callback function support for column rendering
                     template: function (data) {
@@ -136,7 +136,7 @@ var KTUserListDatatable = function () {
 
                 {
                     field: '',
-                    title: 'New Action',
+                    title: 'Next Action',
                     width: 650,
 
                     template: function (data) {

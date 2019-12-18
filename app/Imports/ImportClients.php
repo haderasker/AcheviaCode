@@ -73,10 +73,21 @@ class ImportClients implements ToModel
             'marketerId' => $cols['marketerCol'],
             'assignToSaleManId' => $cols['saleCol'],
         );
+        $state = '';
+        if($cols['saleCol'] !=0){
+            $state = 'assigned';
+        }
 //
 //        //insert record
         $user = ClientDetail::create($clientDetailsData);
-        $history = ClientHistory::create(['userId' => $user->id, 'actionId' => 0]);
+        $history = ClientHistory::create([
+            'userId' => $user->id,
+            'actionId' => 0,
+            'summery' => $user->summery,
+            'viaMethodId' => $user->viaMethodId,
+            'createdBy' => Auth::user()->id,
+            'state' => $state,
+        ]);
         if ($note != '') {
             $note = UserNote::create(['userId' => $user->id, 'note' => $note]);
         }

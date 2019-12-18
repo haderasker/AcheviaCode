@@ -123,10 +123,21 @@ class ClientController extends Controller
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
             if ($request->notes) {
-                $note = UserNote::create(['userId' => $user['id'], 'name' => $request->notes]);
+                $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
-            $history = ClientHistory::create(['userId' => $user['id'], 'actionId' => 0]);
+            $state = '';
+            if($request->assignToSaleManId !=0){
+                $state = 'assigned';
+            }
 
+              $history = ClientHistory::create([
+                'userId' => $user['userId'],
+                'actionId' => 0,
+                'summery' => $user->summery,
+                'viaMethodId' => $user->viaMethodId,
+                'createdBy' => Auth::user()->id,
+                'state' => $state,
+            ]);
         }
 
         return $user;
@@ -175,13 +186,24 @@ class ClientController extends Controller
 //
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
+
             if ($request->notes) {
-                $note = UserNote::create(['userId' => $user['id'], 'name' => $request->notes]);
+                $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
-
-            $history = ClientHistory::create(['userId' => $user['id'], 'actionId' => 0]);
-
+            $state = '';
+            if($request->assignToSaleManId !=0){
+                $state = 'assigned';
+            }
+            $history = ClientHistory::create([
+                'userId' => $user['userId'],
+                'actionId' => 0,
+                'summery' => $user->summery,
+                'viaMethodId' => $user->viaMethodId,
+                'createdBy' => Auth::user()->id,
+                'state' => $state,
+            ]);
         }
+
 
         return $user;
     }
@@ -365,7 +387,18 @@ class ClientController extends Controller
 //            event(UserSalesUpdatedEvent::class);
         }
         if ($request->actionId != 0) {
-            $history = ClientHistory::create(['userId' => $request->_id, 'actionId' => $request->actionId]);
+            $state = 'same action';
+            if($request->actionId != $client['actionId'] ){
+                $state = 'change action';
+            }
+            $history = ClientHistory::create([
+                'userId' => $request->_id,
+                'actionId' => $request->actionId,
+                'summery' => $request->summery,
+                'viaMethodId' => $request->via_method,
+                'createdBy' => Auth::user()->id,
+                'state' => $state,
+            ]);
         }
         if ($request->notes != '') {
             $note = UserNote::create(['userId' => $request->_id, 'note' => $request->notes]);
@@ -380,7 +413,15 @@ class ClientController extends Controller
      */
     public function update(Request $request)
     {
-//        $updated = $this->user->updateUser($id, $request);
+        $request->validate([
+            'summery' => 'required|min:1',
+            'notificationDate' => 'required|date',
+            'notificationTime' => 'required',
+            'notes' => 'required',
+            'via_method' => 'required|integer',
+            'actionId' =>'required|integer',
+        ]);
+
         $client = $this->clientModel->where('userId', $request->_id)->first()->toArray();
 
         $notificationDate = $client['newActionDate'];
@@ -476,7 +517,18 @@ class ClientController extends Controller
 //            event(UserSalesUpdatedEvent::class);
         }
         if ($request->actionId != 0) {
-            $history = ClientHistory::create(['userId' => $request->_id, 'actionId' => $request->actionId]);
+            $state = 'same action';
+            if($request->actionId != $client['actionId'] ){
+                $state = 'change action';
+            }
+            $history = ClientHistory::create([
+                'userId' => $request->_id,
+                'actionId' => $request->actionId,
+                'summery' => $request->summery,
+                'viaMethodId' => $request->via_method,
+                'createdBy' => Auth::user()->id,
+                'state' => $state,
+            ]);
         }
         if ($request->notes != '') {
             $note = UserNote::create(['userId' => $request->_id, 'note' => $request->notes]);

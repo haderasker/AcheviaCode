@@ -65,7 +65,7 @@
                                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
 
                                     <!--begin: Form Wizard Form-->
-                                    <form class="kt-form" id="kt_user_add_form" action="{{url('/client-quick-store')}}">
+                                    <form class="kt-form" id="kt_user_add_form" method="POST" action="{{url('/client-quick-store')}}">
                                     @csrf
                                     <!--begin: Form Wizard Step 1-->
                                         <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
