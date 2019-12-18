@@ -71,6 +71,11 @@ class User extends Authenticatable
         return $this->hasOne('App\Models\clientDetail' , 'userId');
     }
 
+    public function notes()
+    {
+        return $this->hasOne('App\Models\UserNote' , 'userId');
+    }
+
     public function clients()
     {
         return $this->hasMany('App\user', 'assignToSaleManId')->with('detail');

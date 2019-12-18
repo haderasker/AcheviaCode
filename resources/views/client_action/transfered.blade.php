@@ -89,6 +89,9 @@
                                     </ul>
                                 </div>
                             </div>
+                            <button class="btn btn-label-danger btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_delete_all">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 @endif

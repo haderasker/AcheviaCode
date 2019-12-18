@@ -364,6 +364,8 @@
                                 });
                                 if (roleId == 4) {
                                     $('.hidden').show();
+                                }else{
+                                    $('.hidden').hide();
                                 }
                             }
                         );

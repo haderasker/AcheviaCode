@@ -342,13 +342,13 @@ var KTUserListDatatable = function () {
 // selected records delete
     var selectedDelete = function () {
         $('#kt_subheader_group_actions_delete_all').on('click', function () {
-            // fetch selected IDs
+// fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
                 return $(chk).val();
             });
 
             if (ids.length > 0) {
-                // learn more: https://sweetalert2.github.io/
+// learn more: https://sweetalert2.github.io/
                 swal.fire({
                     buttonsStyling: false,
 
@@ -363,16 +363,33 @@ var KTUserListDatatable = function () {
                     cancelButtonClass: "btn btn-sm btn-bold btn-brand"
                 }).then(function (result) {
                     if (result.value) {
-                        swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your selected records have been deleted! :(',
-                            type: 'success',
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        })
-                        // result.dismiss can be 'cancel', 'overlay',
-                        // 'close', and 'timer'
+
+                        $.ajax({
+                            type: "GET",
+                            headers: {"Authorization": localStorage.getItem('token')},
+                            url: URL + '/client-delete',
+                            data: {
+                                ids: ids.toArray(),
+                            },
+                            success: function (data) {
+                                swal.fire({
+                                    title: 'Deleted!',
+                                    text: 'Your selected records statuses have been Deleted!',
+                                    type: 'success',
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    confirmButtonClass: "btn btn-sm btn-bold btn-brand",
+                                })
+                                    .then((success) => {
+                                        if (success) {
+                                            location.reload();
+                                        }
+                                    });
+                            },
+                        });
+
+// result.dismiss can be 'cancel', 'overlay',
+// 'close', and 'timer'
                     } else if (result.dismiss === 'cancel') {
                         swal.fire({
                             title: 'Cancelled',
@@ -381,7 +398,12 @@ var KTUserListDatatable = function () {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        });
+                        })
+                            .then((success) => {
+                                if (success) {
+                                    location.reload();
+                                }
+                            });
                     }
                 });
             }

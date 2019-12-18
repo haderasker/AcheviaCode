@@ -43,7 +43,7 @@
         {{--</div>--}}
 
         {{--<!--end: Search -->--}}
-        @if(@Auth::user()->role->name != 'client'))
+        @if(@Auth::user()->role->name != 'client')
         <!--begin: Notifications -->
         <div class="kt-header__topbar-item dropdown">
             <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">

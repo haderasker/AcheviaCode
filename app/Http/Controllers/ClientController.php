@@ -126,11 +126,11 @@ class ClientController extends Controller
                 $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
             $state = '';
-            if($request->assignToSaleManId !=0){
+            if ($request->assignToSaleManId != 0) {
                 $state = 'assigned';
             }
 
-              $history = ClientHistory::create([
+            $history = ClientHistory::create([
                 'userId' => $user['userId'],
                 'actionId' => 0,
                 'summery' => $user->summery,
@@ -191,7 +191,7 @@ class ClientController extends Controller
                 $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
             $state = '';
-            if($request->assignToSaleManId !=0){
+            if ($request->assignToSaleManId != 0) {
                 $state = 'assigned';
             }
             $history = ClientHistory::create([
@@ -388,7 +388,7 @@ class ClientController extends Controller
         }
         if ($request->actionId != 0) {
             $state = 'same action';
-            if($request->actionId != $client['actionId'] ){
+            if ($request->actionId != $client['actionId']) {
                 $state = 'change action';
             }
             $history = ClientHistory::create([
@@ -419,7 +419,7 @@ class ClientController extends Controller
             'notificationTime' => 'required',
             'notes' => 'required',
             'via_method' => 'required|integer',
-            'actionId' =>'required|integer',
+            'actionId' => 'required|integer',
         ]);
 
         $client = $this->clientModel->where('userId', $request->_id)->first()->toArray();
@@ -518,7 +518,7 @@ class ClientController extends Controller
         }
         if ($request->actionId != 0) {
             $state = 'same action';
-            if($request->actionId != $client['actionId'] ){
+            if ($request->actionId != $client['actionId']) {
                 $state = 'change action';
             }
             $history = ClientHistory::create([
@@ -540,15 +540,18 @@ class ClientController extends Controller
     /**
      * delete user
      */
-    public
-    function destroy($id)
+    public function destroy(Request $request)
     {
-        $model = $this->model->find($id);
-        $model->detail()->delete();
+        $ids = $request->ids;
+        foreach ($ids as $id) {
+            $model = $this->model->find($id);
+            $model->detail()->delete();
+            $model->history()->delete();
+            $model->notes()->delete();
+            $model->delete();
+        }
 
-        $model->delete();
-
-        return redirect('/home')->withMessage('Deleted successfully');
+        return redirect('/all-clients')->withMessage('Deleted successfully');
     }
 
     /**

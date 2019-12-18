@@ -138,7 +138,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('client-edit/{id}', 'ClientController@edit');
         Route::post('client-update', 'ClientController@update');
         Route::post('client-form-update', 'ClientController@updateForm');
-        Route::delete('client-delete/{id}', 'ClientController@destroy');
+        Route::get('client-delete', 'ClientController@destroy');
 
         /**
          * client actions routes

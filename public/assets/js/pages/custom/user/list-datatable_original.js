@@ -220,7 +220,7 @@ var KTUserListDatatable = function () {
             </li>\
             <li class="kt-nav__item">\
                 <a href="' + URL + '/history-clients/' + data.id + '" class="kt-nav__link">\
-                    <i class="kt-nav__link-icon flaticon2-trash"></i>\
+                    <i class="kt-nav__link-icon flaticon2-list"></i>\
                     <span class="kt-nav__link-text">History</span>\
                 </a>\
             </li>\
@@ -404,14 +404,31 @@ var KTUserListDatatable = function () {
                     cancelButtonClass: "btn btn-sm btn-bold btn-brand"
                 }).then(function (result) {
                     if (result.value) {
-                        swal.fire({
-                            title: 'Deleted!',
-                            text: 'Your selected records have been deleted! :(',
-                            type: 'success',
-                            buttonsStyling: false,
-                            confirmButtonText: "OK",
-                            confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        })
+
+                        $.ajax({
+                            type: "GET",
+                            headers: {"Authorization": localStorage.getItem('token')},
+                            url: URL + '/client-delete',
+                            data: {
+                                ids: ids.toArray(),
+                            },
+                            success: function (data) {
+                                swal.fire({
+                                    title: 'Deleted!',
+                                    text: 'Your selected records statuses have been Deleted!',
+                                    type: 'success',
+                                    buttonsStyling: false,
+                                    confirmButtonText: "OK",
+                                    confirmButtonClass: "btn btn-sm btn-bold btn-brand",
+                                })
+                                    .then((success) => {
+                                        if (success) {
+                                            location.reload();
+                                        }
+                                    });
+                            },
+                        });
+
 // result.dismiss can be 'cancel', 'overlay',
 // 'close', and 'timer'
                     } else if (result.dismiss === 'cancel') {
@@ -422,7 +439,12 @@ var KTUserListDatatable = function () {
                             buttonsStyling: false,
                             confirmButtonText: "OK",
                             confirmButtonClass: "btn btn-sm btn-bold btn-brand",
-                        });
+                        })
+                            .then((success) => {
+                                if (success) {
+                                    location.reload();
+                                }
+                            });
                     }
                 });
             }

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
 
     <!-- begin:: Content Head -->
     <div class="kt-subheader   kt-grid__item" id="kt_subheader">
@@ -69,6 +74,10 @@
                                     </ul>
                                 </div>
                             </div>
+
+                            <button class="btn btn-label-danger btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_delete_all">
+                                Delete
+                            </button>
                         </div>
                     </div>
                 @endif
