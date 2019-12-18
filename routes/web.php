@@ -107,6 +107,9 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('user-update/{id}', 'UserController@update');
         Route::delete('user-delete/{id}', 'UserController@destroy');
         Route::get('users/get_data', 'UserController@getAllData');
+        Route::get('api/dropdown/teams', 'UserController@dropDownTeams');
+
+
 
         /**
          * reports routes
@@ -116,7 +119,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('all-reports', 'ReportController@AllReports');
     });
 
-    Route::middleware(['client'])->group(function () {
+    Route::middleware(['notClient'])->group(function () {
 
         /**
          *
@@ -136,7 +139,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('client-update', 'ClientController@update');
         Route::post('client-form-update', 'ClientController@updateForm');
         Route::delete('client-delete/{id}', 'ClientController@destroy');
-
 
         /**
          * client actions routes

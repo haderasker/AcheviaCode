@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Models\Role;
-use Illuminate\Support\Facades\Hash;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Response;
 
 class UserController extends Controller
 {
@@ -37,10 +38,11 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all()->toArray();
-        return View('users.add',compact('roles'));
+        return View('users.add', compact('roles'));
     }
 
-    public function getAllData(){
+    public function getAllData()
+    {
 
         $data = $this->model->with('role')->whereHas('role')->get()->toArray();
 
@@ -76,21 +78,21 @@ class UserController extends Controller
             $countDuplicated = $userExist['duplicated'];
             $model->duplicated = $countDuplicated + 1;
             $user = $model->save();
-            return  ['user' => $model, 'exist' => 'yes'];
+            return ['user' => $model, 'exist' => 'yes'];
 
         } else {
             $password = null;
-            if( $request->password){
-               $password =  Hash::make($request->password);
+            if ($request->password) {
+                $password = Hash::make($request->password);
             }
             $image = null;
-            if($request->image) {
+            if ($request->image) {
                 $imageName = time() . '.' . $request->image->extension();
                 $request->image->move(public_path('images'), $imageName);
             }
             $userData = array(
                 'name' => $request->name,
-                'password'=>$password,
+                'password' => $password,
                 'image' => $image,
                 'email' => $request->email,
                 'roleId' => $request->roleId,
@@ -106,7 +108,7 @@ class UserController extends Controller
                 'active' => 1,
             );
             $user = $this->model->create($userData);
-            return  ['user' => $user, 'exist' => 'no'];
+            return ['user' => $user, 'exist' => 'no'];
         }
     }
 
@@ -198,6 +200,18 @@ class UserController extends Controller
         $model->delete();
 
         return redirect('/users')->with('success', 'Deleted successfully');
+    }
+
+    public function dropDownTeams(Request $request)
+    {
+        $roleId = $request->option;
+
+        if ($roleId == 4) {
+            $teams = User::where('roleId' , 3)->get()->toArray();
+
+            return Response::make($teams);
+        }
+
     }
 
 }
