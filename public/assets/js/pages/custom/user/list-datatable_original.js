@@ -405,8 +405,14 @@ var KTUserListDatatable = function () {
                 }).then(function (result) {
                     if (result.value) {
 
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
+                            }
+                        });
+
                         $.ajax({
-                            type: "GET",
+                            type: "DELETE",
                             headers: {"Authorization": localStorage.getItem('token')},
                             url: URL + '/client-delete',
                             data: {

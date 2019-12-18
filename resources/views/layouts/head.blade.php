@@ -5,7 +5,7 @@
     <title>Achivia App</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    @csrf
     <!--begin::Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Roboto:300,400,500,600,700">
 
@@ -72,6 +72,7 @@
     <link href="{{url('assets/plugins/custom/jstree/dist/themes/default/style.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{url('assets/plugins/custom/jqvmap/dist/jqvmap.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{url('assets/plugins/custom/uppy/dist/uppy.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url('css/style.css')}}" rel="stylesheet" type="text/css" />
 
     <!--end:: Vendor Plugins for custom pages -->
 

@@ -1,10 +1,4 @@
 @extends('layouts.app')
-<style>
-    a.whats:hover {
-        background-color:#1ebea5 !important;
-    }
-</style>
-
 @section('content')
     @if(session()->has('message'))
         <div class="alert alert-success">
@@ -58,6 +52,7 @@
                         </div>
                     </form>
                 </div>
+
                 @if((Auth::user()->role->name == 'admin'))
                     <div class="kt-subheader__group" id="kt_subheader_group_actions">
                         <div class="kt-subheader__desc"><span id="kt_subheader_group_selected_rows"></span> Selected:

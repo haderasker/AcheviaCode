@@ -550,8 +550,7 @@ class ClientController extends Controller
             $model->notes()->delete();
             $model->delete();
         }
-
-        return redirect('/all-clients')->withMessage('Deleted successfully');
+        return 'ok';
     }
 
     /**

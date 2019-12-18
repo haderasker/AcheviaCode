@@ -1,12 +1,5 @@
 @extends('layouts.app')
-<style>
-    /*.last span {*/
-        /*visibility: hidden !important;*/
-        /*width: 80px !important;*/
-    /*}*/
 
-
-</style>
 @section('content')
     @if(session()->has('message'))
         <div class="alert alert-success">

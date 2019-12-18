@@ -1,9 +1,4 @@
 @extends('layouts.app')
-<style>
-    a.whats:hover {
-        background-color:#1ebea5 !important;
-    }
-</style>
 
 @section('content')
     @if(session()->has('message'))

@@ -21,7 +21,6 @@
 
     <!-- begin:: Header Topbar -->
     <div class="kt-header__topbar">
-
         {{--<!--begin: Search -->--}}
         {{--<div class="kt-header__topbar-item kt-header__topbar-item--search dropdown" id="kt_quick_search_toggle">--}}
         {{--<div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">--}}

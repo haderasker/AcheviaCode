@@ -363,10 +363,14 @@ var KTUserListDatatable = function () {
                     cancelButtonClass: "btn btn-sm btn-bold btn-brand"
                 }).then(function (result) {
                     if (result.value) {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
+                            }
+                        });
 
                         $.ajax({
-                            type: "GET",
-                            headers: {"Authorization": localStorage.getItem('token')},
+                            type: "DELETE",
                             url: URL + '/client-delete',
                             data: {
                                 ids: ids.toArray(),

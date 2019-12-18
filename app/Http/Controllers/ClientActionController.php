@@ -170,13 +170,13 @@ class ClientActionController extends Controller
 
         if ((Auth::user()->role->name == 'admin')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id) {
-                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0);
-            })->get()->toArray();
+                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('transferred' , 0);
+            })->where('duplicated' , '=',1)->get()->toArray();
 
         } elseif ((Auth::user()->role->name == 'sale Man')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id, $userId) {
-                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId);
-            })->get()->toArray();
+                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId)->where('transferred' , 0);
+            })->where('duplicated' , '=',1)->get()->toArray();
         }
 
         $key = 0;
