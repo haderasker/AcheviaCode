@@ -5,7 +5,6 @@ public/error_log
 storage/*.key
 vendor
 .env
-.cpanel.yml
 .env.backup
 .phpunit.result.cache
 Homestead.json
