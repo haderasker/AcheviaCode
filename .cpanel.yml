@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - php composer update
+    - php composer dumpautoload -o
+    - php artisan migrate:fresh
+    - php artisan db:seed
+    - php artisan view:clear
+    - php artisan route:clear
+    - php artisan optimize:clear
+    - php artisan config:clear
+    - php artisan cache:clear
