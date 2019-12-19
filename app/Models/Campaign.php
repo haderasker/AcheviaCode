@@ -19,6 +19,6 @@ class Campaign extends Model
 
     public function marketers()
     {
-        return $this->hasMany('App\Models\Marketer','campaignId');
+        return $this->belongsToMany('App\User','campaign_marketers','campaignId' , 'marketerId');
     }
 }

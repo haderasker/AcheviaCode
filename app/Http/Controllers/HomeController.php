@@ -74,6 +74,9 @@ class HomeController extends Controller
 
     public function facebookForm(Request $request)
     {
+        $projectName = $request->projectName;
+        $projectId = Project::where('name','like', '%' . $projectName . '%' )->get()->first()['id'];
+dd($projectId);
         $phone = ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
         if ($userExist) {
@@ -99,6 +102,7 @@ class HomeController extends Controller
 
             $clientDetailsData = [
                 'userId' => $user->id,
+                'projectId' => $projectId,
             ];
 
             //insert record

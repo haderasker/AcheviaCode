@@ -608,16 +608,14 @@ class ClientController extends Controller
     function dropDownMarketer(Request $request)
     {
         $campaignId = $request->option;
-
         $campaign = Campaign::find($campaignId);
         $marketers = $campaign->marketers();
 
-        return Response::make($marketers->get(['id', 'name']));
+        return Response::make($marketers->get());
 
     }
 
-    public
-    function dropDownSale(Request $request)
+    public function dropDownSale(Request $request)
     {
         $sales = [];
         $projectId = $request->option;

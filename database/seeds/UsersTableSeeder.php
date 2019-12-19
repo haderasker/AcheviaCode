@@ -38,5 +38,14 @@ class UsersTableSeeder extends Seeder
             'roleId' => 3,
             'createdBy' =>0,
         ]);
+        DB::table('users')->insert([
+            'id'=>11,
+            'name' => 'Marketer',
+            'userName' => 'marketer',
+            'email' =>  'marketer@gmail.com',
+            'password' => bcrypt('12345678'),
+            'roleId' => 6,
+            'createdBy' =>0,
+        ]);
     }
 }

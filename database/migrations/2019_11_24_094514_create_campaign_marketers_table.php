@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMarketersTable extends Migration
+class CreateCampaignMarketersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateMarketersTable extends Migration
      */
     public function up()
     {
-        Schema::create('marketers', function (Blueprint $table) {
+        Schema::create('campaign_marketers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('marketerId');
             $table->unsignedBigInteger('campaignId');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateMarketersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('marketers');
+        Schema::dropIfExists('campaign_marketers');
     }
 }

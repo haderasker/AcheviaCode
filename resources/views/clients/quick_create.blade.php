@@ -342,7 +342,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value='0'> Select Marketer </option>");
+                        marketerId.append("<option value='0'> Select CampaignMarketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });

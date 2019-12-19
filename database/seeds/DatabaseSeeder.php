@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
          $this->call(TeamsTableSeeder::class);
          $this->call(TeamsProjectTableSeeder::class);
         $this->call(CampaignsTableSeeder::class);
-        $this->call(MarketersTableSeeder::class);
         $this->call(DeliveryDatesTableSeeder::class);
         $this->call(SendingTypesTableSeeder::class);
         $this->call(RotationTableSeeder::class);
+        $this->call(CampaignMarketersTableSeeder::class);
     }
 }

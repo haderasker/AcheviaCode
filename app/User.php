@@ -86,4 +86,9 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Team', 'teamId');
     }
 
+    public function campaign()
+    {
+        return $this->belongsToMany('App\Models\Campaign','campaign_marketers','marketerId', 'campaignId');
+    }
+
 }

@@ -273,10 +273,10 @@
 
                                                                 {{--<div class="form-group row">--}}
                                                                 {{--<label class="col-xl-3 col-lg-3 col-form-label">--}}
-                                                                {{--Marketer</label>--}}
+                                                                {{--CampaignMarketer</label>--}}
                                                                 {{--<select id="marketerId" name="marketerId"--}}
                                                                 {{--class="form-control col-lg-9 col-xl-9">--}}
-                                                                {{--<option selected>Select Marketer</option>--}}
+                                                                {{--<option selected>Select CampaignMarketer</option>--}}
                                                                 {{--</select>--}}
                                                                 {{--</div>--}}
 
@@ -380,7 +380,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value=''> Select Marketer </option>");
+                        marketerId.append("<option value=''> Select CampaignMarketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });
