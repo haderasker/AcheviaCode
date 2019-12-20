@@ -6,7 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Events\UserSalesUpdatedEvent;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\UserNotification;
+use App\Notifications\UserUpdateNotification;
 
 class UserSalesUpdatedSMSListener
 {
@@ -28,6 +28,8 @@ class UserSalesUpdatedSMSListener
      */
     public function handle(UserSalesUpdatedEvent $event)
     {
+        $user = $event->user;
+        Notification::send([$user], new UserUpdateNotification());
 
     }
 }

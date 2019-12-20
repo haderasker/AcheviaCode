@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Events\UserSalesUpdatedEvent;
 
 class ClientController extends Controller
 {
@@ -186,6 +187,10 @@ class ClientController extends Controller
 //
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
+
+            if ($request->assignToSaleManId != 0) {
+                event(UserSalesUpdatedEvent::class);
+            }
 
             if ($request->notes) {
                 $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
@@ -378,13 +383,12 @@ class ClientController extends Controller
             'deliveryDateId' => $request->deliveryDateId,
             'convertProject1' => $request->convertProject1,
             'convertProject2' => $request->convertProject2,
-
         );
 
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
         if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
-//            event(UserSalesUpdatedEvent::class);
+            event(UserSalesUpdatedEvent::class);
         }
         if ($request->actionId != 0) {
             $state = 'same action';

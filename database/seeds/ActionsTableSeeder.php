@@ -14,7 +14,7 @@ class ActionsTableSeeder extends Seeder
         DB::table('actions')->insert([
             'id' => 1,
             'name' => 'Done Deal',
-            'order' => 5,
+            'order' => 6,
         ]);
         DB::table('actions')->insert([
             'id' => 2,
@@ -25,7 +25,7 @@ class ActionsTableSeeder extends Seeder
         DB::table('actions')->insert([
             'id' => 3,
             'name' => 'Coming Visit',
-            'order' => 3,
+            'order' => 4,
         ]);
         DB::table('actions')->insert([
             'id' => 4,
@@ -34,35 +34,41 @@ class ActionsTableSeeder extends Seeder
         ]);
 
         DB::table('actions')->insert([
+            'id' => 11,
+            'name' => 'Invitation',
+            'order' => 3,
+        ]);
+
+        DB::table('actions')->insert([
             'id' => 5,
             'name' => 'Scouting',
-            'order' => 4,
+            'order' => 5,
         ]);
 
         DB::table('actions')->insert([
             'id' => 6,
             'name' => 'Convert to another project',
-            'order' => 6,
+            'order' => 7,
         ]);
         DB::table('actions')->insert([
             'id' => 7,
             'name' => 'No Answer',
-            'order' => 7,
+            'order' => 8,
         ]);
         DB::table('actions')->insert([
             'id' => 8,
             'name' => 'Not Available Or Closed',
-            'order' => 8,
+            'order' => 9,
         ]);
         DB::table('actions')->insert([
             'id' => 9,
             'name' => 'Low Budget',
-            'order' => 9,
+            'order' => 10,
         ]);
         DB::table('actions')->insert([
             'id' => 10,
             'name' => 'Trash',
-            'order' => 10,
+            'order' => 11,
         ]);
     }
 

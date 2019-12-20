@@ -18,7 +18,7 @@ class MethodsTableSeeder extends Seeder
         ]);
         DB::table('via_methods')->insert([
             'id' => 2,
-            'name' => 'whats',
+            'name' => "What's App",
 
         ]);
 

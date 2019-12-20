@@ -65,7 +65,7 @@
                                             class="kt-menu__link-text">Re Assigned</span></a></li>
                             <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
                             @foreach($list as $one)
-                                @if($one['order'] == 6)
+                                @if($one['order'] == 7)
                                     <div class="kt-separator kt-separator--border-dashed kt-separator--space-sm"></div>
                                     <li class="kt-menu__item " aria-haspopup="true"><a
                                                 href="{{url('action-client/' . $one['id'])}}"
