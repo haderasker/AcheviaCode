@@ -2,8 +2,8 @@
 <!--begin::Page Custom Styles(used by this page) -->
 <link href="{{url('assets/css/pages/wizard/wizard-4.css')}}" rel="stylesheet" type="text/css"/>
 <style>
-    .alert{
-        display:block !important;
+    .alert {
+        display: block !important;
     }
 </style>
 <!--end::Page Custom Styles -->
@@ -65,7 +65,8 @@
                                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
 
                                     <!--begin: Form Wizard Form-->
-                                    <form class="kt-form" id="kt_user_add_form" method="POST" action="{{url('/client-quick-store')}}">
+                                    <form class="kt-form" id="kt_user_add_form" method="POST"
+                                          action="{{url('/client-quick-store')}}">
                                     @csrf
                                     <!--begin: Form Wizard Step 1-->
                                         <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
@@ -85,7 +86,8 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Name</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input id="name" name="name" class="form-control"
+                                                                        <input id="name" name="name"
+                                                                               class="form-control"
                                                                                type="text" value="{{ old('name') }}">
                                                                     </div>
                                                                 </div>
@@ -99,29 +101,70 @@
                                                                                             class="la la-phone"></i></span>
                                                                             </div>
                                                                             <!-- country codes (ISO 3166) and Dial codes. -->
-                                                                            <select class="form-control"  name="countryCode" id="">
-                                                                                <option data-countryCode="EG" value="20" Selected>Egypt (+20)</option>
+                                                                            <select class="form-control"
+                                                                                    name="countryCode" id="">
+                                                                                <option data-countryCode="EG" value="20"
+                                                                                        Selected>Egypt (+20)
+                                                                                </option>
                                                                                 <optgroup label="Other countries">
-                                                                                    <option data-countryCode="SA" value="966">Saudi Arabia (+966)</option>
-                                                                                    <option data-countryCode="BH" value="973">Bahrain (+973)</option>
-                                                                                    <option data-countryCode="IQ" value="964">Iraq (+964)</option>
-                                                                                    <option data-countryCode="JO" value="962">Jordan (+962)</option>
-                                                                                    <option data-countryCode="KW" value="965">Kuwait (+965)</option>
-                                                                                    <option data-countryCode="LB" value="961">Lebanon (+961)</option>
-                                                                                    <option data-countryCode="LY" value="218">Libya (+218)</option>
-                                                                                    <option data-countryCode="OM" value="968">Oman (+968)</option>
-                                                                                    <option data-countryCode="QA" value="974">Qatar (+974)</option>
-                                                                                    <option data-countryCode="AE" value="971">United Arab Emirates (+971)</option>
-                                                                                    <option data-countryCode="YE" value="967">Yemen (South)(+967)</option>
-                                                                                    <option data-countryCode="TN" value="216">Tunisia (+216)</option>
-                                                                                    <option data-countryCode="SI" value="963">Syria (+963)</option>
-                                                                                    <option data-countryCode="SD" value="249">Sudan (+249)</option>
-                                                                                    <option data-countryCode="DZ" value="213">Algeria (+213)</option>
-                                                                                    <option data-countryCode="KM" value="269">Comoros (+269)</option>
-                                                                                    <option data-countryCode="MA" value="212">Morocco (+212)</option>
+                                                                                    <option data-countryCode="SA"
+                                                                                            value="966">Saudi Arabia
+                                                                                        (+966)
+                                                                                    </option>
+                                                                                    <option data-countryCode="BH"
+                                                                                            value="973">Bahrain (+973)
+                                                                                    </option>
+                                                                                    <option data-countryCode="IQ"
+                                                                                            value="964">Iraq (+964)
+                                                                                    </option>
+                                                                                    <option data-countryCode="JO"
+                                                                                            value="962">Jordan (+962)
+                                                                                    </option>
+                                                                                    <option data-countryCode="KW"
+                                                                                            value="965">Kuwait (+965)
+                                                                                    </option>
+                                                                                    <option data-countryCode="LB"
+                                                                                            value="961">Lebanon (+961)
+                                                                                    </option>
+                                                                                    <option data-countryCode="LY"
+                                                                                            value="218">Libya (+218)
+                                                                                    </option>
+                                                                                    <option data-countryCode="OM"
+                                                                                            value="968">Oman (+968)
+                                                                                    </option>
+                                                                                    <option data-countryCode="QA"
+                                                                                            value="974">Qatar (+974)
+                                                                                    </option>
+                                                                                    <option data-countryCode="AE"
+                                                                                            value="971">United Arab
+                                                                                        Emirates (+971)
+                                                                                    </option>
+                                                                                    <option data-countryCode="YE"
+                                                                                            value="967">Yemen
+                                                                                        (South)(+967)
+                                                                                    </option>
+                                                                                    <option data-countryCode="TN"
+                                                                                            value="216">Tunisia (+216)
+                                                                                    </option>
+                                                                                    <option data-countryCode="SI"
+                                                                                            value="963">Syria (+963)
+                                                                                    </option>
+                                                                                    <option data-countryCode="SD"
+                                                                                            value="249">Sudan (+249)
+                                                                                    </option>
+                                                                                    <option data-countryCode="DZ"
+                                                                                            value="213">Algeria (+213)
+                                                                                    </option>
+                                                                                    <option data-countryCode="KM"
+                                                                                            value="269">Comoros (+269)
+                                                                                    </option>
+                                                                                    <option data-countryCode="MA"
+                                                                                            value="212">Morocco (+212)
+                                                                                    </option>
                                                                                 </optgroup>
                                                                             </select>
-                                                                            <input type="text" class="form-control" id="phone"
+                                                                            <input type="text" class="form-control"
+                                                                                   id="phone"
                                                                                    name="phone"
                                                                                    value="{{ old('phone') }}"
                                                                                    aria-describedby="basic-addon1">
@@ -137,7 +180,8 @@
                                                                                         class="input-group-text"><i
                                                                                             class="la la-at"></i></span>
                                                                             </div>
-                                                                            <input  id="email" type="text" class="form-control"
+                                                                            <input id="email" type="text"
+                                                                                   class="form-control"
                                                                                    value="{{ old('email') }}"
                                                                                    name="email"
                                                                                    aria-describedby="basic-addon1">
@@ -149,7 +193,8 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Job
                                                                         Title</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input class="form-control" type="text"
+                                                                        <input id="title" class="form-control"
+                                                                               type="text"
                                                                                name="jobTitle"
                                                                                value="{{ old('jobTitle') }}">
                                                                     </div>
@@ -159,7 +204,8 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Notes</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input class="form-control" type="text"
+                                                                        <input id="note" class="form-control"
+                                                                               type="text"
                                                                                name="notes"
                                                                                value="{{ old('notes') }}">
                                                                     </div>
@@ -193,28 +239,31 @@
                                                                         Campaign</label>
                                                                     <select id="campaignId" name="campaignId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option  value="0" selected>Select Campaign</option>
+                                                                        <option value="0" selected>Select Campaign
+                                                                        </option>
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Marketer</label>
-                                                                    <select id="marketerId"  name="marketerId"
+                                                                    <select id="marketerId" name="marketerId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option  value="0" selected>Select Marketer</option>
+                                                                        <option value="0" selected>Select Marketer
+                                                                        </option>
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Platform</label>
-                                                                    <select id="" name="platform"
+                                                                    <select id="platform" name="platform"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected value="0">Select Platform</option>
+                                                                        <option selected value="0">Select Platform
+                                                                        </option>
                                                                         <option value="facebook"> FaceBook</option>
                                                                         <option value="google"> Google</option>
-                                                                        <option value="instgram"> Instagram </option>
+                                                                        <option value="instgram"> Instagram</option>
                                                                         <option value="linkedin"> LinkedIn</option>
                                                                         <option value="twitter"> Twitter</option>
                                                                         <option value="youtube"> YouTube</option>
@@ -230,19 +279,19 @@
                                                                     </select>
                                                                 </div>
                                                                 {{--<div class="form-group row">--}}
-                                                                    {{--<label class="col-xl-3 col-lg-3 col-form-label">Gender</label>--}}
-                                                                    {{--<div class="kt-radio-inline">--}}
-                                                                        {{--<label class="kt-radio">--}}
-                                                                            {{--<input type="radio" value="0" name="gender">--}}
-                                                                            {{--Male--}}
-                                                                            {{--<span></span>--}}
-                                                                        {{--</label>--}}
-                                                                        {{--<label class="kt-radio">--}}
-                                                                            {{--<input type="radio" value="1" name="gender">--}}
-                                                                            {{--Female--}}
-                                                                            {{--<span></span>--}}
-                                                                        {{--</label>--}}
-                                                                    {{--</div>--}}
+                                                                {{--<label class="col-xl-3 col-lg-3 col-form-label">Gender</label>--}}
+                                                                {{--<div class="kt-radio-inline">--}}
+                                                                {{--<label class="kt-radio">--}}
+                                                                {{--<input type="radio" value="0" name="gender">--}}
+                                                                {{--Male--}}
+                                                                {{--<span></span>--}}
+                                                                {{--</label>--}}
+                                                                {{--<label class="kt-radio">--}}
+                                                                {{--<input type="radio" value="1" name="gender">--}}
+                                                                {{--Female--}}
+                                                                {{--<span></span>--}}
+                                                                {{--</label>--}}
+                                                                {{--</div>--}}
                                                                 {{--</div>--}}
 
                                                             </div>
@@ -265,8 +314,22 @@
                                                         </div>
                                                         <div class="kt-wizard-v4__review-content">
                                                             <p id="myName"></p>
-                                                            <p> Phone: <span id="myPhone" ></span> </p>
-                                                            <p>Email: <span id="myEmail" ></span></p>
+                                                            <p>Phone: <span id="myPhone"></span></p>
+                                                            <p>Email: <span id="myEmail"></span></p>
+                                                            <p>Job Title: <span id="myTitle"></span></p>
+                                                            <p>Note: <span id="myNote"></span></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-wizard-v4__review-item">
+                                                        <div class="kt-wizard-v4__review-title">
+                                                            Interested Information
+                                                        </div>
+                                                        <div class="kt-wizard-v4__review-content">
+                                                            <p>Project: <span id="myProject"></span></p>
+                                                            <p>Campaign: <span id="myCampaign"></span></p>
+                                                            <p>Marketer: <span id="myMarketer"></span></p>
+                                                            <p>Platform: <span id="myPlatform"></span></p>
+                                                            <p>AssignTo: <span id="mySale"></span></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -311,7 +374,7 @@
 @endsection
 
 @section('script')
-    <script> window.HREF ="{{ url('/client-quick-create') }}"; </script>
+    <script> window.HREF = "{{ url('/client-quick-create') }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function (e) {

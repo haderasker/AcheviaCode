@@ -10,6 +10,7 @@ use App\Models\Team;
 use App\User;
 use App\Models\ClientHistory;
 use Illuminate\Support\Facades\Auth;
+use App\Events\UserSalesUpdatedEvent;
 
 class AssignSaleManToClientAutoListener
 {
@@ -33,6 +34,7 @@ class AssignSaleManToClientAutoListener
     public function handle(ClientDetailCreatedEvent $event)
     {
         $client = $event->user;
+        $user = User::where('id', $client['userId'])->first();
         if ($client['assignToSaleManId'] != 0) {
             return;
         } else {
@@ -55,6 +57,9 @@ class AssignSaleManToClientAutoListener
                 foreach ($mySelectedSales as $sale) {
                     if (($sale['lastAssigned'] == 0 || $sale['weight'] > $sale['lastAssigned']) && $sale['assign'] == 0) {
                         ClientDetail::where('userId', $client['userId'])->update(['assignToSaleManId' => $sale['id']]);
+
+                        event(new UserSalesUpdatedEvent($user));
+
                         $history = ClientHistory::create([
                             'userId' => $client['userId'],
                             'actionId' => 0,

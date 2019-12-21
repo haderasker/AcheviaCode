@@ -14,6 +14,7 @@ use App\Models\UserNote;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
+use App\Events\UserSalesUpdatedEvent;
 
 
 class ImportClients implements ToModel
@@ -61,6 +62,7 @@ class ImportClients implements ToModel
         }
 
         $user = User::create($userData);
+        $userCreated = $user;
 
         $clientDetailsData = array(
             'userId' => $user->id,
@@ -80,6 +82,11 @@ class ImportClients implements ToModel
 //
 //        //insert record
         $user = ClientDetail::create($clientDetailsData);
+
+        if ($cols['saleCol'] != 0) {
+            event(new UserSalesUpdatedEvent($userCreated));
+        }
+
         $history = ClientHistory::create([
             'userId' => $user->id,
             'actionId' => 0,

@@ -71,8 +71,14 @@ class UserController extends Controller
      */
     public function save($request)
     {
+//        $projectId = 2;
         $phone = $request->countryCode . ltrim($request->phone, '0');
         $userExist = $this->model->where('phone', $phone)->orWhere('email', $request->email)->first();
+
+//        $projectIdExist = $userExist->with('detail')->whereHas('detail')->first()['detail']['projectId'];
+
+//        if ($userExist && $projectIdExist == $projectId ) {
+
         if ($userExist) {
             $model = $this->model->find($userExist['id']);
             $countDuplicated = $userExist['duplicated'];
@@ -115,7 +121,8 @@ class UserController extends Controller
     /**
      * store user
      */
-    public function store(Request $request)
+    public
+    function store(Request $request)
     {
         $request->validate([
             'name' => 'required|max:255',
@@ -133,14 +140,16 @@ class UserController extends Controller
     /**
      * view edit page to update user
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         $requestData = $this->model->find($id);
 
         return View('users.edit', compact('requestData'));
     }
 
-    public function updateUser($id, $request)
+    public
+    function updateUser($id, $request)
     {
         $model = $this->model->find($id);
         $model->name = $request->name;
@@ -169,7 +178,8 @@ class UserController extends Controller
     /**
      * update user
      */
-    public function update($id, Request $request)
+    public
+    function update($id, Request $request)
     {
         $request->validate([
             'name' => 'required|max:255',
@@ -194,7 +204,8 @@ class UserController extends Controller
     /**
      * delete user
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         $model = $this->model->find($id);
         $model->delete();
@@ -202,12 +213,13 @@ class UserController extends Controller
         return redirect('/users')->with('success', 'Deleted successfully');
     }
 
-    public function dropDownTeams(Request $request)
+    public
+    function dropDownTeams(Request $request)
     {
         $roleId = $request->option;
 
         if ($roleId == 4) {
-            $teams = User::where('roleId' , 3)->get()->toArray();
+            $teams = User::where('roleId', 3)->get()->toArray();
 
             return Response::make($teams);
         }

@@ -78,6 +78,7 @@ class ClientController extends Controller
 
         $created = $this->user->save($request);
         $user = $created['user'];
+        $userCreated = $created['user'];
         $exist = $created['exist'];
         if ($exist == 'no') {
             $saleManAssignedToClient = 0;
@@ -123,6 +124,11 @@ class ClientController extends Controller
 //
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
+
+            if ($request->assignToSaleManId != 0) {
+                event(new UserSalesUpdatedEvent($userCreated));
+            }
+
             if ($request->notes) {
                 $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
@@ -171,6 +177,7 @@ class ClientController extends Controller
 
         $created = $this->user->save($request);
         $user = $created['user'];
+        $userCreated = $created['user'];
         $exist = $created['exist'];
         if ($exist == 'no') {
             $clientDetailsData = array(
@@ -187,9 +194,8 @@ class ClientController extends Controller
 //
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
-
             if ($request->assignToSaleManId != 0) {
-                event(UserSalesUpdatedEvent::class);
+                event(new UserSalesUpdatedEvent($userCreated));
             }
 
             if ($request->notes) {
@@ -271,6 +277,7 @@ class ClientController extends Controller
     {
 //        $updated = $this->user->updateUser($id, $request);
         $client = $this->clientModel->where('userId', $request->_id)->first()->toArray();
+        $user = User::where('id', $client['userId'])->first();
 
         $notificationDate = $client['newActionDate'];
         $notificationTime = $client['notificationTime'];
@@ -387,8 +394,8 @@ class ClientController extends Controller
 
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
-        if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
-            event(UserSalesUpdatedEvent::class);
+        if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0  ) {
+            event(new UserSalesUpdatedEvent($user));
         }
         if ($request->actionId != 0) {
             $state = 'same action';
@@ -427,6 +434,7 @@ class ClientController extends Controller
         ]);
 
         $client = $this->clientModel->where('userId', $request->_id)->first()->toArray();
+        $user = User::where('id', $client['userId'])->first();
 
         $notificationDate = $client['newActionDate'];
         $notificationTime = $client['notificationTime'];
@@ -517,8 +525,9 @@ class ClientController extends Controller
 
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
-        if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
-//            event(UserSalesUpdatedEvent::class);
+
+        if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0  ) {
+            event(new UserSalesUpdatedEvent($user));
         }
         if ($request->actionId != 0) {
             $state = 'same action';

@@ -233,7 +233,7 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Job
                                                                         Title</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input class="form-control" type="text"
+                                                                        <input  id="title" class="form-control" type="text"
                                                                                name="jobTitle"
                                                                                value="{{ old('jobTitle') }}">
                                                                     </div>
@@ -242,7 +242,7 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Notes</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input class="form-control" name="notes"
+                                                                        <input id="note" class="form-control" name="notes"
                                                                                type="text" value="{{old('notes')}}">
                                                                     </div>
                                                                 </div>
@@ -347,7 +347,7 @@
                                                         <label class="col-xl-3 col-lg-3 col-form-label">
                                                             Platform</label>
 
-                                                        <select id="" name="platform"
+                                                        <select id="platform" name="platform"
                                                                 class="form-control col-lg-9 col-xl-9">
                                                             <option selected value="0">Select Platform</option>
                                                             <option value="facebook"> FaceBook</option>
@@ -406,7 +406,7 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Property
                                                                         Location</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input id="" class="form-control"
+                                                                        <input id="propertyLocation" class="form-control"
                                                                                name="propertyLocation"
                                                                                type="text"
                                                                                value="{{old('propertyLocation')}}">
@@ -416,7 +416,7 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">
                                                                         Property Utility</label>
-                                                                    <select id="" name="propertyUtility"
+                                                                    <select id="propertyUtility" name="propertyUtility"
                                                                             class="form-control col-lg-9 col-xl-9">
                                                                         <option selected>Select Property Utility
                                                                         </option>
@@ -470,7 +470,7 @@
                                                                         Project 1</label>
 
                                                                     <select id="projectId" name="convertProject1"
-                                                                            class="form-control col-lg-9 col-xl-9">
+                                                                            class="projectOne form-control col-lg-9 col-xl-9">
                                                                         <option selected value="0">Select Project</option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
@@ -484,7 +484,7 @@
                                                                         Project</label>
 
                                                                     <select id="projectId" name="convertProject2"
-                                                                            class="form-control col-lg-9 col-xl-9">
+                                                                            class="projectTwo form-control col-lg-9 col-xl-9">
                                                                         <option selected value="0">Select Project</option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
@@ -518,6 +518,8 @@
                                                             <p> Name: <span id="myName"></span></p>
                                                             <p> Phone: <span id="myPhone"></span></p>
                                                             <p>Email: <span id="myEmail"></span></p>
+                                                            <p>Job Title: <span id="myTitle" ></span></p>
+                                                            <p>Note: <span id="myNote" ></span></p>
                                                         </div>
                                                     </div>
                                                     <div class="kt-wizard-v4__review-item">
@@ -528,6 +530,7 @@
                                                             <p>Project: <span id="myProject"></span></p>
                                                             <p>Campaign: <span id="myCampaign"></span></p>
                                                             <p>Marketer: <span id="myMarketer"></span></p>
+                                                            <p>Platform: <span id="myPlatform"></span></p>
                                                             <p>AssignTo: <span id="mySale"></span></p>
                                                         </div>
                                                     </div>
@@ -538,9 +541,14 @@
                                                         <div class="kt-wizard-v4__review-content">
                                                             <p id=""></p>
                                                             <p>Property: <span id="myProperty"></span></p>
+                                                            <p>Property Location: <span id="myPropertyLocation"></span></p>
+                                                            <p>Property Utility: <span id="myPropertyUtility"></span></p>
                                                             <p>Budget: <span id="myBudget"></span></p>
                                                             <p>Date: <span id="myDate"></span></p>
                                                             <p>Area: <span id="myArea"></span></p>
+                                                            <p>Convert To Project 1: <span id="myProjectOne"></span></p>
+                                                            <p>Convert To Project 2: <span id="myProjectTwo"></span></p>
+
                                                         </div>
                                                     </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\ClientDetail;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,7 +15,7 @@ use App\User;
 class UserSalesUpdatedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $user;
+    public $user,$detail;
     /**
      * Create a new event instance.
      *

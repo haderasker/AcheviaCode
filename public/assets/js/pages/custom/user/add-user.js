@@ -29,12 +29,20 @@ var KTUserAdd = function () {
             var name = $('#name').val();
             var phone = $('#phone').val();
             var email = $('#email').val();
+            var title = $('#title').val();
+            var note = $('#note').val();
             var campaign = $('#campaignId').children("option:selected").html();
             var marketer = $('#marketerId').children("option:selected").html();
+            var platform = $('#platform').children("option:selected").html();
             var sale = $('#saleId').children("option:selected").html();
             var project = $('#projectId').children("option:selected").html();
+            var projectOne = $('.projectOne').children("option:selected").html();
+            var projectTwo = $('.projectTwo').children("option:selected").html();
+
             var interest = $('#projectId').children("option:selected").val();
             var property = $('#property').children("option:selected").html();
+            var propertyUtility = $('#propertyUtility').children("option:selected").html();
+            var propertyLocation = $('#propertyLocation').val();
             var date = $('#date').children("option:selected").html();
             var from = $('#from').val();
             var to = $('#to').val();
@@ -45,15 +53,25 @@ var KTUserAdd = function () {
             $('#myName').text(name);
             $('#myPhone').text(phone);
             $('#myEmail').text(email);
+            $('#myTitle').text(title);
+            $('#myNote').text(note);
+
             $('#myCampaign').text(campaign);
             $('#myMarketer').text(marketer);
             $('#mySale').text(sale);
             $('#myProject').text(project);
             $('#interest').val(interest);
+            $('#myPlatform').text(platform);
+
+
             $('#myProperty').text(property);
-            $('#myDate').text(date);
+            $('#myPropertyLocation').text(propertyLocation);
+            $('#myPropertyUtility').text(propertyUtility);
             $('#myArea').text(area);
             $('#myBudget').text(budget);
+            $('#myDate').text(date);
+            $('#myProjectOne').text(projectOne);
+            $('#myProjectTwo').text(projectTwo);
 
             KTUtil.scrollTop();
 

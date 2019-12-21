@@ -8,7 +8,7 @@ use App\Models\Project;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
+use App\Events\UserSalesUpdatedEvent;
 
 class HomeController extends Controller
 {
@@ -43,7 +43,7 @@ class HomeController extends Controller
     public function welCome()
     {
         $projects = Project::all()->toArray();
-        return view('welcome' , compact('projects'));
+        return view('welcome', compact('projects'));
     }
 
 
@@ -75,8 +75,7 @@ class HomeController extends Controller
     public function facebookForm(Request $request)
     {
         $projectName = $request->projectName;
-        $projectId = Project::where('name','like', '%' . $projectName . '%' )->get()->first()['id'];
-        dd($projectId);
+        $projectId = Project::where('name', 'like', '%' . $projectName . '%')->get()->first()['id'];
         $phone = ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
         if ($userExist) {
@@ -99,6 +98,9 @@ class HomeController extends Controller
             ];
 
             $user = User::create($userData);
+            $userCreated = $user;
+
+            event(new UserSalesUpdatedEvent($userCreated));
 
             $clientDetailsData = [
                 'userId' => $user->id,
@@ -129,6 +131,7 @@ class HomeController extends Controller
 
         $created = $this->user->save($request);
         $user = $created['user'];
+        $userCreated = $created['user'];
         $exist = $created['exist'];
         if ($exist == 'no') {
             $clientDetailsData = array(
@@ -140,6 +143,9 @@ class HomeController extends Controller
                 'addedClientFrom' => 'landingPage',
                 'addedClientLink' => url('/'),
             );
+
+            event(new UserSalesUpdatedEvent($userCreated));
+
             $user = ClientDetail::create($clientDetailsData);
         }
 //
