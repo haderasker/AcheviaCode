@@ -562,9 +562,6 @@ class ClientController extends Controller
         $ids = $request->ids;
         foreach ($ids as $id) {
             $model = $this->model->find($id);
-            $model->detail()->delete();
-            $model->history()->delete();
-            $model->notes()->delete();
             $model->delete();
         }
         return 'ok';

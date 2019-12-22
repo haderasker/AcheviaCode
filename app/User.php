@@ -53,22 +53,22 @@ class User extends Authenticatable
 
     public function logs()
     {
-        return $this->hasMany('App\Models\log');
+        return $this->hasMany('App\Models\Log');
     }
 
     public function history()
     {
-        return $this->hasMany('App\Models\clientHistory', 'userId');
+        return $this->hasMany('App\Models\ClientHistory', 'userId');
     }
 
     public function role()
     {
-        return $this->hasOne('App\Models\role','id', 'roleId');
+        return $this->hasOne('App\Models\Role','id', 'roleId');
     }
 
     public function detail()
     {
-        return $this->hasOne('App\Models\clientDetail' , 'userId');
+        return $this->hasOne('App\Models\ClientDetail' , 'userId');
     }
 
     public function notes()
@@ -78,7 +78,7 @@ class User extends Authenticatable
 
     public function clients()
     {
-        return $this->hasMany('App\user', 'assignToSaleManId')->with('detail');
+        return $this->hasMany('App\User', 'assignToSaleManId')->with('detail');
     }
 
     public function team()
