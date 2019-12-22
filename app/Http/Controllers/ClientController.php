@@ -127,25 +127,26 @@ class ClientController extends Controller
 
             if ($request->assignToSaleManId != 0) {
                 event(new UserSalesUpdatedEvent($userCreated));
+                $state = '';
+                if ($request->assignToSaleManId != 0) {
+                    $state = 'Re assigned';
+                }
+
+                $history = ClientHistory::create([
+                    'userId' => $user['userId'],
+                    'actionId' => 0,
+                    'summery' => $user->summery,
+                    'viaMethodId' => $user->viaMethodId,
+                    'createdBy' => Auth::user()->id,
+                    'state' => $state,
+                    'notes' => $user['notes'],
+                ]);
             }
 
             if ($request->notes) {
                 $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
-            $state = '';
-            if ($request->assignToSaleManId != 0) {
-                $state = 'Re assigned';
-            }
 
-            $history = ClientHistory::create([
-                'userId' => $user['userId'],
-                'actionId' => 0,
-                'summery' => $user->summery,
-                'viaMethodId' => $user->viaMethodId,
-                'createdBy' => Auth::user()->id,
-                'state' => $state,
-                'notes' => $user['notes'],
-            ]);
         }
 
         return $user;
@@ -197,24 +198,24 @@ class ClientController extends Controller
             $user = $this->clientModel->create($clientDetailsData);
             if ($request->assignToSaleManId != 0) {
                 event(new UserSalesUpdatedEvent($userCreated));
+                $state = '';
+                if ($request->assignToSaleManId != 0) {
+                    $state = 'Re assigned';
+                }
+                $history = ClientHistory::create([
+                    'userId' => $user['userId'],
+                    'actionId' => 0,
+                    'summery' => $user->summery,
+                    'viaMethodId' => $user->viaMethodId,
+                    'createdBy' => Auth::user()->id,
+                    'state' => $state,
+                    'notes' => $user['notes'],
+                ]);
             }
 
             if ($request->notes) {
                 $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
             }
-            $state = '';
-            if ($request->assignToSaleManId != 0) {
-                $state = 'Re assigned';
-            }
-            $history = ClientHistory::create([
-                'userId' => $user['userId'],
-                'actionId' => 0,
-                'summery' => $user->summery,
-                'viaMethodId' => $user->viaMethodId,
-                'createdBy' => Auth::user()->id,
-                'state' => $state,
-                'notes' => $user['notes'],
-            ]);
         }
 
 

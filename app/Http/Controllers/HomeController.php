@@ -101,16 +101,11 @@ class HomeController extends Controller
             ];
 
             $user = User::create($userData);
-            $userCreated = $user;
-
-            event(new UserSalesUpdatedEvent($userCreated));
-
             $clientDetailsData = [
                 'userId' => $user->id,
                 'projectId' => $projectId,
             ];
 
-            //insert record
             $userClient = ClientDetail::create($clientDetailsData);
 
             return $user;
@@ -147,31 +142,11 @@ class HomeController extends Controller
                 'addedClientLink' => url('/'),
             );
 
-            event(new UserSalesUpdatedEvent($userCreated));
-
             $user = ClientDetail::create($clientDetailsData);
-            $clientCreated = $user;
-
-
             if ($request->notes) {
                 $note = UserNote::create(['userId' => $userCreated['userId'], 'name' => $request->notes]);
             }
-
-            $history = ClientHistory::create([
-                'userId' => $clientCreated['userId'],
-                'actionId' => 0,
-                'summery' => $clientCreated->summery,
-                'viaMethodId' => $clientCreated->viaMethodId,
-                'createdBy' => Auth::user()->id,
-                'state' => 'Re assigned',
-                'notes' => $clientCreated['notes'],
-            ]);
-
         }
-//
-//        //insert record
-
-
         return $user;
     }
 }

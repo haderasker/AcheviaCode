@@ -8,13 +8,13 @@
 
 namespace App\Imports;
 
+use App\Events\UserSalesUpdatedEvent;
 use App\Models\ClientDetail;
 use App\Models\ClientHistory;
 use App\Models\UserNote;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
-use App\Events\UserSalesUpdatedEvent;
 
 
 class ImportClients implements ToModel
@@ -76,7 +76,7 @@ class ImportClients implements ToModel
             'assignToSaleManId' => $cols['saleCol'],
         );
         $state = '';
-        if($cols['saleCol'] !=0){
+        if ($cols['saleCol'] != 0) {
             $state = 'Re assigned';
         }
 //
@@ -85,17 +85,17 @@ class ImportClients implements ToModel
 
         if ($cols['saleCol'] != 0) {
             event(new UserSalesUpdatedEvent($userCreated));
+            $history = ClientHistory::create([
+                'userId' => $user->id,
+                'actionId' => 0,
+                'summery' => $user->summery,
+                'viaMethodId' => $user->viaMethodId,
+                'createdBy' => Auth::user()->id,
+                'state' => $state,
+                'notes' => $user['notes'],
+            ]);
         }
 
-        $history = ClientHistory::create([
-            'userId' => $user->id,
-            'actionId' => 0,
-            'summery' => $user->summery,
-            'viaMethodId' => $user->viaMethodId,
-            'createdBy' => Auth::user()->id,
-            'state' => $state,
-            'notes' => $user['notes'],
-        ]);
         if ($note != '') {
             $note = UserNote::create(['userId' => $user->id, 'note' => $note]);
         }
