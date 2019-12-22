@@ -88,7 +88,7 @@
 <script src="{{url('assets/plugins/general/jquery.repeater/src/lib.js')}}" type="text/javascript"></script>
 <script src="{{url('assets/plugins/general/jquery.repeater/src/jquery.input.js')}}" type="text/javascript"></script>
 <script src="{{url('assets/plugins/general/jquery.repeater/src/repeater.js')}}" type="text/javascript"></script>
-<script src="{{url('assets/plugins/general/dompurify/dist/purify.js')}}" type="text/javascript"></script>
+{{--<script src="{{url('assets/plugins/general/dompurify/dist/purify.js')}}" type="text/javascript"></script>--}}
 
 <!--end:: Vendor Plugins -->
 <script src="{{url('assets/js/scripts.bundle.js')}}" type="text/javascript"></script>
