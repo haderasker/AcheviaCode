@@ -77,7 +77,7 @@ class ImportClients implements ToModel
         );
         $state = '';
         if($cols['saleCol'] !=0){
-            $state = 'assigned';
+            $state = 'Re assigned';
         }
 //
 //        //insert record
@@ -94,6 +94,7 @@ class ImportClients implements ToModel
             'viaMethodId' => $user->viaMethodId,
             'createdBy' => Auth::user()->id,
             'state' => $state,
+            'notes' => $user['notes'],
         ]);
         if ($note != '') {
             $note = UserNote::create(['userId' => $user->id, 'note' => $note]);

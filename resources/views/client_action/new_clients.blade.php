@@ -295,7 +295,7 @@
         function last(data) {
 
             return '<input type="text" hidden class="user" value="' + data.id + '"> \
-               <a  href="https://wa.me/'+ data.phone +'" class="whats btn btn-bold btn-label-success btn-lg" style="width:160px;">\
+               <a  href="https://wa.me/'+ data.phone +'" class="whats btn btn-bold btn-label-success btn-lg" target="_blank" style="width:160px;">\
                     <i class="fab fa-whatsapp"></i>whatsApp</a>\
                  ';
         }

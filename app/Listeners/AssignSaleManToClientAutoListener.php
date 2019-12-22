@@ -64,7 +64,8 @@ class AssignSaleManToClientAutoListener
                             'userId' => $client['userId'],
                             'actionId' => 0,
                             'createdBy' => Auth::user()->id,
-                            'state' =>  'assigned',
+                            'state' =>  'Re assigned',
+                            'notes' => $client['notes'],
                         ]);
                         User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
                         return;

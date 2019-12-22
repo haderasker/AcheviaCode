@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserSalesUpdatedEvent;
 use App\Models\Action;
 use App\Models\ClientDetail;
 use App\Models\Project;
+use App\Models\UserNote;
+use App\Models\ClientHistory;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Events\UserSalesUpdatedEvent;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -147,6 +150,23 @@ class HomeController extends Controller
             event(new UserSalesUpdatedEvent($userCreated));
 
             $user = ClientDetail::create($clientDetailsData);
+            $clientCreated = $user;
+
+
+            if ($request->notes) {
+                $note = UserNote::create(['userId' => $userCreated['userId'], 'name' => $request->notes]);
+            }
+
+            $history = ClientHistory::create([
+                'userId' => $clientCreated['userId'],
+                'actionId' => 0,
+                'summery' => $clientCreated->summery,
+                'viaMethodId' => $clientCreated->viaMethodId,
+                'createdBy' => Auth::user()->id,
+                'state' => 'Re assigned',
+                'notes' => $clientCreated['notes'],
+            ]);
+
         }
 //
 //        //insert record

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateUsersHistoryTable extends Migration
+class UpdateClientHistoryNotesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,7 @@ class UpdateUsersHistoryTable extends Migration
     public function up()
     {
         Schema::table('client_history', function (Blueprint $table) {
-            $table->unsignedBigInteger('viaMethodId')->nullable();
-            $table->string('summery')->nullable();
-            $table->unsignedBigInteger('createdBy');
-            $table->string('state')->nullable();
+            $table->string('notes')->nullable();
         });
     }
 
@@ -29,5 +26,6 @@ class UpdateUsersHistoryTable extends Migration
     public function down()
     {
         Schema::dropIfExists('client_history');
+
     }
 }

@@ -134,7 +134,7 @@ class ClientController extends Controller
             }
             $state = '';
             if ($request->assignToSaleManId != 0) {
-                $state = 'assigned';
+                $state = 'Re assigned';
             }
 
             $history = ClientHistory::create([
@@ -144,6 +144,7 @@ class ClientController extends Controller
                 'viaMethodId' => $user->viaMethodId,
                 'createdBy' => Auth::user()->id,
                 'state' => $state,
+                'notes' => $user['notes'],
             ]);
         }
 
@@ -203,7 +204,7 @@ class ClientController extends Controller
             }
             $state = '';
             if ($request->assignToSaleManId != 0) {
-                $state = 'assigned';
+                $state = 'Re assigned';
             }
             $history = ClientHistory::create([
                 'userId' => $user['userId'],
@@ -212,6 +213,7 @@ class ClientController extends Controller
                 'viaMethodId' => $user->viaMethodId,
                 'createdBy' => Auth::user()->id,
                 'state' => $state,
+                'notes' => $user['notes'],
             ]);
         }
 
@@ -400,7 +402,7 @@ class ClientController extends Controller
         if ($request->actionId != 0) {
             $state = 'same action';
             if ($request->actionId != $client['actionId']) {
-                $state = 'change action';
+                $state = 'change State';
             }
             $history = ClientHistory::create([
                 'userId' => $request->_id,
@@ -409,6 +411,7 @@ class ClientController extends Controller
                 'viaMethodId' => $request->via_method,
                 'createdBy' => Auth::user()->id,
                 'state' => $state,
+                'notes' => $request->notes,
             ]);
         }
         if ($request->notes != '') {
@@ -532,7 +535,7 @@ class ClientController extends Controller
         if ($request->actionId != 0) {
             $state = 'same action';
             if ($request->actionId != $client['actionId']) {
-                $state = 'change action';
+                $state = 'change State';
             }
             $history = ClientHistory::create([
                 'userId' => $request->_id,
@@ -541,6 +544,7 @@ class ClientController extends Controller
                 'viaMethodId' => $request->via_method,
                 'createdBy' => Auth::user()->id,
                 'state' => $state,
+                'notes' => $request->notes,
             ]);
         }
         if ($request->notes != '') {

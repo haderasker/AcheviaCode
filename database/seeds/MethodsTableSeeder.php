@@ -11,17 +11,17 @@ class MethodsTableSeeder extends Seeder
      */
     public function run()
     {
+
         DB::table('via_methods')->insert([
             'id' => 1,
-            'name' => 'phone',
+            'name' => "What's App",
 
         ]);
         DB::table('via_methods')->insert([
             'id' => 2,
-            'name' => "What's App",
+            'name' => 'phone',
 
         ]);
-
         DB::table('via_methods')->insert([
             'id' => 3,
             'name' => 'email',
