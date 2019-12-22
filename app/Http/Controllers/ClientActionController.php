@@ -170,13 +170,13 @@ class ClientActionController extends Controller
 
         if ((Auth::user()->role->name == 'admin')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id) {
-                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0);
-            })->where('duplicated' , '=',1)->get()->toArray();
+                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('transferred', '=', 0);
+            })->where('duplicated', '=', 1)->get()->toArray();
 
         } elseif ((Auth::user()->role->name == 'sale Man')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id, $userId) {
-                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId);
-            })->where('duplicated' , '=',1)->get()->toArray();
+                $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId)->where('transferred', '=', 0);
+            })->where('duplicated', '=', 1)->get()->toArray();
         }
 
         $key = 0;
@@ -216,7 +216,7 @@ class ClientActionController extends Controller
         $actions = Action::all()->sortBy('order')->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
 
-        return View('client_action.duplicated', compact('actionId', 'sales','actions','methods'));
+        return View('client_action.duplicated', compact('actionId', 'sales', 'actions', 'methods'));
     }
 
     public function getDuplicatedData()
@@ -266,7 +266,7 @@ class ClientActionController extends Controller
         $actions = Action::all()->sortBy('order')->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
 
-        return View('client_action.transfered', compact('actionId', 'sales', 'actions' , 'methods'));
+        return View('client_action.transfered', compact('actionId', 'sales', 'actions', 'methods'));
     }
 
     public function getTransferedData()
@@ -372,7 +372,7 @@ class ClientActionController extends Controller
         $key = 0;
         foreach ($data as $one) {
             $actionName = Action::where('id', $one['actionId'])->first()['name'];
-            $createdBy = User::where('id',$one['createdBy'])->first()['name'];
+            $createdBy = User::where('id', $one['createdBy'])->first()['name'];
             $name = $user['name'];
             $data[$key]['actionName'] = $actionName;
             $data[$key]['createdBy'] = $createdBy;
