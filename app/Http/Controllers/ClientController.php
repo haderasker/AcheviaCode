@@ -291,7 +291,7 @@ class ClientController extends Controller
         }
 
         $transferred = 0;
-        if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
+        if ($client['assignToSaleManId'] != $request->assignToSaleManId && $request->assignToSaleManId != 0) {
             $transferred = 1;
         }
         $newActionDate = $client['newActionDate'];
@@ -449,7 +449,7 @@ class ClientController extends Controller
         }
 
         $transferred = 0;
-        if ($client['assignToSaleManId'] != $request->assignToSaleManId) {
+        if ($client['assignToSaleManId'] != $request->assignToSaleManId && $request->assignToSaleManId != 0) {
             $transferred = 1;
         }
         $newActionDate = $client['newActionDate'];
