@@ -144,7 +144,7 @@ class HomeController extends Controller
 
             $user = ClientDetail::create($clientDetailsData);
             if ($request->notes) {
-                $note = UserNote::create(['userId' => $userCreated['userId'], 'name' => $request->notes]);
+                $note = UserNote::create(['userId' => $userCreated['userId'], 'note' => $request->notes]);
             }
         }
         return $user;

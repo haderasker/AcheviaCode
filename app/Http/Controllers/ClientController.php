@@ -144,7 +144,7 @@ class ClientController extends Controller
             }
 
             if ($request->notes) {
-                $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
+                $note = UserNote::create(['userId' => $user['userId'], 'note' => $request->notes]);
             }
 
         }
@@ -214,7 +214,7 @@ class ClientController extends Controller
             }
 
             if ($request->notes) {
-                $note = UserNote::create(['userId' => $user['userId'], 'name' => $request->notes]);
+                $note = UserNote::create(['userId' => $user['userId'], 'note' => $request->notes]);
             }
         }
 
