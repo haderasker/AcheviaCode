@@ -60,7 +60,7 @@ class AssignSaleManToClientAutoListener
                         $history = ClientHistory::create([
                             'userId' => $client['userId'],
                             'actionId' => 0,
-                            'createdBy' => 0,
+                            'createdBy' => $user['createdBy'],
                             'state' => 'Re assigned',
                             'notes' => $client['notes'],
                         ]);
