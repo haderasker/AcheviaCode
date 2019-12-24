@@ -3,14 +3,14 @@
 namespace App\Listeners;
 
 use App\Events\ClientDetailCreatedEvent;
+use App\Events\UserSalesUpdatedEvent;
 use App\Models\ClientDetail;
+use App\Models\ClientHistory;
 use App\Models\Project;
 use App\Models\RotationAuto;
 use App\Models\Team;
 use App\User;
-use App\Models\ClientHistory;
 use Illuminate\Support\Facades\Auth;
-use App\Events\UserSalesUpdatedEvent;
 
 class AssignSaleManToClientAutoListener
 {
@@ -45,10 +45,9 @@ class AssignSaleManToClientAutoListener
                 $sales = [];
                 foreach ($teams as $team) {
                     $team = Team::find($team['id']);
-                    $teamleader = User::where('id',  $team['teamLeaderId'])->get()->toArray();
+                    $teamleader = User::where('id', $team['teamLeaderId'])->get()->toArray();
                     $sales[] = $teamleader;
                     $sales[] = $team->sales()->get()->toArray();
-
                 }
 
                 $selectedSales = call_user_func_array("array_merge", $sales);
@@ -57,17 +56,15 @@ class AssignSaleManToClientAutoListener
                 foreach ($mySelectedSales as $sale) {
                     if (($sale['lastAssigned'] == 0 || $sale['weight'] > $sale['lastAssigned']) && $sale['assign'] == 0) {
                         ClientDetail::where('userId', $client['userId'])->update(['assignToSaleManId' => $sale['id']]);
-
-                        event(new UserSalesUpdatedEvent($user));
-
+                        User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
                         $history = ClientHistory::create([
                             'userId' => $client['userId'],
                             'actionId' => 0,
                             'createdBy' => Auth::user()->id,
-                            'state' =>  'Re assigned',
+                            'state' => 'Re assigned',
                             'notes' => $client['notes'],
                         ]);
-                        User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
+                        event(new UserSalesUpdatedEvent($user));
                         return;
                     }
                 }
@@ -92,8 +89,8 @@ class AssignSaleManToClientAutoListener
             foreach ($sales as $oneSale) {
                 $user = User::where('id', $oneSale['id'])->first();
                 if ($user) {
-                   $user->lastAssigned = 0;
-                   $user->save();
+                    $user->lastAssigned = 0;
+                    $user->save();
                 }
 
                 $mySelectedSales[] = $user->toArray();
