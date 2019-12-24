@@ -138,7 +138,7 @@ var KTUserListDatatable = function () {
 
                 {
                     field: 'assignedDate',
-                    title: 'Assign Data',
+                    title: 'Assign Date',
                     type: 'date',
                     template: function (data) {
                         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.assignedDate + '</span>';
@@ -167,7 +167,7 @@ var KTUserListDatatable = function () {
                             },
                             2: {
                                 'title': 'following',
-                                'class': ' btn-label-danger'
+                                'class': ' btn-label-success'
                             },
                             3: {
                                 'title': 'comingVisit',
@@ -178,12 +178,33 @@ var KTUserListDatatable = function () {
                                 'class': ' btn-label-info'
                             },
                             5: {
-                                'title': 'cancellation',
-                                'class': ' btn-label-warning'
+                                'title': 'Scouting',
+                                'class': ' btn-label-primary'
                             },
                             6: {
-                                'title': 'notInterested',
+                                'title': 'Convert to another project',
+                                'class': ' btn-label-primary'
+                            },
+
+                            7: {
+                                'title': 'No Answer',
                                 'class': ' btn-label-warning'
+                            },
+                            8: {
+                                'title': 'Not Available Or Closed',
+                                'class': ' btn-label-warning'
+                            },
+                            9: {
+                                'title': 'Low Budget',
+                                'class': ' btn-label-warning'
+                            },
+                            10: {
+                                'title': 'Trash',
+                                'class': ' btn-label-danger'
+                            },
+                            11: {
+                                'title': 'Invitation',
+                                'class': ' btn-label-info'
                             },
 
                         };

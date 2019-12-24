@@ -273,7 +273,7 @@
                 },
                 2: {
                     'title': 'following',
-                    'class': ' btn-label-danger'
+                    'class': ' btn-label-success'
                 },
                 3: {
                     'title': 'comingVisit',
@@ -284,12 +284,33 @@
                     'class': ' btn-label-info'
                 },
                 5: {
-                    'title': 'cancellation',
-                    'class': ' btn-label-warning'
+                    'title': 'Scouting',
+                    'class': ' btn-label-primary'
                 },
                 6: {
-                    'title': 'notInterested',
+                    'title': 'Convert to another project',
+                    'class': ' btn-label-primary'
+                },
+
+                7: {
+                    'title': 'No Answer',
                     'class': ' btn-label-warning'
+                },
+                8: {
+                    'title': 'Not Available Or Closed',
+                    'class': ' btn-label-warning'
+                },
+                9: {
+                    'title': 'Low Budget',
+                    'class': ' btn-label-warning'
+                },
+                10: {
+                    'title': 'Trash',
+                    'class': ' btn-label-danger'
+                },
+                11: {
+                    'title': 'Invitation',
+                    'class': ' btn-label-info'
                 },
 
             };

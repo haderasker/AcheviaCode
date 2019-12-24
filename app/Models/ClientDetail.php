@@ -34,5 +34,4 @@ class ClientDetail extends Model
         'created' => ClientDetailCreatedEvent::class,
     ];
 
-
 }

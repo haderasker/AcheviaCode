@@ -11,10 +11,6 @@ class CitiesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('project_cities')->insert([
-            'id'=>1,
-            'name' => 'nasrCity',
-            'description' =>'city',
-        ]);
+
     }
 }

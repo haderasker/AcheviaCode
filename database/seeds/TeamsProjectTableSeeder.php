@@ -11,10 +11,6 @@ class TeamsProjectTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('project_team')->insert([
-            'id'=>10,
-            'projectId' => 1,
-            'teamId' => 10,
-        ]);
+
     }
 }

@@ -11,10 +11,6 @@ class TeamsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('teams')->insert([
-            'id'=>10,
-            'name' => Str::random(10),
-            'teamLeaderId' => 10,
-        ]);
+
     }
 }

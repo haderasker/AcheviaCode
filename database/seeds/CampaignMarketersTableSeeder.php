@@ -11,18 +11,6 @@ class CampaignMarketersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('campaign_marketers')->insert([
-            'id' => 1,
-            'marketerId' => 11,
-            'campaignId' => 1,
-
-        ]);
-
-        DB::table('campaign_marketers')->insert([
-            'id' => 2,
-            'marketerId' => 11,
-            'campaignId' => 2,
-        ]);
 
     }
 }

@@ -79,6 +79,7 @@ class HomeController extends Controller
     {
         $projectName = $request->projectName;
         $projectId = Project::where('name', 'like', '%' . $projectName . '%')->get()->first()['id'];
+        return $projectId;
         $phone = ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
         if ($userExist) {
