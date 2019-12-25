@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('roleId');
             $table->unsignedBigInteger('teamId')->nullable();
             $table->unsignedBigInteger('mangerId')->nullable();
+            $table->unsignedBigInteger('createdBy')->nullable();
             $table->boolean('userStatus')->nullable();
             $table->integer('duplicated')->default(1);
             $table->boolean('saleManPunished')->nullable();
@@ -32,6 +33,10 @@ class CreateUsersTable extends Migration
             $table->integer('active')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('roleId')->references('id')->on('roles');
+            $table->foreign('teamId')->references('id')->on('users');
+            $table->foreign('mangerId')->references('id')->on('users');
+            $table->foreign('createdBy')->references('id')->on('users');
         });
     }
 

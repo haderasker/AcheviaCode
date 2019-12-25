@@ -17,6 +17,9 @@ class UpdateClientDetailTable extends Migration
             $table->unsignedBigInteger('campaignId')->nullable();
             $table->unsignedBigInteger('marketerId')->nullable();
             $table->string('platform')->nullable();
+            $table->foreign('campaignId')->references('id')->on('campaigns');
+            $table->foreign('marketerId')->references('id')->on('users');
+
         });
     }
 

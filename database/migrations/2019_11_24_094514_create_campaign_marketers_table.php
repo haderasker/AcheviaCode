@@ -15,9 +15,11 @@ class CreateCampaignMarketersTable extends Migration
     {
         Schema::create('campaign_marketers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('marketerId');
+            $table->unsignedBigInteger('marketerId');
             $table->unsignedBigInteger('campaignId');
             $table->timestamps();
+            $table->foreign('campaignId')->references('id')->on('campaigns');
+            $table->foreign('marketerId')->references('id')->on('users');
         });
     }
 

@@ -15,6 +15,7 @@ class UpdateUsersTokenTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('api_token')->nullable();
+            $table->string('device_id')->nullable();
         });
     }
 

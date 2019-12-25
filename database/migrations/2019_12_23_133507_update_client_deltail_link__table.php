@@ -14,7 +14,9 @@ class UpdateClientDeltailLinkTable extends Migration
     public function up()
     {
         Schema::table('client_details', function (Blueprint $table) {
-            $table->integer('addClientLinkId')->nullable();
+            $table->unsignedBigInteger('addClientLinkId')->nullable();
+            $table->foreign('addClientLinkId')->references('id')->on('project_links');
+
         });
     }
 

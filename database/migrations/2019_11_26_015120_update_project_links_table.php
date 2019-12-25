@@ -18,6 +18,8 @@ class UpdateProjectLinksTable extends Migration
             $table->string('link');
             $table->unsignedBigInteger('projectId')->nullable();
             $table->timestamps();
+            $table->foreign('projectId')->references('id')->on('projects');
+
         });
     }
 

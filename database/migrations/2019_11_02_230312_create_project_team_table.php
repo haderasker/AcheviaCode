@@ -18,6 +18,8 @@ class CreateProjectTeamTable extends Migration
             $table->unsignedBigInteger('projectId');
             $table->unsignedBigInteger('teamId');
             $table->timestamps();
+            $table->foreign('teamId')->references('id')->on('teams');
+            $table->foreign('projectId')->references('id')->on('projects');
         });
     }
 

@@ -18,6 +18,8 @@ class CreateClientHistoryTable extends Migration
             $table->unsignedBigInteger('userId');
             $table->unsignedBigInteger('actionId');
             $table->timestamps();
+            $table->foreign('userId')->references('id')->on('users');
+            $table->foreign('actionId')->references('id')->on('actions');
         });
     }
 

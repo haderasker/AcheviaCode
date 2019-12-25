@@ -18,6 +18,9 @@ class UpdateUsersHistoryTable extends Migration
             $table->string('summery')->nullable();
             $table->unsignedBigInteger('createdBy');
             $table->string('state')->nullable();
+            $table->foreign('createdBy')->references('id')->on('users');
+            $table->foreign('viaMethodId')->references('id')->on('via_methods');
+
         });
     }
 

@@ -19,6 +19,8 @@ class CreateCampaignsTable extends Migration
             $table->string('description');
             $table->unsignedBigInteger('projectId');
             $table->timestamps();
+            $table->foreign('projectId')->references('id')->on('projects');
+
         });
     }
 

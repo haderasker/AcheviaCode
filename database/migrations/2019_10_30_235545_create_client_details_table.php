@@ -49,6 +49,11 @@ class CreateClientDetailsTable extends Migration
             $table->date('notificationDate')->nullable();
             $table->integer('transferred')->default(0); // 1 transferred 0 no
             $table->timestamps();
+            $table->foreign('projectId')->references('id')->on('projects');
+            $table->foreign('userId')->references('id')->on('users');
+            $table->foreign('actionId')->references('id')->on('actions');
+            $table->foreign('viaMethodId')->references('id')->on('via_methods');
+            $table->foreign('assignToSaleManId')->references('id')->on('users');
         });
     }
 

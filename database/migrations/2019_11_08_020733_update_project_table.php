@@ -15,6 +15,7 @@ class UpdateProjectTable extends Migration
     {
         Schema::table('projects', function (Blueprint $table) {
             $table->unsignedBigInteger('cityId')->nullable();
+            $table->foreign('cityId')->references('id')->on('project_cities');
         });
     }
 

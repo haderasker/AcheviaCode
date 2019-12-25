@@ -21,6 +21,7 @@ class CreateSendingTable extends Migration
             $table->string('type')->nullable();
             $table->string('senderId')->nullable();
             $table->timestamps();
+            $table->foreign('sendingTypeId')->references('id')->on('sending_types');
         });
     }
 

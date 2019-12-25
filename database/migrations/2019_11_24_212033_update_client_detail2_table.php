@@ -23,6 +23,9 @@ class UpdateClientDetail2Table extends Migration
             $table->unsignedBigInteger('deliveryDateId')->nullable();
             $table->unsignedBigInteger('convertProject1')->nullable();
             $table->unsignedBigInteger('convertProject2')->nullable();
+            $table->foreign('deliveryDateId')->references('id')->on('delivery_dates');
+            $table->foreign('convertProject1')->references('id')->on('projects');
+            $table->foreign('convertProject2')->references('id')->on('projects');
         });
     }
 
