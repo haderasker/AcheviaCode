@@ -3,8 +3,8 @@ deployment:
   tasks:
     - php composer update
     - php composer dumpautoload -o
-    - php artisan migrate:refresh --path=/database/migrations/2013_1_31_000000_create_roles_table.php
-    - php artisan migrate:refresh
+    - php artisan migrate --path=/database/migrations/2013_1_31_000000_create_roles_table.php
+    - php artisan migrate
     - php artisan db:seed
     - php artisan view:clear
     - php artisan route:clear
