@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectCity;
-use App\Models\ProjectLink;
 use App\Models\ProjectTeam;
 use App\Models\Team;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 
 class ProjectController extends Controller
 {
@@ -29,14 +27,15 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $requestData = $this->model::where('idParent' , null)->get()->toArray();
+        $requestData = $this->model::where('idParent', null)->get()->toArray();
 
         return View('projects.view', compact('requestData'));
     }
 
-    public function getAllData(){
+    public function getAllData()
+    {
 
-        $data = $this->model::where('idParent' , null)->get()->toArray();
+        $data = $this->model::where('idParent', null)->get()->toArray();
 
         $meta = [
             "page" => 1,
@@ -61,18 +60,18 @@ class ProjectController extends Controller
      */
     public function create()
     {
-       $teams = Team::all()->toArray();
-        return View('projects.add',compact('teams'));
+        $teams = Team::all()->toArray();
+        return View('projects.add', compact('teams'));
     }
 
 
-        public function dropDownCity(Request $request)
+    public function dropDownCity(Request $request)
     {
         $country = $request->option;
 
-        $cities = ProjectCity::where('country' , $country )->get();
+        $cities = ProjectCity::where('country', $country)->get();
 
-       return $cities;
+        return $cities;
 
     }
 
@@ -83,18 +82,26 @@ class ProjectController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'teams' => 'required',
         ]);
+        $imageName = null;
+        if ($request->image) {
+            $imageName = time() . '.' . $request->image->extension();
 
-        $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        }
 
-        $request->image->move(public_path('images'), $imageName);
+        $cityId = $request->cityId;
+        if($request->cityId == 0){
+            $cityId = null;
+        }
 
         $data = array(
             'name' => $request->name,
             'description' => $request->description,
             'image' => $imageName,
             'country' => $request->country,
-            'cityId' => $request->cityId,
+            'cityId' => $cityId,
             'location' => $request->location,
 
         );
@@ -111,17 +118,17 @@ class ProjectController extends Controller
 //            ProjectLink::create($linkData);
 //        }
 
-        foreach ($request->teams as $team){
+        foreach ($request->teams as $team) {
 
             $teamData = [
                 'teamId' => $team,
-                'projectId' =>$project->id,
+                'projectId' => $project->id,
             ];
 
             ProjectTeam::create($teamData);
         }
 
-        return redirect('/projects')->with('success','Stored successfully');
+        return redirect('/projects')->with('success', 'Stored successfully');
     }
 
     /**
@@ -137,7 +144,7 @@ class ProjectController extends Controller
     /**
      * update project
      */
-    public function update($id , Request $request)
+    public function update($id, Request $request)
     {
         $request->validate([
             'name' => 'required|unique:projects|max:255',
@@ -148,7 +155,7 @@ class ProjectController extends Controller
         $model->description = $request->description;
         $model->save();
 
-        return redirect('/projects')->with('success','Updated successfully');
+        return redirect('/projects')->with('success', 'Updated successfully');
     }
 
     /**
@@ -159,7 +166,7 @@ class ProjectController extends Controller
         $model = $this->model->find($id);
         $model->delete();
 
-        return redirect('/projects')->with('success','Deleted successfully');
+        return redirect('/projects')->with('success', 'Deleted successfully');
     }
 
     /**
@@ -168,7 +175,7 @@ class ProjectController extends Controller
     public function createCustom()
     {
         $projects = Project::all()->toArray();
-        return View('projects.custom',compact('projects'));
+        return View('projects.custom', compact('projects'));
     }
 
 
@@ -188,7 +195,7 @@ class ProjectController extends Controller
         $request->validate([
             'name' => 'required',
             'projectId' => 'required|integer',
-            'teams' =>'required',
+            'teams' => 'required',
         ]);
 
 
@@ -200,17 +207,17 @@ class ProjectController extends Controller
 //        //insert record
         $project = $this->model->create($data);
 
-        foreach ($request->teams as $team){
+        foreach ($request->teams as $team) {
 
             $teamData = [
                 'teamId' => $team,
-                'projectId' =>$project->id,
+                'projectId' => $project->id,
             ];
 
             ProjectTeam::create($teamData);
         }
 
-        return redirect('/projects')->with('success','Stored successfully');
+        return redirect('/projects')->with('success', 'Stored successfully');
     }
 
 }

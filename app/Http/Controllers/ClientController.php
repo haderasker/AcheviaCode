@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserSalesUpdatedEvent;
 use App\Imports\ImportClients;
 use App\Models\Action;
 use App\Models\Campaign;
@@ -18,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Events\UserSalesUpdatedEvent;
 
 class ClientController extends Controller
 {
@@ -85,6 +85,11 @@ class ClientController extends Controller
             if ($request->assignToSaleManId != 0) {
                 $saleManAssignedToClient = 1;
             }
+            $assignToSaleManId = $request->assignToSaleManId;
+            if ($request->assignToSaleManId == 0) {
+                $assignToSaleManId = null;
+            }
+
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'projectId' => $request->projectId,
@@ -104,7 +109,7 @@ class ClientController extends Controller
                 'region' => '',
                 'country' => '',
                 'city' => '',
-                'assignToSaleManId' => $request->assignToSaleManId,
+                'assignToSaleManId' => $assignToSaleManId,
                 'lastAssigned' => $saleManAssignedToClient,
                 'assignedDate' => now()->format('Y-m-d'),
                 'assignedTime' => now()->format('H:i:s'),
@@ -134,7 +139,7 @@ class ClientController extends Controller
 
                 $history = ClientHistory::create([
                     'userId' => $user['userId'],
-                    'actionId' => 0,
+                    'actionId' => null,
                     'summery' => $user->summery,
                     'viaMethodId' => $user->viaMethodId,
                     'createdBy' => Auth::user()->id,
@@ -182,6 +187,10 @@ class ClientController extends Controller
         $userCreated = $created['user'];
         $exist = $created['exist'];
         if ($exist == 'no') {
+            $assignToSaleManId = $request->assignToSaleManId;
+            if ($request->assignToSaleManId == 0) {
+                $assignToSaleManId = null;
+            }
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'jobTitle' => $request->jobTitle,
@@ -191,7 +200,7 @@ class ClientController extends Controller
                 'platform' => $request->platform,
                 'campaignId' => $request->campaignId,
                 'marketerId' => $request->marketerId,
-                'assignToSaleManId' => $request->assignToSaleManId,
+                'assignToSaleManId' => $assignToSaleManId,
             );
 //
 //        //insert record
@@ -204,7 +213,7 @@ class ClientController extends Controller
                 }
                 $history = ClientHistory::create([
                     'userId' => $user['userId'],
-                    'actionId' => 0,
+                    'actionId' => null,
                     'summery' => $user->summery,
                     'viaMethodId' => $user->viaMethodId,
                     'createdBy' => Auth::user()->id,
@@ -397,7 +406,7 @@ class ClientController extends Controller
 
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
-        if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0  ) {
+        if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0) {
             event(new UserSalesUpdatedEvent($user));
         }
         if ($request->actionId != 0) {
@@ -530,7 +539,7 @@ class ClientController extends Controller
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
 
-        if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0  ) {
+        if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0) {
             event(new UserSalesUpdatedEvent($user));
         }
         if ($request->actionId != 0) {

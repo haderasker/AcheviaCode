@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserSalesUpdatedEvent;
 use App\Models\Action;
 use App\Models\ClientDetail;
 use App\Models\Project;
 use App\Models\UserNote;
-use App\Models\ClientHistory;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -81,12 +78,17 @@ class HomeController extends Controller
         $projectId = Project::where('name', 'like', '%' . $projectName . '%')->get()->first()['id'];
         $phone = ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
-        if ($userExist) {
+        $actionId = ClientDetail::where('userId', $userExist['id'])->first()['actionId'];
+        if ($userExist && $actionId != null) {
             $model = User::find($userExist['id']);
             $countDuplicated = $userExist['duplicated'];
             $model->duplicated = $countDuplicated + 1;
             $user = $model->save();
             return $model;
+
+        } elseif ($userExist && $actionId == null) {
+            $model = User::find($userExist['id']);
+            return ['user' => $model, 'exist' => 'yes'];
 
         } else {
 

@@ -8,6 +8,21 @@
 </style>
 <!--end::Page Custom Styles -->
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-danger">
+            {{ session()->get('message') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <div class="kt-grid kt-grid--hor kt-grid--root">
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
@@ -15,9 +30,7 @@
             <!-- begin:: Content -->
             <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
                 <div class="kt-wizard-v4" id="kt_user_add_user" data-ktwizard-state="step-first">
-                    <div class="alert alert-danger" style="display:none">
 
-                    </div>
 
                     <!--begin: Form Wizard Nav -->
                     <div class="kt-wizard-v4__nav">
@@ -40,22 +53,7 @@
                                     </div>
                                 </div>
                             </div>
-                            {{--<div class="kt-wizard-v4__nav-item nav-item" data-ktwizard-type="step">--}}
-                            {{--<div class="kt-wizard-v4__nav-body">--}}
-                            {{--<div class="kt-wizard-v4__nav-number">--}}
-                            {{--2--}}
-                            {{--</div>--}}
-                            {{--<div class="kt-wizard-v4__nav-label">--}}
-                            {{--<div class="kt-wizard-v4__nav-label-title">--}}
-                            {{--Review--}}
-                            {{--</div>--}}
-                            {{--<div class="kt-wizard-v4__nav-label-desc">--}}
-                            {{--Review your Details--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
-                            {{--</div>--}}
+
                         </div>
 
                         <!--end: Form Wizard Nav -->
@@ -254,7 +252,7 @@
 
                                                                     <div class="show form-group row hidden">
                                                                         <label class="col-xl-3 col-lg-3 col-form-label">
-                                                                            User Type</label>
+                                                                             Team Leader</label>
                                                                         <select id="teamId" name="teamId"
                                                                                 class="form-control col-lg-9 col-xl-9">
                                                                         </select>
@@ -269,27 +267,6 @@
                                             </div>
 
                                             <!--end: Form Wizard Step 1-->
-
-                                            <!--begin: Form Wizard Step 4-->
-                                            <div class="kt-wizard-v4__content" data-ktwizard-type="step-content">
-                                                <div class="kt-heading kt-heading--md">Review your Details and Submit
-                                                </div>
-                                                <div class="kt-form__section kt-form__section--first">
-                                                    <div class="kt-wizard-v4__review">
-                                                        <div class="kt-wizard-v4__review-item">
-                                                            <div class="kt-wizard-v4__review-title">
-                                                                Your Account Details
-                                                            </div>
-                                                            <div class="kt-wizard-v4__review-content">
-                                                                <p id="myName"></p>
-                                                                <p> Phone: <span id="myPhone"></span></p>
-                                                                <p>Email: <span id="myEmail"></span></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                             <div class="kt-form__actions">
                                                 <div class="row">
                                                     <div class="col-lg-9 ml-lg-auto">
@@ -300,26 +277,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <!--end: Form Wizard Step 4-->
-
-                                        {{--<!--begin: Form Actions -->--}}
-                                        {{--<div class="kt-form__actions">--}}
-                                        {{--<div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"--}}
-                                        {{--data-ktwizard-type="action-prev">--}}
-                                        {{--Previous--}}
-                                        {{--</div>--}}
-                                        {{--<div class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"--}}
-                                        {{--data-ktwizard-type="action-submit">--}}
-                                        {{--Submit--}}
-                                        {{--</div>--}}
-                                        {{--<div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u"--}}
-                                        {{--data-ktwizard-type="action-next">--}}
-                                        {{--Next Step--}}
-                                        {{--</div>--}}
-                                        {{--</div>--}}
-
-                                        <!--end: Form Actions -->
                                         </form>
 
                                         <!--end: Form Wizard Form-->
@@ -358,13 +315,13 @@
 
                                 var teamId = $('#teamId');
                                 teamId.empty();
-                                teamId.append("<option value='0'> Select Team Leader  </option>");
+                                teamId.append("<option value=''> Select Team Leader  </option>");
                                 $.each(data, function (index, element) {
                                     teamId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                                 });
                                 if (roleId == 4) {
                                     $('.hidden').show();
-                                }else{
+                                } else {
                                     $('.hidden').hide();
                                 }
                             }

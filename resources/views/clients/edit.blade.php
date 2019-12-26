@@ -2,8 +2,18 @@
 
 @section('content')
     @if(session()->has('message'))
-        <div class="alert alert-success">
+        <div class="alert alert-danger">
             {{ session()->get('message') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -163,6 +173,7 @@
 
                                         <select id="" name="property"
                                                 class="form-control col-lg-9 col-xl-9">
+                                            <option value=""> Select Property</option>
                                             <option value="residential" {{'residential' == $requestData['detail']['property'] ? 'selected' : '' }}> Residential
                                             </option>
                                             <option value="commercial" {{'commercial' == $requestData['detail']['property'] ? 'selected' : '' }}> Commercial</option>
@@ -188,6 +199,7 @@
                                             Property Utility</label>
                                         <select id="" name="propertyUtility"
                                                 class="form-control col-lg-9 col-xl-9">
+                                            <option value=""> Select Property Utility</option>
                                             <option value="personal" {{'personal' == $requestData['detail']['propertyUtility'] ? 'selected' : '' }}> personal use</option>
                                             <option value="investment" {{'investment' == $requestData['detail']['propertyUtility'] ? 'selected' : '' }}> investment</option>
                                         </select>
@@ -222,7 +234,8 @@
                                             Delivery Date</label>
                                         <select id="" name="deliveryDateId"
                                                 class="form-control col-lg-9 col-xl-9">
-                                            @foreach($dates as $date)
+                                            <option value=""> Select Delivery Date </option>
+                                        @foreach($dates as $date)
                                                 <option value="{{$date['id']}}" {{$date['id'] == $requestData['detail']['deliveryDateId'] ? 'selected' : '' }}>{{$date['name']}}</option>
                                             @endforeach
                                         </select>
@@ -233,7 +246,8 @@
                                             Project 1</label>
                                         <select id="projectId" name="convertProject1"
                                                 class="form-control col-lg-9 col-xl-9">
-                                            @foreach($projects as $project)
+                                            <option value=""> Select Project</option>
+                                        @foreach($projects as $project)
                                                 <option value="{{$project['id']}}" {{$project['id'] == $requestData['detail']['convertProject1'] ? 'selected' : '' }}>{{$project['name']}}</option>
                                             @endforeach
                                         </select>
@@ -245,7 +259,8 @@
 
                                         <select id="projectId" name="convertProject2"
                                                 class="form-control col-lg-9 col-xl-9">
-                                            @foreach($projects as $project)
+                                            <option value=""> Select Project</option>
+                                        @foreach($projects as $project)
                                                 <option value="{{$project['id']}}" {{$project['id'] == $requestData['detail']['convertProject2'] ? 'selected' : '' }}>{{$project['name']}}</option>
                                             @endforeach
                                         </select>

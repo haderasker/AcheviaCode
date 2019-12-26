@@ -36,10 +36,11 @@ class ImportClients implements ToModel
         $cols = $this->myData;
         $phone = $row[$cols['codeCol'] - 1] . $row[$cols['phoneCol'] - 1];
         $userExist = User::where('phone', $phone)->orWhere('email', $row[$cols['emailCol'] - 1])->first();
-
-        if ($userExist) {
+        $actionId = ClientDetail::where('userId', $userExist['id'])->first()['actionId'];
+        if ($userExist && $actionId != null) {
             $userExist->duplicated = $userExist->duplicated + 1;
-
+            return $userExist;
+        } elseif ($userExist && $actionId == null) {
             return $userExist;
         }
 
@@ -63,7 +64,10 @@ class ImportClients implements ToModel
 
         $user = User::create($userData);
         $userCreated = $user;
-
+        $assignToSaleManId = $cols['saleCol'];
+        if ($cols['saleCol'] == 0) {
+            $assignToSaleManId = null;
+        }
         $clientDetailsData = array(
             'userId' => $user->id,
             'typeClient' => 0,
@@ -73,7 +77,7 @@ class ImportClients implements ToModel
             'projectId' => $cols['projectCol'],
             'campaignId' => $cols['campaignCol'],
             'marketerId' => $cols['marketerCol'],
-            'assignToSaleManId' => $cols['saleCol'],
+            'assignToSaleManId' => $assignToSaleManId,
         );
         $state = '';
         if ($cols['saleCol'] != 0) {
@@ -87,7 +91,7 @@ class ImportClients implements ToModel
             event(new UserSalesUpdatedEvent($userCreated));
             $history = ClientHistory::create([
                 'userId' => $user->id,
-                'actionId' => 0,
+                'actionId' => null,
                 'summery' => $user->summery,
                 'viaMethodId' => $user->viaMethodId,
                 'createdBy' => Auth::user()->id,

@@ -47,9 +47,9 @@ class SendingController extends Controller
 
         $request->validate([
             'senderId' => 'required',
-            'sendingTypeId' =>'required',
+            'sendingTypeId' =>'required|not_in:0',
             'body' =>'required',
-            'type' =>'required',
+            'type' =>'required|not_in:0',
         ]);
 
         $model =$this->model;

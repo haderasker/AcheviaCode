@@ -61,7 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('project-delete/{id}', 'ProjectController@destroy');
         Route::get('api/dropdown/cities', 'ProjectController@dropDownCity');
         Route::get('project/get_data', 'ProjectController@getAllData');
-        Route::get('api/dropdown/teams', 'ProjectController@dropDownTeams');
+        Route::get('api/dropdown/project_teams', 'ProjectController@dropDownTeams');
         Route::get('project-custom', 'ProjectController@createCustom');
         Route::post('project-custom-store', 'ProjectController@storeCustom');
 

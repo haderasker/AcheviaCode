@@ -16,7 +16,7 @@ class CreateClientHistoryTable extends Migration
         Schema::create('client_history', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('userId');
-            $table->unsignedBigInteger('actionId');
+            $table->unsignedBigInteger('actionId')->nullable();
             $table->timestamps();
             $table->foreign('userId')->references('id')->on('users');
             $table->foreign('actionId')->references('id')->on('actions');

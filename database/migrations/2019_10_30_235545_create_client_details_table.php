@@ -42,7 +42,7 @@ class CreateClientDetailsTable extends Migration
             $table->string('addedClientFrom')->nullable();
             $table->string('addedClientPlatform')->nullable();
             $table->string('addedClientLink')->nullable();
-            $table->unsignedBigInteger('assignToSaleManId')->default(0);
+            $table->unsignedBigInteger('assignToSaleManId')->nullable();
             $table->time('assignedTime')->nullable();
             $table->date('assignedDate')->nullable();
             $table->time('notificationTime')->nullable();

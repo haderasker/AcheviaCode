@@ -78,12 +78,17 @@ class TeamController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:teams|max:255',
-            'teamLeaderId' => 'required',
+            'teamLeaderId' => 'required|not_in:0',
         ]);
+
+        $teamLeaderId = $request->teamLeaderId;
+        if($request->teamLeaderId == 0){
+            $teamLeaderId = null;
+        }
 
         $model =$this->model;
         $model->name = $request->name;
-        $model->teamLeaderId = $request->teamLeaderId;
+        $model->teamLeaderId = $teamLeaderId;
         $model->save();
 
         return redirect('/teams')->with('success','Stored successfully');

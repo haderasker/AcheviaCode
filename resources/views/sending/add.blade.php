@@ -8,16 +8,28 @@
 </style>
 <!--end::Page Custom Styles -->
 @section('content')
+    @if(session()->has('message'))
+        <div class="alert alert-danger">
+            {{ session()->get('message') }}
+        </div>
+    @endif
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="kt-grid kt-grid--hor kt-grid--root">
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
 
             <!-- begin:: Content -->
             <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
                 <div class="kt-wizard-v4" id="kt_user_add_user" data-ktwizard-state="step-first">
-                    <div class="alert alert-danger" style="display:none">
 
-                    </div>
 
                     <!--begin: Form Wizard Nav -->
                     <div class="kt-wizard-v4__nav">

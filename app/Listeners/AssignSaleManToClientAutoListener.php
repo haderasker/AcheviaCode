@@ -59,7 +59,7 @@ class AssignSaleManToClientAutoListener
                         User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
                         $history = ClientHistory::create([
                             'userId' => $client['userId'],
-                            'actionId' => 0,
+                            'actionId' => null,
                             'createdBy' => $user['createdBy'],
                             'state' => 'Re assigned',
                             'notes' => $client['notes'],

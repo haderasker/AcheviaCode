@@ -16,7 +16,7 @@ class UpdateUsersHistoryTable extends Migration
         Schema::table('client_history', function (Blueprint $table) {
             $table->unsignedBigInteger('viaMethodId')->nullable();
             $table->string('summery')->nullable();
-            $table->unsignedBigInteger('createdBy');
+            $table->unsignedBigInteger('createdBy')->nullable();
             $table->string('state')->nullable();
             $table->foreign('createdBy')->references('id')->on('users');
             $table->foreign('viaMethodId')->references('id')->on('via_methods');

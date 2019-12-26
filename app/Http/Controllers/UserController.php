@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientDetail;
 use App\Models\Role;
 use App\User;
 use Illuminate\Http\Request;
@@ -43,7 +44,6 @@ class UserController extends Controller
 
     public function getAllData()
     {
-
         $data = $this->model->with('role')->whereHas('role')->get()->toArray();
 
         $key = 0;
@@ -74,16 +74,21 @@ class UserController extends Controller
 //        $projectId = 2;
         $phone = $request->countryCode . ltrim($request->phone, '0');
         $userExist = $this->model->where('phone', $phone)->orWhere('email', $request->email)->first();
+        $actionId = ClientDetail::where('userId', $userExist['id'])->first()['actionId'];
 
 //        $projectIdExist = $userExist->with('detail')->whereHas('detail')->first()['detail']['projectId'];
 
 //        if ($userExist && $projectIdExist == $projectId ) {
 
-        if ($userExist) {
+        if ($userExist && $actionId != null) {
             $model = $this->model->find($userExist['id']);
             $countDuplicated = $userExist['duplicated'];
             $model->duplicated = $countDuplicated + 1;
             $user = $model->save();
+            return ['user' => $model, 'exist' => 'yes'];
+
+        } elseif ($userExist && $actionId == null) {
+            $model = $this->model->find($userExist['id']);
             return ['user' => $model, 'exist' => 'yes'];
 
         } else {
@@ -96,6 +101,10 @@ class UserController extends Controller
                 $imageName = time() . '.' . $request->image->extension();
                 $request->image->move(public_path('images'), $imageName);
             }
+            $teamId = $request->teamId;
+            if ($request->teamId == 0) {
+                $teamId = null;
+            }
             $userData = array(
                 'name' => $request->name,
                 'password' => $password,
@@ -105,7 +114,7 @@ class UserController extends Controller
                 'createdBy' => $request->createdBy,
                 'userName' => '',
                 'phone' => $phone,
-                'teamId' => $request->teamId,
+                'teamId' => $teamId,
                 'mangerId' => $request->mangerId,
                 'userStatus' => 1,
                 'saleManPunished' => $request->saleManPunished,
@@ -128,8 +137,11 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|unique:users|max:255',
             'phone' => 'required',
-            'roleId' => 'required',
             'createdBy' => 'required',
+            'roleId' => 'required|not_in:0',
+            'teamId' => 'required_if:roleId,4',
+        ], [
+            'teamId.required_if' => 'select team leader if you select user type salesman',
         ]);
 
         $created = $this->save($request);
@@ -188,8 +200,6 @@ class UserController extends Controller
             'userName' => 'required',
             'phone' => 'required',
             'roleId' => 'required',
-            'teamId' => 'required',
-            'mangerId' => 'required',
             'assign' => 'required',
             'saleManPunished' => 'required',
             'saleManAssignedToClient' => 'required',

@@ -9,6 +9,7 @@
 <!--end::Page Custom Styles -->
 @section('content')
 
+
     <div class="kt-grid kt-grid--hor kt-grid--root">
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
 
@@ -247,45 +248,6 @@
                                                                     </div>
                                                                 </div>
 
-                                                                {{--<div class="form-group row">--}}
-                                                                {{--<label class="col-xl-3 col-lg-3 col-form-label">Gender</label>--}}
-                                                                {{--<div class="kt-radio-inline">--}}
-                                                                {{--<label class="kt-radio">--}}
-                                                                {{--<input type="radio" value="0" name="gender">--}}
-                                                                {{--Male--}}
-                                                                {{--<span></span>--}}
-                                                                {{--</label>--}}
-                                                                {{--<label class="kt-radio">--}}
-                                                                {{--<input type="radio" value="1" name="gender">--}}
-                                                                {{--Female--}}
-                                                                {{--<span></span>--}}
-                                                                {{--</label>--}}
-                                                                {{--</div>--}}
-                                                                {{--</div>--}}
-                                                                {{--<div class="form-group row">--}}
-                                                                {{--<label class="col-xl-3 col-lg-3 col-form-label">Age--}}
-                                                                {{--Range</label>--}}
-                                                                {{--<div class="kt-radio-inline">--}}
-                                                                {{--<label class="kt-radio">--}}
-                                                                {{--<input type="radio" value="25-30"--}}
-                                                                {{--name="clientAgeRange">--}}
-                                                                {{--25 - 30--}}
-                                                                {{--<span></span>--}}
-                                                                {{--</label>--}}
-                                                                {{--<label class="kt-radio">--}}
-                                                                {{--<input type="radio" value="30-35"--}}
-                                                                {{--name="clientAgeRange">--}}
-                                                                {{--30 - 35--}}
-                                                                {{--<span></span>--}}
-                                                                {{--</label>--}}
-                                                                {{--<label class="kt-radio">--}}
-                                                                {{--<input type="radio" value="35-40"--}}
-                                                                {{--name="clientAgeRange">--}}
-                                                                {{--35 - 40--}}
-                                                                {{--<span></span>--}}
-                                                                {{--</label>--}}
-                                                                {{--</div>--}}
-                                                                {{--</div>--}}
 
                                                             </div>
                                                         </div>
@@ -301,17 +263,7 @@
                                             <div class="kt-heading kt-heading--md">Setup Your Interested</div>
                                             <div class="kt-form__section kt-form__section--first">
                                                 <div class="kt-wizard-v4__form">
-                                                    {{--<div class="form-group row">--}}
-                                                    {{--<label class="col-xl-3 col-lg-3 col-form-label">Project--}}
-                                                    {{--City</label>--}}
-                                                    {{--<select id="cityId" name="projectCity"--}}
-                                                    {{--class="form-control col-lg-9 col-xl-9">--}}
-                                                    {{--<option selected>Select City</option>--}}
-                                                    {{--@foreach($cities as $city)--}}
-                                                    {{--<option value="{{$city['id']}}">{{$city['name']}}</option>--}}
-                                                    {{--@endforeach--}}
-                                                    {{--</select>--}}
-                                                    {{--</div>--}}
+
                                                     <div class="form-group row">
                                                         <label class="col-xl-3 col-lg-3 col-form-label">Interest
                                                             Project</label>
@@ -330,7 +282,7 @@
                                                             Campaign</label>
                                                         <select id="campaignId" name="campaignId"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected value="0">Select Campaign</option>
+                                                            <option selected value="">Select Campaign</option>
                                                         </select>
                                                     </div>
 
@@ -339,7 +291,7 @@
                                                             Marketer</label>
                                                         <select id="marketerId" name="marketerId"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected value="0">Select Marketer</option>
+                                                            <option selected value="">Select Marketer</option>
                                                         </select>
                                                     </div>
 
@@ -364,7 +316,7 @@
                                                             Assigned To</label>
                                                         <select id="saleId" name="assignToSaleManId"
                                                                 class="form-control col-lg-9 col-xl-9">
-                                                            <option selected>Assigned To</option>
+                                                            <option selected value="0">Assigned To</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -456,7 +408,7 @@
                                                                         Delivery Date</label>
                                                                     <select id="date" name="deliveryDateId"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected value="0">Select Delivery Date
+                                                                        <option selected value="">Select Delivery Date
                                                                         </option>
                                                                         @foreach($dates as $date)
                                                                             <option value="{{$date['id']}}">{{$date['name']}}</option>
@@ -471,7 +423,7 @@
 
                                                                     <select id="projectId" name="convertProject1"
                                                                             class="projectOne form-control col-lg-9 col-xl-9">
-                                                                        <option selected value="0">Select Project</option>
+                                                                        <option selected value="">Select Project</option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
                                                                         @endforeach
@@ -485,7 +437,7 @@
 
                                                                     <select id="projectId" name="convertProject2"
                                                                             class="projectTwo form-control col-lg-9 col-xl-9">
-                                                                        <option selected value="0">Select Project</option>
+                                                                        <option selected value="">Select Project</option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
                                                                         @endforeach
@@ -625,7 +577,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value='0'> Select Marketer </option>");
+                        marketerId.append("<option value=''> Select Marketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });
@@ -647,7 +599,7 @@
                         var campaignId = $('#campaignId');
 
                         campaignId.empty();
-                        campaignId.append("<option value='0'> Select Campaign </option>");
+                        campaignId.append("<option value=''> Select Campaign </option>");
                         $.each(data.campaigns, function (index, element) {
                             campaignId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });

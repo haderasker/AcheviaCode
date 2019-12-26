@@ -171,7 +171,7 @@
 
             $('#projectId').change(function () {
                 $.get(
-                    "{{ url('api/dropdown/teams')}}",
+                    "{{ url('api/dropdown/project_teams')}}",
                     {
                         option: $(this).val()
                     },

@@ -26,7 +26,7 @@ class MigrateOldDataTransform
         $newUsers['user']['email'] = $user->in_email;
         $newUsers['user']['phone'] = $phone;
         $newUsers['user']['roleId'] = 5;
-        $newUsers['user']['createdBy'] = 0;
+        $newUsers['user']['createdBy'] = null;
         $newUsers['detail']['notes'] = $user->in_notes;
         $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
         $newUsers['detail']['addClientLinkId'] = $user->r_link;
@@ -37,7 +37,7 @@ class MigrateOldDataTransform
             $newUsers['history'][$key]['date'] = $one->rl_date;
             $newUsers['history'][$key]['viaMethodId'] = $one->rl_method;
             $newUsers['history'][$key]['notes'] = $one->rl_info;
-            $newUsers['history'][$key]['createdBy'] = 0;
+            $newUsers['history'][$key]['createdBy'] = null;
             if ($one->rl_action == 4) {
                 $state = 'Reassigned';
             } elseif ($one->rl_action == 3) {
@@ -103,7 +103,7 @@ class MigrateOldDataTransform
         $newUsers['email'] = $user->email;
         $newUsers['password'] = $user->password;
         $newUsers['roleId'] = $user->role;
-        $newUsers['createdBy'] = 0;
+        $newUsers['createdBy'] = null;
 
         return $newUsers;
     }
@@ -133,7 +133,7 @@ class MigrateOldDataTransform
             case 13:
             case 14:
             case 17:
-                $idParent = 0;
+                $idParent = null;
                 break;
             case 15:
             case 16:

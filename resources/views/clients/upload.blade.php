@@ -104,13 +104,13 @@
                         <div class="col-lg-2 col-xl-2">
                             <select id="campaignId" name="campaignCol"
                                     class="form-control">
-                                <option selected value="0">Select Campaign</option>
+                                <option selected value="">Select Campaign</option>
                             </select>
                         </div>
                         <div class="col-lg-2 col-xl-2">
                             <select id="marketerId" name="marketerCol"
                                     class="form-control">
-                                <option selected value="0">Select Marketer</option>
+                                <option selected value="">Select Marketer</option>
                             </select>
                         </div>
                         <div class="col-lg-2 col-xl-2">
@@ -158,23 +158,6 @@
     <script>
         jQuery(document).ready(function (e) {
 
-            {{--$('#cityId').change(function () {--}}
-            {{--$.get(--}}
-            {{--"{{ url('api/dropdown')}}",--}}
-            {{--{--}}
-            {{--option: $(this).val()--}}
-            {{--},--}}
-            {{--function (data) {--}}
-            {{--var projectId = $('#projectId');--}}
-            {{--projectId.empty();--}}
-            {{--projectId.append("<option value=''> Select Project </option>");--}}
-            {{--$.each(data, function (index, element) {--}}
-            {{--projectId.append("<option value='" + element.id + "'>" + element.name + "</option>");--}}
-            {{--});--}}
-            {{--}--}}
-            {{--);--}}
-            {{--});--}}
-
             $('#campaignId').change(function () {
                 $.get(
                     "{{ url('api/dropdown/marketer')}}",
@@ -184,7 +167,7 @@
                     function (data) {
                         var marketerId = $('#marketerId');
                         marketerId.empty();
-                        marketerId.append("<option value='0'> Select CampaignMarketer </option>");
+                        marketerId.append("<option value=''> Select Marketer </option>");
                         $.each(data, function (index, element) {
                             marketerId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });
@@ -206,7 +189,7 @@
                         var campaignId = $('#campaignId');
 
                         campaignId.empty();
-                        campaignId.append("<option value='0'> Select Campaign </option>");
+                        campaignId.append("<option value=''> Select Campaign </option>");
                         $.each(data.campaigns, function (index, element) {
                             campaignId.append("<option value='" + element.id + "'>" + element.name + "</option>");
                         });
