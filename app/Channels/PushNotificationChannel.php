@@ -48,7 +48,7 @@ class PushNotificationChannel
             'json' => $message
         ]);
 
-        dd($response->getStatusCode());
+        dd($response->getBody()->getContents());
 
     }
 }
