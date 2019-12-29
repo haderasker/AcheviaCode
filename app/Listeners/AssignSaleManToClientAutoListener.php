@@ -66,8 +66,8 @@ class AssignSaleManToClientAutoListener
                         ]);
 
                         $sale = $saleMan->first();
-//                        event(new UserSalesUpdatedEvent($user));
                         event(new PushNotificationEvent($sale, $user));
+                        event(new UserSalesUpdatedEvent($user));
                         return;
                     }
                 }

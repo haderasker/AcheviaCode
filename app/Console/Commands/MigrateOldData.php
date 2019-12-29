@@ -86,7 +86,6 @@ class MigrateOldData extends Command
         //clients
         // select from old data base
         $model = DB::connection('old_data')->table('requests');
-
         $old_data = $model->select(['in_code', 'r_mobile', 'in_email', 'r_name', 'in_notes', 'r_assigned', 'r_state', 'r_link', 'r_id'])->get();
         foreach ($old_data as $user) {
             // transform to new shape
@@ -95,10 +94,10 @@ class MigrateOldData extends Command
                 $this->error('user exist with email is : ' . $transformedData['user']->email . 'and phone is:' . $transformedData['user']->phone);
             } else {
                 // insert into data base
-                $user = DB::connection('mysql')->table('users');
+                $newUser = DB::connection('mysql')->table('users');
                 $client = DB::connection('mysql')->table('client_details');
                 $history = DB::connection('mysql')->table('client_history');
-                $userCreatedId = $user->insertGetId($transformedData['user']);
+                $userCreatedId = $newUser->insertGetId($transformedData['user']);
                 $transformedData['detail']['userId'] = $userCreatedId;
                 $client->insert($transformedData['detail']);
 

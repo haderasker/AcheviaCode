@@ -16,6 +16,7 @@ class MigrateOldDataTransform
     public function userTransform($user)
     {
         $model = DB::connection('mysql')->table('users');
+        $modelOld = DB::connection('old_data')->table('requests');
         $code = $user->in_code;
         $phoney = $user->r_mobile;
 
@@ -71,7 +72,7 @@ class MigrateOldDataTransform
             $logs = DB::connection('old_data')->table('request_log');
             $history = $logs->where('rl_r_id', $user->r_id)->get()->toArray();
             $newUsers = [];
-            $email = Str::random(10) . '@gmail.com';
+            $email =  time() . Str::random(10) . '@gmail.com';
             if ($user->in_email) {
                 $email = $user->in_email;
             }
@@ -92,6 +93,7 @@ class MigrateOldDataTransform
             foreach ($history as $key => $one) {
                 $newUsers['history'][$key]['actionId'] = $this->replaceAction($one->rl_type);
                 $newUsers['history'][$key]['date'] = $one->rl_date;
+                $newUsers['history'][$key]['created_at'] = $one->rl_date;
                 $newUsers['history'][$key]['viaMethodId'] = $one->rl_method;
                 $newUsers['history'][$key]['notes'] = $one->rl_info;
                 $newUsers['history'][$key]['createdBy'] = null;
@@ -104,7 +106,8 @@ class MigrateOldDataTransform
                 $newUsers['history'][$key]['state'] = $state;
             }
 
-
+//            $modelOld->where('r_id',$user->r_id)->get();
+//            $modelOld->delete();
 
             return $newUsers;
         }
