@@ -42,8 +42,7 @@ class PushNotification extends Notification
     {
         $sale = $notifiable->user;
         $client = $notifiable->client;
-//        $deviceId = $sale['device_id' ?? ''];
-        $deviceId = 'heloo';
+        $deviceId = $sale['device_id' ?? ''];
 
         return $body = [
             'to' => $deviceId,

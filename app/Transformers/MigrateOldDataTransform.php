@@ -88,7 +88,7 @@ class MigrateOldDataTransform
             $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
             $newUsers['detail']['addClientLinkId'] = $user->r_link;
             $newUsers['detail']['projectId'] = $project->l_project;
-
+            $newUsers['detail']['actionId'] = $this->replaceAction($user->r_state);
             foreach ($history as $key => $one) {
                 $newUsers['history'][$key]['actionId'] = $this->replaceAction($one->rl_type);
                 $newUsers['history'][$key]['date'] = $one->rl_date;
@@ -104,7 +104,6 @@ class MigrateOldDataTransform
                 $newUsers['history'][$key]['state'] = $state;
             }
 
-            $newUsers['detail']['actionId'] = $this->replaceAction($user->r_state);
             return $newUsers;
         }
     }

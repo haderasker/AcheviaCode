@@ -101,13 +101,12 @@ class MigrateOldData extends Command
                 $userCreatedId = $user->insertGetId($transformedData['user']);
                 $transformedData['detail']['userId'] = $userCreatedId;
                 $client->insert($transformedData['detail']);
-                
-                if (in_array($transformedData, ['history'])) {
-                    foreach ($transformedData['history'] as $one) {
-                        $one['userId'] = $userCreatedId;
-                        $history->insert($one);
-                    }
+
+                foreach ($transformedData['history'] as $one) {
+                    $one['userId'] = $userCreatedId;
+                    $history->insert($one);
                 }
+
                 $this->info('user with id: ' . $userCreatedId . ' has been saved');
             }
         }

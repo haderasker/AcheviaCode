@@ -43,9 +43,12 @@ class PushNotificationChannel
 
         $message = $notification->toPushNotification($notifiable);
 
-        $this->apiRequest->post(env('FCM_BASE_URL'), [
+        $response = $this->apiRequest->post(env('FCM_BASE_URL'), [
             'headers' => $headers,
             'json' => $message
         ]);
+
+        dd($response->getStatusCode());
+
     }
 }
