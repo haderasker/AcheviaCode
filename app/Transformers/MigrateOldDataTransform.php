@@ -63,7 +63,7 @@ class MigrateOldDataTransform
         $userExist = $model->where('phone', $phone)->orWhere('email', $user->in_email)->first();
 
         if ($userExist) {
-            return 'existed';
+            return ['user' => $userExist, 'status' => 'existed'] ;
 
         } else {
             $link = DB::connection('old_data')->table('Links');
@@ -103,6 +103,8 @@ class MigrateOldDataTransform
 
                 $newUsers['history'][$key]['state'] = $state;
             }
+
+
 
             return $newUsers;
         }

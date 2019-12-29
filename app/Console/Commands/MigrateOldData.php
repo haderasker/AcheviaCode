@@ -91,8 +91,8 @@ class MigrateOldData extends Command
         foreach ($old_data as $user) {
             // transform to new shape
             $transformedData = $this->migrate->userTransform($user);
-            if ($transformedData == 'existed') {
-                $this->error('user exist');
+            if (isset($transformedData['status']) && $transformedData['status'] == 'existed') {
+                $this->error('user exist with email is : ' . $transformedData['user']->email . 'and phone is:' . $transformedData['user']->phone);
             } else {
                 // insert into data base
                 $user = DB::connection('mysql')->table('users');
@@ -102,9 +102,11 @@ class MigrateOldData extends Command
                 $transformedData['detail']['userId'] = $userCreatedId;
                 $client->insert($transformedData['detail']);
 
-                foreach ($transformedData['history'] as $one) {
-                    $one['userId'] = $userCreatedId;
-                    $history->insert($one);
+                if (isset($transformedData['history'])) {
+                    foreach ($transformedData['history'] as $one) {
+                        $one['userId'] = $userCreatedId;
+                        $history->insert($one);
+                    }
                 }
 
                 $this->info('user with id: ' . $userCreatedId . ' has been saved');
