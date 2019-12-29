@@ -44,11 +44,11 @@ class PushNotification extends Notification
         $client = $notifiable->client;
         $deviceId = $sale['device_id'] ?? '';
 
-        return $body = [
-            'registration_ids' => [$deviceId],
-            "data" => [
-                "title" => 'Assigned To Client',
-                "message" => 'You Assigned To Client: ' .
+        return [
+            'to' => $deviceId,
+            'notification' => [
+                'title' => 'Assigned To Client',
+                'body' => 'You Assigned To Client: ' .
                     $client['name'] . 'Client Information : Phone Is ' . $client['phone'] . 'And Email Is ' . $client['email'],
             ]
         ];
