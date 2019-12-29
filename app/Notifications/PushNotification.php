@@ -45,11 +45,10 @@ class PushNotification extends Notification
         $deviceId = $sale['device_id'] ?? '';
 
         return [
-            'to' => $deviceId,
+            'to' => [$deviceId],
             'notification' => [
-                'title' => 'Assigned To Client',
-                'body' => 'You Assigned To Client: ' .
-                    $client['name'] . 'Client Information : Phone Is ' . $client['phone'] . 'And Email Is ' . $client['email'],
+                'title' => 'New Assignation',
+                'body' => 'You Assigned To Client: ' . $client['name'] ,
             ]
         ];
 
