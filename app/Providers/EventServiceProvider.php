@@ -2,16 +2,17 @@
 
 namespace App\Providers;
 
+use App\Events\ClientDetailCreatedEvent;
 use App\Events\UserCreatedEvent;
 use App\Events\UserSalesUpdatedEvent;
-use App\Listeners\UserCreatedSMSListener;
 use App\Listeners\AssignSaleManToClientAutoListener;
+use App\Listeners\UserCreatedSMSListener;
 use App\Listeners\UserSalesUpdatedSMSListener;
+use App\Listeners\PushNotificationListener;
+use App\Events\PushNotificationEvent;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
-use App\Events\ClientDetailCreatedEvent;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -37,6 +38,10 @@ class EventServiceProvider extends ServiceProvider
 
         UserSalesUpdatedEvent::class => [
             UserSalesUpdatedSMSListener::class,
+        ],
+
+        PushNotificationEvent::class => [
+            PushNotificationListener::class,
         ],
     ];
 

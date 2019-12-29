@@ -36,16 +36,22 @@ class ClientActionController extends Controller
         return View('client_action.all_clients', compact('actionId', 'sales'));
     }
 
-    public function getAllData()
+    public function getAllData(Request $request)
     {
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
+
         $userId = Auth::user()->id;
 
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $this->model->with('detail')->whereHas('detail')->get()->toArray();
+            $data = $this->model->with('detail')->whereHas('detail')
+                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         } elseif (Auth::user()->role->name == 'sale Man') {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($userId) {
                 $q->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId);
-            })->get()->toArray();
+            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);;
         }
         $key = 0;
         foreach ($data as $one) {
@@ -57,17 +63,17 @@ class ClientActionController extends Controller
         }
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;
@@ -88,12 +94,17 @@ class ClientActionController extends Controller
     /**
      * view  index newClients
      */
-    public function getNewRequestsData()
+    public function getNewRequestsData(Request $request)
     {
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
+
         if ((Auth::user()->role->name == 'admin')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) {
                 $q->where('actionId', null)->where('assignToSaleManId', '=', 0);
-            })->get()->toArray();
+            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
 
             $key = 0;
             foreach ($data as $one) {
@@ -105,17 +116,17 @@ class ClientActionController extends Controller
             }
 
             $meta = [
-                "page" => 1,
-                "pages" => 1,
-                "perpage" => -1,
-                "total" => 40,
+                "page" => $data->currentPage(),
+                "pages" => intval($data->total() / $data->perPage()),
+                "perpage" => $data->perPage(),
+                "total" => $data->total(),
                 "sort" => "asc",
                 "field" => "id",
             ];
 
             $requestData = [
                 'meta' => $meta,
-                'data' => $data,
+                'data' => $data->items(),
             ];
 
             return $requestData;
@@ -160,8 +171,12 @@ class ClientActionController extends Controller
     /**
      * view  index get data
      */
-    public function getData($id)
+    public function getData($id, Request $request)
     {
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
         $userId = Auth::user()->id;
 
         if ($id == 0) {
@@ -171,12 +186,14 @@ class ClientActionController extends Controller
         if ((Auth::user()->role->name == 'admin')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id) {
                 $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('transferred', '=', 0);
-            })->where('duplicated', '=', 1)->get()->toArray();
+            })->where('duplicated', '=', 1)
+                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
 
         } elseif ((Auth::user()->role->name == 'sale Man')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($id, $userId) {
                 $q->where('actionId', $id)->where('assignToSaleManId', '!=', 0)->where('assignToSaleManId', $userId)->where('transferred', '=', 0);
-            })->where('duplicated', '=', 1)->get()->toArray();
+            })->where('duplicated', '=', 1)
+                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         }
 
         $key = 0;
@@ -189,17 +206,17 @@ class ClientActionController extends Controller
         }
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
             "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;
@@ -219,16 +236,21 @@ class ClientActionController extends Controller
         return View('client_action.duplicated', compact('actionId', 'sales', 'actions', 'methods'));
     }
 
-    public function getDuplicatedData()
+    public function getDuplicatedData(Request $request)
     {
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
         $userId = Auth::user()->id;
 
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail')->get()->toArray();
+            $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail')
+                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         } elseif ((Auth::user()->role->name == 'sale Man')) {
             $data = $this->model->where('duplicated', '>', 1)->with('detail')->whereHas('detail', function ($q) use ($userId) {
                 $q->where('assignToSaleManId', $userId);
-            })->get()->toArray();
+            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         }
         $key = 0;
         foreach ($data as $one) {
@@ -240,17 +262,17 @@ class ClientActionController extends Controller
         }
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;
@@ -269,18 +291,22 @@ class ClientActionController extends Controller
         return View('client_action.transfered', compact('actionId', 'sales', 'actions', 'methods'));
     }
 
-    public function getTransferedData()
+    public function getTransferedData(Request $request)
     {
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
         $userId = Auth::user()->id;
 
         if ((Auth::user()->role->name == 'admin')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) {
                 $q->where('transferred', 1);
-            })->get()->toArray();
+            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         } elseif ((Auth::user()->role->name == 'sale Man')) {
             $data = $this->model->with('detail')->whereHas('detail', function ($q) use ($userId) {
                 $q->where('transferred', 1)->where('assignToSaleManId', $userId);
-            })->get()->toArray();
+            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         }
         $key = 0;
         foreach ($data as $one) {
@@ -291,17 +317,17 @@ class ClientActionController extends Controller
             $key = $key + 1;
         }
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;
@@ -316,9 +342,15 @@ class ClientActionController extends Controller
         return View('client_action.history_client', compact('userId'));
     }
 
-    public function getHistory($id)
+    public function getHistory($id, Request $request)
     {
-        $user = $this->model->where('id', $id)->with('history')->whereHas('history')->first()->toArray();
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
+
+        $user = $this->model->where('id', $id)->with('history')->whereHas('history')
+            ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         $data = $user['history'];
         $key = 0;
         foreach ($data as $one) {
@@ -331,17 +363,17 @@ class ClientActionController extends Controller
 
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
             "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
 

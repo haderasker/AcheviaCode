@@ -36,7 +36,7 @@ class SendingController extends Controller
     public function create()
     {
         $sendingTypes = SendingTypes::all();
-        return View('sending.add',compact('sendingTypes'));
+        return View('sending.add', compact('sendingTypes'));
     }
 
     /**
@@ -47,12 +47,12 @@ class SendingController extends Controller
 
         $request->validate([
             'senderId' => 'required',
-            'sendingTypeId' =>'required|not_in:0',
-            'body' =>'required',
-            'type' =>'required|not_in:0',
+            'sendingTypeId' => 'required|not_in:0',
+            'body' => 'required',
+            'type' => 'required|not_in:0',
         ]);
 
-        $model =$this->model;
+        $model = $this->model;
         $model->senderId = $request->senderId;
         $model->sendingTypeId = $request->sendingTypeId;
         $model->body = $request->body;
@@ -60,7 +60,7 @@ class SendingController extends Controller
         $model->active = 1;
         $model->save();
 
-        return redirect('/sending')->with('success','Stored successfully');
+        return redirect('/sending')->with('success', 'Stored successfully');
     }
 
     /**
@@ -81,9 +81,9 @@ class SendingController extends Controller
     {
         $request->validate([
             'senderId' => 'required',
-            'sendingTypeId' =>'required',
-            'body' =>'required',
-            'type' =>'required',
+            'sendingTypeId' => 'required',
+            'body' => 'required',
+            'type' => 'required',
         ]);
 
         $model = $this->model->find($request->id);
@@ -94,25 +94,32 @@ class SendingController extends Controller
         $model->active = 1;
         $model->save();
 
-        return redirect('/sending')->with('success','Updated successfully');
+        return redirect('/sending')->with('success', 'Updated successfully');
     }
 
-    public function getAllData(){
+    public function getAllData(Request $request)
+    {
+        $paginationOptions = $request->input('pagination');
+        if($paginationOptions['perpage'] == -1){
+            $paginationOptions['perpage'] = 0;
+        }
 
-        $data = $this->model->all()->toArray();
+        $data = $this->model
+            ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;

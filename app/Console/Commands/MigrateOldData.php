@@ -6,6 +6,7 @@ use App\Transformers\MigrateOldDataTransform;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
+
 class MigrateOldData extends Command
 {
     /**
@@ -42,29 +43,6 @@ class MigrateOldData extends Command
      */
     public function handle()
     {
-        //clients
-        // select from old data base
-        $model = DB::connection('old_data')->table('requests');
-
-        $old_data = $model->select(['in_code', 'r_mobile', 'in_email', 'r_name', 'in_notes', 'r_assigned', 'r_state', 'r_link', 'r_id'])->get();
-        foreach ($old_data as $user) {
-            // transform to new shape
-            $transformedData = $this->migrate->userTransform($user);
-
-            // insert into data base
-            $user = DB::connection('mysql')->table('users');
-            $client = DB::connection('mysql')->table('client_details');
-            $history = DB::connection('mysql')->table('client_history');
-            $userCreatedId = $user->insertGetId($transformedData['user']);
-            $transformedData['detail']['userId'] = $userCreatedId;
-            $client->insert($transformedData['detail']);
-            foreach ($transformedData['history'] as $one) {
-                $one['userId'] = $userCreatedId;
-                $history->insert($one);
-            }
-            $this->info('users has been saved');
-        }
-
         //users
         // select from old data base
         $modelUsers = DB::connection('old_data')->table('users');
@@ -75,7 +53,8 @@ class MigrateOldData extends Command
             // insert into data base
             $user = DB::connection('mysql')->table('users');
             $userCreated = $user->insert($transformedDataUser);
-            $this->info('users has been saved');
+            $this->info('user has been saved');
+
         }
 
 //        //projects
@@ -94,7 +73,7 @@ class MigrateOldData extends Command
 //        //projects links
         // select from old data base
         $modelLink = DB::connection('old_data')->table('Links');
-        $old_data_links = $modelLink->select(['l_id', 'l_link', 'l_platform', 'l_project' ,'l_alias','l_r_no'])->get();
+        $old_data_links = $modelLink->select(['l_id', 'l_link', 'l_platform', 'l_project', 'l_alias', 'l_r_no'])->get();
         foreach ($old_data_links as $link) {
             // transform to new shape
             $transformedDataLinkr = ($this->migrate->linkTransform($link));
@@ -102,6 +81,35 @@ class MigrateOldData extends Command
             $link = DB::connection('mysql')->table('project_links');
             $Created = $link->insert($transformedDataLinkr);
             $this->info('link has been saved');
+        }
+
+        //clients
+        // select from old data base
+        $model = DB::connection('old_data')->table('requests');
+
+        $old_data = $model->select(['in_code', 'r_mobile', 'in_email', 'r_name', 'in_notes', 'r_assigned', 'r_state', 'r_link', 'r_id'])->get();
+        foreach ($old_data as $user) {
+            // transform to new shape
+            $transformedData = $this->migrate->userTransform($user);
+            if ($transformedData == 'existed') {
+                $this->error('user exist');
+            } else {
+                // insert into data base
+                $user = DB::connection('mysql')->table('users');
+                $client = DB::connection('mysql')->table('client_details');
+                $history = DB::connection('mysql')->table('client_history');
+                $userCreatedId = $user->insertGetId($transformedData['user']);
+                $transformedData['detail']['userId'] = $userCreatedId;
+                $client->insert($transformedData['detail']);
+                
+                if (in_array($transformedData, ['history'])) {
+                    foreach ($transformedData['history'] as $one) {
+                        $one['userId'] = $userCreatedId;
+                        $history->insert($one);
+                    }
+                }
+                $this->info('user with id: ' . $userCreatedId . ' has been saved');
+            }
         }
 
     }

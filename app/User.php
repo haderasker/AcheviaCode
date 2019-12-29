@@ -63,7 +63,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->hasOne('App\Models\Role','id', 'roleId');
+        return $this->belongsTo('App\Models\Role', 'roleId');
     }
 
     public function detail()
@@ -83,8 +83,15 @@ class User extends Authenticatable
 
     public function team()
     {
-        return $this->belongsTo('App\Models\Team', 'teamId');
+        return $this->hasMany('App\Models\Team','teamLeaderId');
     }
+
+
+    public function sales()
+    {
+        return $this->hasMany('App\User','teamId');
+    }
+
 
     public function campaign()
     {

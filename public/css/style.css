@@ -1,3 +1,7 @@
 a.whats:hover {
     background-color:#1ebea5 !important;
 }
+
+.alert {
+    display: block !important;
+}

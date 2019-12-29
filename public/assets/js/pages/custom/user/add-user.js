@@ -26,44 +26,50 @@ var KTUserAdd = function () {
 
         // Change event
         wizard.on('change', function (wizard) {
+
             var name = $('#name').val();
             var phone = $('#phone').val();
             var email = $('#email').val();
+            var project = $('#projectId').children("option:selected").html();
+            var platform = $('#platform').children("option:selected").html();
+
+
             var title = $('#title').val();
             var note = $('#note').val();
             var campaign = $('#campaignId').children("option:selected").html();
+            var campaignVal = $('#campaignId').children("option:selected").val();
             var marketer = $('#marketerId').children("option:selected").html();
-            var platform = $('#platform').children("option:selected").html();
+            var marketerVal = $('#marketerId').children("option:selected").val();
             var sale = $('#saleId').children("option:selected").html();
-            var project = $('#projectId').children("option:selected").html();
+            var saleVal = $('#saleId').children("option:selected").val();
             var projectOne = $('.projectOne').children("option:selected").html();
+            var projectOneVal = $('.projectOne').children("option:selected").val();
             var projectTwo = $('.projectTwo').children("option:selected").html();
-
+            var projectTwoVal = $('.projectTwo').children("option:selected").val();
             var interest = $('#projectId').children("option:selected").val();
             var property = $('#property').children("option:selected").html();
+            var propertyVal = $('#property').children("option:selected").val();
             var propertyUtility = $('#propertyUtility').children("option:selected").html();
+            var propertyUtilityVal = $('#propertyUtility').children("option:selected").val();
             var propertyLocation = $('#propertyLocation').val();
             var date = $('#date').children("option:selected").html();
+            var dateVal = $('#date').children("option:selected").val();
             var from = $('#from').val();
             var to = $('#to').val();
             var budget = $('#budget').val();
             var area = from + ' - ' + to;
 
-
             $('#myName').text(name);
             $('#myPhone').text(phone);
             $('#myEmail').text(email);
+            $('#myProject').text(project);
+            $('#myPlatform').text(platform);
             $('#myTitle').text(title);
             $('#myNote').text(note);
-
             $('#myCampaign').text(campaign);
             $('#myMarketer').text(marketer);
             $('#mySale').text(sale);
-            $('#myProject').text(project);
             $('#interest').val(interest);
-            $('#myPlatform').text(platform);
-
-
             $('#myProperty').text(property);
             $('#myPropertyLocation').text(propertyLocation);
             $('#myPropertyUtility').text(propertyUtility);
@@ -72,6 +78,100 @@ var KTUserAdd = function () {
             $('#myDate').text(date);
             $('#myProjectOne').text(projectOne);
             $('#myProjectTwo').text(projectTwo);
+
+            if (title !== '') {
+                $('#myTitle').parent().removeClass('hidden');
+                $('#myTitle').parent().show();
+            } else {
+                $('#myTitle').parent().addClass('hidden');
+                $('#myTitle').parent('.hidden').hide();
+            }
+            if (note !== '') {
+                $('#myNote').parent().removeClass('hidden');
+                $('#myNote').parent().show()
+            } else {
+                $('#myNote').parent().addClass('hidden');
+                $('#myNote').parent('.hidden').hide();
+            }
+            if (campaignVal == '') {
+                $('#myCampaign').parent().addClass('hidden');
+                $('#myCampaign').parent('.hidden').hide();
+            } else {
+                $('#myCampaign').parent().removeClass('hidden');
+                $('#myCampaign').parent().show();
+            }
+            if (marketerVal == '') {
+                $('#myMarketer').parent().addClass('hidden');
+                $('#myMarketer').parent('.hidden').hide();
+            } else {
+                $('#myMarketer').parent().removeClass('hidden');
+                $('#myMarketer').parent().show();
+            }
+
+            if (saleVal == '0') {
+                $('#mySale').parent().addClass('hidden');
+                $('#mySale').parent('.hidden').hide();
+            } else {
+                $('#mySale').parent().removeClass('hidden');
+                $('#mySale').parent().show();
+            }
+            if (projectOneVal == '') {
+                $('#myProjectOne').parent().addClass('hidden');
+                $('#myProjectOne').parent('.hidden').hide();
+            } else {
+                $('#myProjectOne').parent().removeClass('hidden');
+                $('#myProjectOne').parent().show();
+            }
+            if (projectTwoVal == '') {
+                $('#myProjectTwo').parent().addClass('hidden');
+                $('#myProjectTwo').parent('.hidden').hide();
+            } else {
+                $('#myProjectTwo').parent().removeClass('hidden');
+                $('#myProjectTwo').parent().show();
+            }
+            if (propertyVal == '') {
+                $('#myProperty').parent().addClass('hidden');
+                $('#myProperty').parent('.hidden').hide();
+            } else {
+                $('#myProperty').parent().removeClass('hidden');
+                $('#myProperty').parent().show();
+            }
+            if (propertyUtilityVal == '') {
+                $('#myPropertyUtility').parent().addClass('hidden');
+                $('#myPropertyUtility').parent('.hidden').hide();
+            } else {
+                $('#myPropertyUtility').parent().removeClass('hidden');
+                $('#myPropertyUtility').parent().show();
+            }
+            if (dateVal == '') {
+                $('#myDate').parent().addClass('hidden');
+                $('#myDate').parent('.hidden').hide();
+            } else {
+                $('#myDate').parent().removeClass('hidden');
+                $('#myDate').parent().show();
+            }
+            if (budget == '') {
+                $('#myBudget').parent().addClass('hidden');
+                $('#myBudget').parent('.hidden').hide();
+            } else {
+                $('#myBudget').parent().removeClass('hidden');
+                $('#myBudget').parent().show();
+            }
+            if (propertyLocation == '') {
+                $('#myPropertyLocation').parent().addClass('hidden');
+                $('#myPropertyLocation').parent('.hidden').hide();
+            } else {
+                $('#myPropertyLocation').parent().removeClass('hidden');
+                $('#myPropertyLocation').parent().show();
+            }
+            if (from == '' && to == '') {
+                $('#myArea').parent().addClass('hidden');
+                $('#myArea').parent('.hidden').hide();
+            } else {
+                $('#myArea').parent().removeClass('hidden');
+                $('#myArea').parent().show();
+            }
+
 
             KTUtil.scrollTop();
 

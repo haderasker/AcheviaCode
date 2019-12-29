@@ -9,51 +9,109 @@
 namespace App\Transformers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class MigrateOldDataTransform
 {
     public function userTransform($user)
     {
-        $link = DB::connection('old_data')->table('Links');
-        $project = $link->where('l_id', $user->r_link)->first();
-        $logs = DB::connection('old_data')->table('request_log');
-        $history = $logs->where('rl_r_id', $user->r_id)->get()->toArray();
-        $newUsers = [];
+        $model = DB::connection('mysql')->table('users');
         $code = $user->in_code;
-        $countryCode = str_replace('+', '', strstr($code, '+'));
-        $phone = $countryCode . ltrim($user->r_mobile, '0');
-        $newUsers['user']['name'] = $user->r_name;
-        $newUsers['user']['email'] = $user->in_email;
-        $newUsers['user']['phone'] = $phone;
-        $newUsers['user']['roleId'] = 5;
-        $newUsers['user']['createdBy'] = null;
-        $newUsers['detail']['notes'] = $user->in_notes;
-        $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
-        $newUsers['detail']['addClientLinkId'] = $user->r_link;
-        $newUsers['detail']['projectId'] = $project->l_project;
+        $phoney = $user->r_mobile;
 
-        foreach ($history as $key => $one) {
-            $newUsers['history'][$key]['actionId'] = $this->replaceAction($one->rl_type);
-            $newUsers['history'][$key]['date'] = $one->rl_date;
-            $newUsers['history'][$key]['viaMethodId'] = $one->rl_method;
-            $newUsers['history'][$key]['notes'] = $one->rl_info;
-            $newUsers['history'][$key]['createdBy'] = null;
-            if ($one->rl_action == 4) {
-                $state = 'Reassigned';
-            } elseif ($one->rl_action == 3) {
-                $state = 'Change State';
-            }
+        $countryCode = '20';
+        if ($code) {
+            $countryCode = str_replace('+', '', strstr($code, '+'));
+        }
+        $convertMob = strtr($phoney, array('i' => '1', 'o' => '0', ' ' => '', '٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4', '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9'));
+        preg_match_all('!\d+!', $convertMob, $matches);
+        $convertMob = implode('', $matches[0]);
+        $firstChar = substr($convertMob, 0, 1);
+        $firstTwoChar = substr($convertMob, 0, 2);
+        $firstThirdChar = substr($convertMob, 0, 3);
+        $firstFourChar = substr($convertMob, 0, 4);
+        $phone = $countryCode . $convertMob;
 
-            $newUsers['history'][$key]['state'] = $state;
+
+        if ($firstTwoChar == '10') {
+            $phone = $countryCode . str_replace('10', '', $convertMob);
+        }
+        if ($firstThirdChar == '200') {
+            $phone = $countryCode . str_replace('200', '', $convertMob);
+        }
+        if ($firstTwoChar != '20' || $firstTwoChar != '96' || $firstTwoChar != '97') {
+            $phone = $countryCode . $convertMob;
+        }
+        if ($firstTwoChar == '20' || $firstTwoChar == '96' || $firstTwoChar == '97') {
+            $phone = $convertMob;
+        }
+        if ($firstFourChar == '2020') {
+            $phone = $countryCode . str_replace('2020', '', $convertMob);
         }
 
-        $newUsers['detail']['actionId'] = $this->replaceAction($user->r_state);
-        return $newUsers;
+
+        if ($firstChar == '1') {
+            $phone = $countryCode . $convertMob;
+        }
+        if ($firstChar == '0') {
+            $phone = $countryCode . ltrim($convertMob, '0');
+        }
+        if ($firstTwoChar == '00') {
+            $phone = str_replace('00', '', $convertMob);
+        }
+
+        $userExist = $model->where('phone', $phone)->orWhere('email', $user->in_email)->first();
+
+        if ($userExist) {
+            return 'existed';
+
+        } else {
+            $link = DB::connection('old_data')->table('Links');
+            $project = $link->where('l_id', $user->r_link)->first();
+            $logs = DB::connection('old_data')->table('request_log');
+            $history = $logs->where('rl_r_id', $user->r_id)->get()->toArray();
+            $newUsers = [];
+            $email = Str::random(10) . '@gmail.com';
+            if ($user->in_email) {
+                $email = $user->in_email;
+            }
+            $name = 'empty';
+            if ($user->r_name) {
+                $name = $user->r_name;
+            }
+            $newUsers['user']['name'] = $name;
+            $newUsers['user']['email'] = $email;
+            $newUsers['user']['phone'] = $phone;
+            $newUsers['user']['roleId'] = 5;
+            $newUsers['user']['createdBy'] = null;
+            $newUsers['detail']['notes'] = $user->in_notes;
+            $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
+            $newUsers['detail']['addClientLinkId'] = $user->r_link;
+            $newUsers['detail']['projectId'] = $project->l_project;
+
+            foreach ($history as $key => $one) {
+                $newUsers['history'][$key]['actionId'] = $this->replaceAction($one->rl_type);
+                $newUsers['history'][$key]['date'] = $one->rl_date;
+                $newUsers['history'][$key]['viaMethodId'] = $one->rl_method;
+                $newUsers['history'][$key]['notes'] = $one->rl_info;
+                $newUsers['history'][$key]['createdBy'] = null;
+                if ($one->rl_action == 4) {
+                    $state = 'Reassigned';
+                } elseif ($one->rl_action == 3) {
+                    $state = 'Change State';
+                }
+
+                $newUsers['history'][$key]['state'] = $state;
+            }
+
+            $newUsers['detail']['actionId'] = $this->replaceAction($user->r_state);
+            return $newUsers;
+        }
     }
 
     public function replaceAction($state)
     {
-        $actionId = 0;
+        $actionId = null;
         switch ($state) {
             case 1:
             case 2:
@@ -102,7 +160,12 @@ class MigrateOldDataTransform
         $newUsers['name'] = $user->name;
         $newUsers['email'] = $user->email;
         $newUsers['password'] = $user->password;
-        $newUsers['roleId'] = $user->role;
+        $role = $user->role;
+        if ($user->role == 3) {
+            $role = 4;
+        }
+        $newUsers['roleId'] = $role;
+
         $newUsers['createdBy'] = null;
 
         return $newUsers;

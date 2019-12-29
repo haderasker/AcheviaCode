@@ -254,7 +254,7 @@ class ClientController extends Controller
 
                 $team = Team::find($team['id']);
 
-                $allSales = $team->sales()->get(['id', 'name'])->toArray();
+                $allSales = $team->teamLeader->sales()->get(['id', 'name'])->toArray();
 
                 if ((Auth::user()->role->name != 'sale Man')) {
                     foreach ($allSales as $sale) {
@@ -652,10 +652,8 @@ class ClientController extends Controller
         $teams = $project->teams()->get()->toArray();
 
         foreach ($teams as $team) {
-
             $team = Team::find($team['id']);
-
-            $allSales = $team->sales()->get(['id', 'name'])->toArray();
+            $allSales = $team->teamLeader->sales()->get()->toArray();
 
             if ((Auth::user()->role->name != 'sale Man')) {
                 foreach ($allSales as $sale) {

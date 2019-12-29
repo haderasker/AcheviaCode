@@ -22,8 +22,9 @@ class Team extends Model
         return $this->belongsToMany('App\Models\Project' , 'project_team','teamId','projectId');
     }
 
-    public function sales()
+
+    public function teamLeader()
     {
-        return $this->hasMany('App\User', 'teamId');
+        return $this->belongsTo('App\User','teamLeaderId');
     }
 }

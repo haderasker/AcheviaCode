@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Team;
 use App\Models\ProjectTeam;
-use Illuminate\Http\Request;
+use App\Models\Team;
 use App\User;
+use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    private $model , $projectTeam;
+    private $model, $projectTeam;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct(Team $model , ProjectTeam $projectTeam)
+    public function __construct(Team $model, ProjectTeam $projectTeam)
     {
         $this->model = $model;
         $this->projectTeam = $projectTeam;
@@ -33,28 +33,32 @@ class TeamController extends Controller
         return View('teams.view', compact('requestData'));
     }
 
-    public function getAllData(){
-
-        $data = $this->model->all()->toArray();
+    public function getAllData(Request $request)
+    {
+        $paginationOptions = $request->input('pagination');
+        if ($paginationOptions['perpage'] == -1) {
+            $paginationOptions['perpage'] = 0;
+        }
+        $data = $this->model->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
         $key = 0;
         foreach ($data as $one) {
-            $teamLeaderName = User::where('id',$one['teamLeaderId'])->pluck('name','id')->toArray();
+            $teamLeaderName = User::where('id', $one['teamLeaderId'])->pluck('name', 'id')->toArray();
             $data[$key]['teamLeaderName'] = $teamLeaderName[$one['teamLeaderId']];
             $key = $key + 1;
         }
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;
@@ -68,7 +72,7 @@ class TeamController extends Controller
     {
 
         $teamleaders = User::where('roleId', 3)->get()->toArray();
-        return View('teams.add',compact('teamleaders'));
+        return View('teams.add', compact('teamleaders'));
     }
 
     /**
@@ -82,16 +86,16 @@ class TeamController extends Controller
         ]);
 
         $teamLeaderId = $request->teamLeaderId;
-        if($request->teamLeaderId == 0){
+        if ($request->teamLeaderId == 0) {
             $teamLeaderId = null;
         }
 
-        $model =$this->model;
+        $model = $this->model;
         $model->name = $request->name;
         $model->teamLeaderId = $teamLeaderId;
         $model->save();
 
-        return redirect('/teams')->with('success','Stored successfully');
+        return redirect('/teams')->with('success', 'Stored successfully');
     }
 
     /**
@@ -107,7 +111,7 @@ class TeamController extends Controller
     /**
      * update team
      */
-    public function update($id , Request $request)
+    public function update($id, Request $request)
     {
         $request->validate([
             'name' => 'required|unique:teams|max:255',
@@ -120,11 +124,11 @@ class TeamController extends Controller
         $model->teamLeaderId = $request->teamLeaderId;
         $model->save();
 
-        if($request->projectId){
+        if ($request->projectId) {
             $model->projects()->create($request->projectId);
         }
 
-        return redirect('/teams')->with('success','Updated successfully');
+        return redirect('/teams')->with('success', 'Updated successfully');
     }
 
     /**
@@ -135,7 +139,7 @@ class TeamController extends Controller
         $model = $this->model->find($id);
         $model->delete();
 
-        return redirect('/teams')->with('success','Deleted successfully');
+        return redirect('/teams')->with('success', 'Deleted successfully');
     }
 
 }

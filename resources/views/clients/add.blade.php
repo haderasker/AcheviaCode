@@ -1,14 +1,9 @@
 @extends('layouts.app')
-<!--begin::Page Custom Styles(used by this page) -->
-<link href="{{url('assets/css/pages/wizard/wizard-4.css')}}" rel="stylesheet" type="text/css"/>
-<style>
-    .alert {
-        display: block !important;
-    }
-</style>
-<!--end::Page Custom Styles -->
-@section('content')
 
+@section ('head')
+    <link href="{{url('assets/css/pages/wizard/wizard-4.css')}}" rel="stylesheet" type="text/css"/>
+@endsection
+@section('content')
 
     <div class="kt-grid kt-grid--hor kt-grid--root">
         <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
@@ -96,7 +91,8 @@
                                 <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v4__wrapper">
 
                                     <!--begin: Form Wizard Form-->
-                                    <form class="kt-form" id="kt_user_add_form" method="POST" action="{{url('/client-store')}}">
+                                    <form class="kt-form" id="kt_user_add_form" method="POST"
+                                          action="{{url('/client-store')}}">
                                     @csrf
                                     <!--begin: Form Wizard Step 1-->
                                         <div class="kt-wizard-v4__content" data-ktwizard-type="step-content"
@@ -121,16 +117,6 @@
                                                                                type="text" value="{{ old('name') }}">
                                                                     </div>
                                                                 </div>
-
-                                                                {{--<div class="form-group row">--}}
-                                                                {{--<label class="col-xl-3 col-lg-3 col-form-label">--}}
-                                                                {{--User Name</label>--}}
-                                                                {{--<div class="col-lg-9 col-xl-9">--}}
-                                                                {{--<input class="form-control" name="userName"--}}
-                                                                {{--type="text"--}}
-                                                                {{--value="{{ old('userName') }}">--}}
-                                                                {{--</div>--}}
-                                                                {{--</div>--}}
 
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Contact
@@ -234,7 +220,8 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Job
                                                                         Title</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input  id="title" class="form-control" type="text"
+                                                                        <input id="title" class="form-control"
+                                                                               type="text"
                                                                                name="jobTitle"
                                                                                value="{{ old('jobTitle') }}">
                                                                     </div>
@@ -243,7 +230,8 @@
                                                                 <div class="form-group row">
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Notes</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input id="note" class="form-control" name="notes"
+                                                                        <input id="note" class="form-control"
+                                                                               name="notes"
                                                                                type="text" value="{{old('notes')}}">
                                                                     </div>
                                                                 </div>
@@ -344,7 +332,7 @@
 
                                                                     <select id="property" name="property"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Property</option>
+                                                                        <option selected value="">Select Property</option>
                                                                         <option value="residential"> Residential
                                                                         </option>
                                                                         <option value="commercial"> Commercial</option>
@@ -358,7 +346,8 @@
                                                                     <label class="col-xl-3 col-lg-3 col-form-label">Property
                                                                         Location</label>
                                                                     <div class="col-lg-9 col-xl-9">
-                                                                        <input id="propertyLocation" class="form-control"
+                                                                        <input id="propertyLocation"
+                                                                               class="form-control"
                                                                                name="propertyLocation"
                                                                                type="text"
                                                                                value="{{old('propertyLocation')}}">
@@ -370,7 +359,7 @@
                                                                         Property Utility</label>
                                                                     <select id="propertyUtility" name="propertyUtility"
                                                                             class="form-control col-lg-9 col-xl-9">
-                                                                        <option selected>Select Property Utility
+                                                                        <option selected value ="">Select Property Utility
                                                                         </option>
                                                                         <option value="personal"> personal use</option>
                                                                         <option value="investment"> investment</option>
@@ -423,7 +412,8 @@
 
                                                                     <select id="projectId" name="convertProject1"
                                                                             class="projectOne form-control col-lg-9 col-xl-9">
-                                                                        <option selected value="">Select Project</option>
+                                                                        <option selected value="">Select Project
+                                                                        </option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
                                                                         @endforeach
@@ -437,7 +427,8 @@
 
                                                                     <select id="projectId" name="convertProject2"
                                                                             class="projectTwo form-control col-lg-9 col-xl-9">
-                                                                        <option selected value="">Select Project</option>
+                                                                        <option selected value="">Select Project
+                                                                        </option>
                                                                         @foreach($projects as $project)
                                                                             <option value="{{$project['id']}}">{{$project['name']}}</option>
                                                                         @endforeach
@@ -470,8 +461,8 @@
                                                             <p> Name: <span id="myName"></span></p>
                                                             <p> Phone: <span id="myPhone"></span></p>
                                                             <p>Email: <span id="myEmail"></span></p>
-                                                            <p>Job Title: <span id="myTitle" ></span></p>
-                                                            <p>Note: <span id="myNote" ></span></p>
+                                                            <p class="hidden">Job Title: <span id="myTitle"></span></p>
+                                                            <p class="hidden">Note: <span id="myNote"></span></p>
                                                         </div>
                                                     </div>
                                                     <div class="kt-wizard-v4__review-item">
@@ -480,10 +471,12 @@
                                                         </div>
                                                         <div class="kt-wizard-v4__review-content">
                                                             <p>Project: <span id="myProject"></span></p>
-                                                            <p>Campaign: <span id="myCampaign"></span></p>
-                                                            <p>Marketer: <span id="myMarketer"></span></p>
+                                                            <p class="hidden">Campaign: <span id="myCampaign"></span>
+                                                            </p>
+                                                            <p class="hidden">Marketer: <span id="myMarketer"></span>
+                                                            </p>
                                                             <p>Platform: <span id="myPlatform"></span></p>
-                                                            <p>AssignTo: <span id="mySale"></span></p>
+                                                            <p class="hidden">AssignTo: <span id="mySale"></span></p>
                                                         </div>
                                                     </div>
                                                     <div class="kt-wizard-v4__review-item">
@@ -492,14 +485,16 @@
                                                         </div>
                                                         <div class="kt-wizard-v4__review-content">
                                                             <p id=""></p>
-                                                            <p>Property: <span id="myProperty"></span></p>
-                                                            <p>Property Location: <span id="myPropertyLocation"></span></p>
-                                                            <p>Property Utility: <span id="myPropertyUtility"></span></p>
-                                                            <p>Budget: <span id="myBudget"></span></p>
-                                                            <p>Date: <span id="myDate"></span></p>
-                                                            <p>Area: <span id="myArea"></span></p>
-                                                            <p>Convert To Project 1: <span id="myProjectOne"></span></p>
-                                                            <p>Convert To Project 2: <span id="myProjectTwo"></span></p>
+                                                            <p class="hidden">Property: <span id="myProperty"></span></p>
+                                                            <p class="hidden">Property Location: <span id="myPropertyLocation"></span>
+                                                            </p>
+                                                            <p class="hidden">Property Utility: <span id="myPropertyUtility"></span>
+                                                            </p>
+                                                            <p class="hidden">Budget: <span id="myBudget"></span></p>
+                                                            <p class="hidden">Date: <span id="myDate"></span></p>
+                                                            <p class="hidden">Area: <span id="myArea"></span></p>
+                                                            <p class="hidden">Convert To Project 1: <span id="myProjectOne"></span></p>
+                                                            <p class="hidden">Convert To Project 2: <span id="myProjectTwo"></span></p>
 
                                                         </div>
                                                     </div>
@@ -550,23 +545,6 @@
     <script src="{{url('assets/js/pages/custom/user/add-user.js')}}" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function (e) {
-
-            {{--$('#cityId').change(function () {--}}
-            {{--$.get(--}}
-            {{--"{{ url('api/dropdown')}}",--}}
-            {{--{--}}
-            {{--option: $(this).val()--}}
-            {{--},--}}
-            {{--function (data) {--}}
-            {{--var projectId = $('#projectId');--}}
-            {{--projectId.empty();--}}
-            {{--projectId.append("<option value=''> Select Project </option>");--}}
-            {{--$.each(data, function (index, element) {--}}
-            {{--projectId.append("<option value='" + element.id + "'>" + element.name + "</option>");--}}
-            {{--});--}}
-            {{--}--}}
-            {{--);--}}
-            {{--});--}}
 
             $('#campaignId').change(function () {
                 $.get(

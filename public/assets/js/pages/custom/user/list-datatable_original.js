@@ -54,7 +54,6 @@ var KTUserListDatatable = function () {
                     selector: {
                         class: 'kt-checkbox--solid'
                     },
-
                 },
                 {
                     field: "name",

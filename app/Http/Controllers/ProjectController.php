@@ -32,23 +32,28 @@ class ProjectController extends Controller
         return View('projects.view', compact('requestData'));
     }
 
-    public function getAllData()
+    public function getAllData(Request $request)
     {
+        $paginationOptions = $request->input('pagination');
+        if($paginationOptions['perpage'] == -1){
+            $paginationOptions['perpage'] = 0;
+        }
 
-        $data = $this->model::where('idParent', null)->get()->toArray();
+        $data = $this->model::where('idParent', null)
+            ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;

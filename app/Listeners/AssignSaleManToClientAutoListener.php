@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\ClientDetailCreatedEvent;
+use App\Events\PushNotificationEvent;
 use App\Events\UserSalesUpdatedEvent;
 use App\Models\ClientDetail;
 use App\Models\ClientHistory;
@@ -10,7 +11,6 @@ use App\Models\Project;
 use App\Models\RotationAuto;
 use App\Models\Team;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 
 class AssignSaleManToClientAutoListener
 {
@@ -47,16 +47,16 @@ class AssignSaleManToClientAutoListener
                     $team = Team::find($team['id']);
                     $teamleader = User::where('id', $team['teamLeaderId'])->get()->toArray();
                     $sales[] = $teamleader;
-                    $sales[] = $team->sales()->get()->toArray();
+                    $sales[] = $team->teamLeader->sales()->get()->toArray();
                 }
-
                 $selectedSales = call_user_func_array("array_merge", $sales);
                 $mySelectedSales = $this->checkSales($selectedSales);
 //
                 foreach ($mySelectedSales as $sale) {
                     if (($sale['lastAssigned'] == 0 || $sale['weight'] > $sale['lastAssigned']) && $sale['assign'] == 0) {
                         ClientDetail::where('userId', $client['userId'])->update(['assignToSaleManId' => $sale['id']]);
-                        User::where('id', $sale['id'])->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
+                        $saleMan = User::where('id', $sale['id']);
+                        $saleMan->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
                         $history = ClientHistory::create([
                             'userId' => $client['userId'],
                             'actionId' => null,
@@ -64,7 +64,10 @@ class AssignSaleManToClientAutoListener
                             'state' => 'Re assigned',
                             'notes' => $client['notes'],
                         ]);
-                        event(new UserSalesUpdatedEvent($user));
+
+                        $sale = $saleMan->first();
+//                        event(new UserSalesUpdatedEvent($user));
+                        event(new PushNotificationEvent($sale, $user));
                         return;
                     }
                 }

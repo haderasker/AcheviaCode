@@ -42,24 +42,30 @@ class UserController extends Controller
         return View('users.add', compact('roles'));
     }
 
-    public function getAllData()
+    public function getAllData(Request $request)
     {
-        $data = $this->model->with('role')->whereHas('role')->get()->toArray();
+        $paginationOptions = $request->input('pagination');
+        if($paginationOptions['perpage'] == -1){
+            $paginationOptions['perpage'] = 0;
+        }
 
-        $key = 0;
+        $data = $this->model->where('roleId','!=',5)->with('role')->whereHas('role')
+            ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+
 
         $meta = [
-            "page" => 1,
-            "pages" => 1,
-            "perpage" => -1,
-            "total" => 40,
+            "page" => $data->currentPage(),
+            "pages" => intval($data->total() / $data->perPage()),
+            "perpage" => $data->perPage(),
+            "total" => $data->total(),
             "sort" => "asc",
-            "field" => "RecordID",
+            "field" => "id",
         ];
 
         $requestData = [
             'meta' => $meta,
-            'data' => $data,
+            'data' => $data->items(),
         ];
 
         return $requestData;

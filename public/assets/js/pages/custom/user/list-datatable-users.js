@@ -1,5 +1,3 @@
-
-
 "use strict";
 // Class definition
 
@@ -70,8 +68,7 @@ var KTUserListDatatable = function () {
                     field: 'roleId',
                     title: 'Type',
                     template: function (data) {
-
-                        return '<span class="btn btn-bold btn-sm btn-font-sm">  ' + data.role.name +' </span>';
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">  ' + data.role.name + ' </span>';
                     },
 
                 },
@@ -81,7 +78,7 @@ var KTUserListDatatable = function () {
                     title: 'Image',
                     template: function (data) {
 
-                        return '<span class="btn btn-bold btn-sm btn-font-sm">  <img width="200" height="100"  src="'+ URL +'/images/' + data.image +'" /> </span>';
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">  <img width="200" height="100"  src="' + URL + '/images/' + data.image + '" /> </span>';
                     },
                 },
 

@@ -23,7 +23,7 @@ class CreateClientDetailsTable extends Migration
             $table->string('space')->nullable();
             $table->string('jobTitle')->nullable();
             $table->string('address')->nullable();
-            $table->string('notes')->nullable();
+            $table->longText('notes')->nullable();
             $table->boolean('gender')->nullable();
             $table->date('newActionDate')->nullable();
             $table->time('newActionTime')->nullable();

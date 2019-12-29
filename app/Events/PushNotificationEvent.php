@@ -2,28 +2,26 @@
 
 namespace App\Events;
 
-use App\Models\ClientDetail;
-use Illuminate\Broadcasting\Channel;
+use App\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\User;
 
-class UserSalesUpdatedEvent
+class PushNotificationEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $user;
+
+    public $user, $client;
+
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, User $client)
     {
         $this->user = $user;
+        $this->client = $client;
     }
 
 }

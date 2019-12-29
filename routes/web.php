@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'HomeController@welCome');
+Route::get('api/mobile-data', 'HomeController@mobData');
 Route::post('client-landing-page', 'HomeController@landingStore');
 
 Auth::routes(['login' => false]);

@@ -8,6 +8,7 @@ use App\Models\Project;
 use App\Models\UserNote;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
@@ -150,5 +151,16 @@ class HomeController extends Controller
             }
         }
         return $user;
+    }
+
+    public function mobData(Request $request)
+    {
+        $user_id = @Auth::user()->id;
+        $device_id = $request->device_id;
+        $user = User::where('id', $user_id);
+
+        $updated = $user->update(['device_id' => $device_id]);
+
+        return $user->first();
     }
 }
