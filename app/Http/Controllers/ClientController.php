@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PushNotificationEvent;
 use App\Events\UserSalesUpdatedEvent;
 use App\Imports\ImportClients;
 use App\Models\Action;
@@ -19,7 +20,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Events\PushNotificationEvent;
 
 class ClientController extends Controller
 {
@@ -55,6 +55,15 @@ class ClientController extends Controller
     public function create()
     {
         $projects = $this->project->all()->toArray();
+        $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
+
         $dates = DeliveryDate::all()->toArray();
 
         return View('clients.add', compact('projects', 'dates'));
@@ -166,6 +175,14 @@ class ClientController extends Controller
     public function quickCreate()
     {
         $projects = $this->project->all()->toArray();
+        $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
         return View('clients.quick_create', compact('projects'));
     }
 
@@ -247,6 +264,14 @@ class ClientController extends Controller
         $methods = Method::all()->toArray();
         $actions = Action::all()->sortBy('order')->toArray();
         $projects = $this->project->all()->toArray();
+        $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
         if ($requestData['detail']['projectId']) {
             $cities = [];
             $project = $this->project::find($requestData['detail']['projectId']);
@@ -277,6 +302,14 @@ class ClientController extends Controller
             $projectName = '';
             $cityName = '';
             $projects = $this->project->all()->toArray();
+            $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
+            foreach ($projects as $key => $project) {
+                foreach ($projectsIgnore as  $ignore){
+                    if($ignore['id'] == $project['id'] ){
+                        unset($projects[$key]);
+                    }
+                }
+            }
             if ((Auth::user()->role->name == 'sale Man')) {
                 $sales = $this->model->where('id', (Auth::user()->id)->get(['id', 'name']));
             }
@@ -596,6 +629,14 @@ class ClientController extends Controller
     function uploadView()
     {
         $projects = $this->project->all()->toArray();
+        $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as  $ignore){
+                if($ignore['id'] == $project['id'] ){
+                    unset($projects[$key]);
+                }
+            }
+        }
         return View('clients.upload', compact('projects'));
     }
 

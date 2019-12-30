@@ -179,7 +179,7 @@ class ProjectController extends Controller
      */
     public function createCustom()
     {
-        $projects = Project::all()->toArray();
+        $projects = Project::where('idParent' , null)->get()->toArray();
         return View('projects.custom', compact('projects'));
     }
 

@@ -42,11 +42,11 @@ class PushNotificationChannel
         ];
 
         $message = $notification->toPushNotification($notifiable);
-
-        $this->apiRequest->post(env('FCM_BASE_URL'), [
-            'headers' => $headers,
-            'json' => $message
-        ]);
-
+        if ($message['notification'] != 'notSend') {
+            $this->apiRequest->post(env('FCM_BASE_URL'), [
+                'headers' => $headers,
+                'json' => $message
+            ]);
+        }
     }
 }

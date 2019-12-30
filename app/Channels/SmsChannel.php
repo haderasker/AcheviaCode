@@ -29,6 +29,8 @@ class SmsChannel
     public function send($notifiable, UserNotification $notification): void
     {
         $message = $notification->toSms($notifiable);
-        $this->apiRequest->post(env('SMS_ENDPOINT'), ['query' => $message]);
+        if ($message != null) {
+            $this->apiRequest->post(env('SMS_ENDPOINT'), ['query' => $message]);
+        }
     }
 }

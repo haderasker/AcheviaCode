@@ -43,15 +43,17 @@ class PushNotification extends Notification
         $sale = $notifiable->user;
         $client = $notifiable->client;
         $deviceId = $sale['device_id'] ?? '';
-
-        return [
-            'registration_ids' => [$deviceId],
-            'notification' => [
-                'title' => 'New Assignation',
-                'body' => 'You Assigned To Client: ' . $client['name'] ,
-            ]
-        ];
-
+        if ($deviceId != '') {
+            return [
+                'registration_ids' => [$deviceId],
+                'notification' => [
+                    'title' => 'New Assignation',
+                    'body' => 'You Assigned To Client: ' . $client['name'],
+                ]
+            ];
+        } else {
+            return ['notification' =>'notSend'];
+        }
     }
 
     /**

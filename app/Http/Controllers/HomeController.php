@@ -44,6 +44,14 @@ class HomeController extends Controller
     public function welCome()
     {
         $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as  $ignore){
+                if($ignore['id'] == $project['id'] ){
+                    unset($projects[$key]);
+                }
+            }
+        }
         return view('welcome', compact('projects'));
     }
 

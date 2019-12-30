@@ -53,7 +53,6 @@ class UserController extends Controller
             ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
 
 
-
         $meta = [
             "page" => $data->currentPage(),
             "pages" => intval($data->total() / $data->perPage()),
