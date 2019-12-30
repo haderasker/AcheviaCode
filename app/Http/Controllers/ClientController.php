@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Events\PushNotificationEvent;
 
 class ClientController extends Controller
 {
@@ -131,6 +132,8 @@ class ClientController extends Controller
             $user = $this->clientModel->create($clientDetailsData);
 
             if ($request->assignToSaleManId != 0) {
+                $sale = User::where('id', $request->assignToSaleManId)->first();
+                event(new PushNotificationEvent($sale, $userCreated));
                 event(new UserSalesUpdatedEvent($userCreated));
                 $state = '';
                 if ($request->assignToSaleManId != 0) {
@@ -206,6 +209,8 @@ class ClientController extends Controller
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
             if ($request->assignToSaleManId != 0) {
+                $sale = User::where('id', $request->assignToSaleManId)->first();
+                event(new PushNotificationEvent($sale, $userCreated));
                 event(new UserSalesUpdatedEvent($userCreated));
                 $state = '';
                 if ($request->assignToSaleManId != 0) {
@@ -407,6 +412,8 @@ class ClientController extends Controller
         //update record
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
         if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0) {
+            $sale = User::where('id', $request->assignToSaleManId)->first();
+            event(new PushNotificationEvent($sale, $user));
             event(new UserSalesUpdatedEvent($user));
         }
         if ($request->actionId != 0) {
@@ -540,6 +547,8 @@ class ClientController extends Controller
         $this->clientModel->where('userId', $request->_id)->update($clientDetailsData);
 
         if ($client['assignToSaleManId'] == 0 && $request->assignToSaleManId != 0) {
+            $sale = User::where('id', $request->assignToSaleManId)->first();
+            event(new PushNotificationEvent($sale, $user));
             event(new UserSalesUpdatedEvent($user));
         }
         if ($request->actionId != 0) {

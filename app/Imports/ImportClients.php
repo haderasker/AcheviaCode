@@ -15,6 +15,7 @@ use App\Models\UserNote;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\ToModel;
+use App\Events\PushNotificationEvent;
 
 
 class ImportClients implements ToModel
@@ -88,6 +89,8 @@ class ImportClients implements ToModel
         $user = ClientDetail::create($clientDetailsData);
 
         if ($cols['saleCol'] != 0) {
+            $sale = User::where('id', $cols['saleCol'])->first();
+            event(new PushNotificationEvent($sale, $userCreated));
             event(new UserSalesUpdatedEvent($userCreated));
             $history = ClientHistory::create([
                 'userId' => $user->id,
