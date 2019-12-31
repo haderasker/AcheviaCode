@@ -21,6 +21,6 @@ class NotClient
             return $next($request);
         }
 
-        return redirect('/home');
+        return redirect('/');
     }
 }

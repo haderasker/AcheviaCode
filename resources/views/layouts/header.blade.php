@@ -4,7 +4,7 @@
     <!-- begin:: Aside -->
     <div class="kt-header__brand kt-grid__item  " id="kt_header_brand">
         <div class="kt-header__brand-logo">
-            <a href="{{url('/home')}}">
+            <a href="{{url('/')}}">
                 <img alt="Logo" src="{{url('images/favicon.png')}}" style="width: 75px"/>
             </a>
         </div>
@@ -59,7 +59,7 @@
                         <h3 class="kt-head__title">My Notifications
                             &nbsp;
                             <span class="btn btn-success btn-sm btn-bold btn-font-md">
-                                <a class="nav-link active show" data-toggle="tab" href="{{url('/home')}}" role="tab"
+                                <a class="nav-link active show" data-toggle="tab" href="{{url('/')}}" role="tab"
                                    aria-selected="true">23 new</a>
                                 </span>
                         </h3>

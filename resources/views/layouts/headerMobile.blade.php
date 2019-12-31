@@ -1,7 +1,7 @@
 <!-- begin:: Header Mobile -->
 <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
     <div class="kt-header-mobile__logo">
-        <a href="{{url('/home')}}">
+        <a href="{{url('/')}}">
             <img alt="Logo" src="{{url('images/favicon.png')}}" style="width: 57px" />
         </a>
     </div>

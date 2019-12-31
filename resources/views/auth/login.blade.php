@@ -153,7 +153,7 @@
                         <div class="kt-login__head">
                             <h3 class="kt-login__title">Sign In </h3>
                         </div>
-                        <form method="POST" action="{{ route('login') }}" class="kt-form">
+                        <form method="POST" action="{{ url('login') }}" class="kt-form">
                             @csrf
                             <div class="input-group">
                                 <input class="form-control" type="email" placeholder="Email" name="email"
@@ -179,8 +179,15 @@
                                     {{ __('Sign In') }}
                                 </button>
                             </div>
+                            <div class="kt-login__actions">
+                                <a  href="{{url('/join-to-us')}}" type="button" class="btn btn-pill kt-login__btn-primary" style="line-height:2.0">
+                                    Join To Us
+                                </a>
+                            </div>
                         </form>
+
                     </div>
+
 
                     <div class="kt-login__forgot">
                         <div class="kt-login__head">

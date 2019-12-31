@@ -29,7 +29,7 @@
                         <div class="kt-portlet__head-label">
                         </div>
                         <div class="kt-portlet__head-toolbar">
-                            <a href="{{url('/home')}}" class="btn btn-clean kt-margin-r-10">
+                            <a href="{{url('/')}}" class="btn btn-clean kt-margin-r-10">
                                 <i class="la la-arrow-left"></i>
                                 <span class="kt-hidden-mobile">Back</span>
                             </a>

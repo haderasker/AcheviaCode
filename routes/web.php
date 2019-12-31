@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,16 +14,19 @@
 |
 */
 
-Route::get('/', 'HomeController@welCome');
+Route::get('/join-to-us', 'HomeController@welCome');
 Route::get('api/mobile-data', 'HomeController@mobData');
 Route::post('client-landing-page', 'HomeController@landingStore');
+Auth::routes();
 
-Auth::routes(['login' => false]);
+Route::get('/login', function(){
+    abort(404);
+});
 
-Route::get('/axie-panel', 'Auth\LoginController@showLoginForm')->name('axie-panel');
+Route::get('/axiepanel', 'Auth\LoginController@showLoginForm')->name('login');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
 
     Route::middleware(['admin'])->group(function () {
         /**
