@@ -155,6 +155,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('new-clients', 'ClientActionController@newClients');
         Route::get('client/get_data/{id}', 'ClientActionController@getData');
         Route::get('action-client/{id}', 'ClientActionController@actionClient');
+        Route::get('client/get_todo_data', 'ClientActionController@getToDoData');
+        Route::get('todo-data', 'ClientActionController@toDoClients');
         Route::get('history-clients/{id}', 'ClientActionController@history');
         Route::get('client/get_history/{id}', 'ClientActionController@getHistory');
         Route::get('duplicated-clients', 'ClientActionController@duplicated');

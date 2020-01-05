@@ -1409,16 +1409,22 @@ var KTDashboard = function() {
 
             if ((end - start) < 100 || label == 'Today') {
                 title = 'Today:';
-                range = start.format('MMM D');
+                range = start.format('YYYY-MM-DD');
             } else if (label == 'Yesterday') {
                 title = 'Yesterday:';
-                range = start.format('MMM D');
+                range = start.format('YYYY-MM-DD');
             } else {
-                range = start.format('MMM D') + ' - ' + end.format('MMM D');
+                range = start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
             }
 
             $('#kt_dashboard_daterangepicker_date').html(range);
             $('#kt_dashboard_daterangepicker_title').html(title);
+
+            window.dispatchEvent(new CustomEvent('date', {
+                detail: {
+                    range: range
+                }
+            }));
         }
 
         picker.daterangepicker({
@@ -1427,6 +1433,7 @@ var KTDashboard = function() {
             endDate: end,
             opens: 'left',
             ranges: {
+                'All Time': [moment('1970-01-01'), moment()],
                 'Today': [moment(), moment()],
                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                 'Last 7 Days': [moment().subtract(6, 'days'), moment()],
@@ -1436,7 +1443,7 @@ var KTDashboard = function() {
             }
         }, cb);
 
-        cb(start, end, '');
+        // cb(start, end, '');
     }
 
     // Latest Orders

@@ -40,7 +40,12 @@ var KTUserListDatatable = function () {
 
             search: {
                 input: $('#generalSearch'),
-                delay: 400,
+                delay: 500,
+            },
+
+            filterSale: {
+                input: $('#saleFilter'),
+                delay: 500,
             },
 
 // columns definition
@@ -57,10 +62,9 @@ var KTUserListDatatable = function () {
                 },
                 {
                     field: "name",
-                    title: "User",
+                    title: "name",
 // callback function support for column rendering
                     template: function (data, i) {
-                        console.log(data);
                         var pos = data.roleId;
                         var position = [
                             'none',
@@ -116,15 +120,6 @@ var KTUserListDatatable = function () {
 
                 },
 
-// {
-//     field: 'notes',
-//     title: 'Notes',
-//
-//     template: function (data) {
-//         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.notes + '</span>';
-//     },
-//
-// },
 
                 {
                     field: 'assignToSaleManId',
@@ -259,13 +254,27 @@ var KTUserListDatatable = function () {
         });
     }
 
+    var listners = function() {
+        window.addEventListener('date', function (elem) {
+            datatable.search(elem.detail.range, "date");
+        }, false);
+    };
 
-// search
+
+    // search
     var search = function () {
-        $('#kt_form_status').on('change', function () {
-            datatable.search($(this).val().toLowerCase(), 'Status');
+        $('#generalSearch').on('keyup', function () {
+            datatable.search($(this).val(), "name");
         });
     }
+
+    // filter
+    var filterSale = function () {
+        $('#saleFilter').on('change', function () {
+            datatable.search($(this).val(), "sale");
+        });
+    }
+
 
 // selection
     var selection = function () {
@@ -361,7 +370,6 @@ var KTUserListDatatable = function () {
                                 sale: sale
                             },
                             success: function (data) {
-                                console.log(data);
                                 swal.fire({
                                     title: 'Assigned!',
                                     text: 'Your selected records statuses have been updated!',
@@ -488,6 +496,8 @@ var KTUserListDatatable = function () {
         init: function () {
             init();
             search();
+            filterSale();
+            listners();
             selection();
             selectedFetch();
             selectedStatusUpdate();

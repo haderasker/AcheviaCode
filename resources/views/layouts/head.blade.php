@@ -1,6 +1,6 @@
 <!-- begin::Head -->
 <head>
-    <base href="../../">
+    <base href="{{url('/')}}">
     <meta charset="utf-8" />
     <title>Achivia App</title>
     <meta name="description" content="">
@@ -81,7 +81,6 @@
     <!--begin::Layout Skins(used by all pages) -->
 
     <!--end::Layout Skins -->
-    <link rel="shortcut icon" href="{{url('assets/media/logos/favicon.ico')}}" />
 </head>
 
 <!-- end::Head -->

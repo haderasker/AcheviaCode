@@ -36,11 +36,14 @@ var KTUserListDatatable = function () {
             // column sorting
             sortable: true,
 
-            pagination: true,
-
             search: {
                 input: $('#generalSearch'),
-                delay: 400,
+                delay: 500,
+            },
+
+            filterSale: {
+                input: $('#saleFilter'),
+                delay: 500,
             },
 
             // columns definition
@@ -48,7 +51,6 @@ var KTUserListDatatable = function () {
                 {
                     field: 'id',
                     title: '#',
-                    sortable: false,
                     width: 20,
                     textAlign: 'center',
                     selector: {
@@ -67,60 +69,6 @@ var KTUserListDatatable = function () {
                     }
                 },
 
-
-                // {
-                //     field: 'jobTitle',
-                //     title: 'Job Title',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.jobTitle + '</span>';
-                //     },
-                // },
-                // {
-                //     field: 'projectId',
-                //     title: 'Project',
-                //
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.projectName + '</span>';
-                //     },
-                //
-                // },
-                //
-                // {
-                //     field: 'space',
-                //     title: 'Space',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.space + '</span>';
-                //     },
-                // },
-
-
-                // {
-                //     field: 'notes',
-                //     title: 'Notes',
-                //
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.notes + '</span>';
-                //     },
-                //
-                // },
-
-                // {
-                //     field: 'assignToSaleManId',
-                //     title: 'Assign To',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.saleName + '</span>';
-                //     },
-                // },
-                //
-                //
-                // {
-                //     field: 'assignedDate',
-                //     title: 'Assign Data',
-                //     type: 'date',
-                //     template: function (data) {
-                //         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.assignedDate + '</span>';
-                //     },
-                // },
 
                 {
                     field: "actionId",
@@ -141,9 +89,7 @@ var KTUserListDatatable = function () {
 
                     template: function (data) {
 
-
                         return window.output(data);
-
                     }
                 },
 
@@ -197,10 +143,24 @@ var KTUserListDatatable = function () {
     };
 
 
+    var listners = function () {
+        window.addEventListener('date', function (elem) {
+            datatable.search(elem.detail.range, "date");
+        }, false);
+    };
+
+
     // search
     var search = function () {
-        $('#kt_form_status').on('change', function () {
-            datatable.search($(this).val().toLowerCase(), 'actionId');
+        $('#generalSearch').on('keyup', function () {
+            datatable.search($(this).val(), "name");
+        });
+    }
+
+    // filter
+    var filterSale = function () {
+        $('#saleFilter').on('change', function () {
+            datatable.search($(this).val(), "sale");
         });
     }
 
@@ -425,6 +385,8 @@ var KTUserListDatatable = function () {
         init: function () {
             init();
             search();
+            filterSale();
+            listners();
             selection();
             selectedFetch();
             selectedStatusUpdate();

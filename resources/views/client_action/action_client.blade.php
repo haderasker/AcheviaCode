@@ -50,6 +50,17 @@
 													</span>
 												</span>
                         </div>
+                        @if((Auth::user()->role->name == 'admin'))
+                            <div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+                                <select class="form-control" id="saleFilter">
+                                    <option value="0">Select SaleMan</option>
+                                    @foreach($sales as $sale)
+                                        <option value=" {{$sale['id']}}">  {{$sale['name']}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+
                     </form>
                 </div>
 
@@ -92,7 +103,27 @@
                     </div>
                 @endif
             </div>
-
+            <div class="kt-kt-subheader__main">
+                <div class="kt-subheader__toolbar" style="padding: 15px">
+                    <div class="kt-subheader__wrapper">
+                        <a class="btn kt-subheader__btn-daterange" id="kt_dashboard_daterangepicker"
+                           data-toggle="kt-tooltip" title="Select dashboard daterange" data-placement="left">
+                            <span class="kt-subheader__btn-daterange-title" id="kt_dashboard_daterangepicker_title">Select Date Range</span>&nbsp;
+                            <span class="kt-subheader__btn-daterange-date"
+                                  id="kt_dashboard_daterangepicker_date"></span>
+                            <i class="flaticon2-calendar-1"></i>
+                        </a>
+                        @if((Auth::user()->role->name == 'admin'))
+                            <a class="btn kt-subheader__btn-primary btn-icon">
+                                <i class="flaticon-download-1"></i>
+                            </a>
+                            <a class="btn kt-subheader__btn-primary btn-icon">
+                                <i class="flaticon2-fax"></i>
+                            </a>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

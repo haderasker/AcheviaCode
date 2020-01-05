@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
     @if(session()->has('message'))
         <div class="alert alert-success">
@@ -61,48 +60,48 @@
                                 </select>
                             </div>
                         @endif
-                        {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
-                        {{--<input type="date" class="form-control" placeholder="Search..." id="fromDateFilter">--}}
-                        {{--</div>--}}
-                        {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
-                        {{--<input type="date" class="form-control" placeholder="Search..." id="toDateFilter">--}}
-                        {{--</div>--}}
+
                     </form>
                 </div>
-                @if((Auth::user()->role->name == 'admin'))
-                <div class="kt-subheader__group" id="kt_subheader_group_actions">
-                    <div class="kt-subheader__desc"><span id="kt_subheader_group_selected_rows"></span> Selected:</div>
-                    <div class="btn-toolbar kt-margin-l-20">
-                        <div class="dropdown" id="kt_subheader_group_actions_status_change">
-                            <button type="button" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle" data-toggle="dropdown">
-                                Select SalesMan
-                            </button>
-                            <div class="dropdown-menu">
-                                <ul class="kt-nav">
-                                    <li class="kt-nav__section kt-nav__section--first">
-                                        <span class="kt-nav__section-text"> Select SalesMan:</span>
-                                    </li>
 
-                                    @foreach($sales as $sale)
-                                        <li class="kt-nav__item">
-                                            <a  class="kt-nav__link"  data-toggle="status-change" data-status="{{$sale['id']}}">
+                @if((Auth::user()->role->name == 'admin'))
+                    <div class="kt-subheader__group" id="kt_subheader_group_actions">
+                        <div class="kt-subheader__desc"><span id="kt_subheader_group_selected_rows"></span> Selected:
+                        </div>
+                        <div class="btn-toolbar kt-margin-l-20">
+                            <div class="dropdown" id="kt_subheader_group_actions_status_change">
+                                <button type="button" class="btn btn-label-brand btn-bold btn-sm dropdown-toggle"
+                                        data-toggle="dropdown">
+                                    Select SalesMan
+                                </button>
+                                <div class="dropdown-menu">
+                                    <ul class="kt-nav">
+                                        <li class="kt-nav__section kt-nav__section--first">
+                                            <span class="kt-nav__section-text"> Select SalesMan:</span>
+                                        </li>
+
+                                        @foreach($sales as $sale)
+                                            <li class="kt-nav__item">
+                                                <a class="kt-nav__link" data-toggle="status-change"
+                                                   data-status="{{$sale['id']}}">
                                                 <span class="kt-nav__link-text">
                                                     <span class="sale kt-badge kt-badge--unified-success kt-badge--inline kt-badge--bold">
                                                         {{$sale['name']}}
                                                     </span>
                                                 </span>
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
                             </div>
+                            <button class="btn btn-label-danger btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_delete_all">
+                                Delete
+                            </button>
                         </div>
-                        <button class="btn btn-label-danger btn-bold btn-sm btn-icon-h" id="kt_subheader_group_actions_delete_all">
-                            Delete
-                        </button>
+
                     </div>
-                </div>
-                    @endif
+                @endif
             </div>
             <div class="kt-kt-subheader__main">
                 <div class="kt-subheader__toolbar" style="padding: 15px">
@@ -125,7 +124,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -138,7 +136,9 @@
             <div class="kt-portlet__body kt-portlet__body--fit">
 
                 <!--begin: Datatable -->
-                <div class="kt-datatable" id="kt_apps_user_list_datatable"></div>
+                <div class="kt-datatable" id="kt_apps_user_list_datatable">
+
+                </div>
 
                 <!--end: Datatable -->
             </div>
@@ -172,6 +172,7 @@
 
         <!--end::Modal-->
 
+
         <!--begin::Modal-->
         <div class="modal fade" id="kt_datatable_records_fetch_modal" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -203,6 +204,7 @@
 
 
 @section('script')
+    <script> HREF = "{{ url('client/get_todo_data') }}"; </script>
     <script>
         function output(data) {
             return '<form class="kt-form" id="updateForm" method="POST" action="{{url('/client-update')}}">\n' +
@@ -248,8 +250,8 @@
                 '</div>\n' +
                 ' </div>\n' +
                 '                        <div class="form-group row">\n' +
-                '                    @if(Auth::user()->role->name == 'admin')\n' +
-                ' <div class="col-lg-3">\n' +
+                ' @if(Auth::user()->role->name == 'admin')\n' +
+                '                            <div class="col-lg-3">\n' +
                 '                                <select id="" name="assignToSaleManId" class="form-control">\n' +
                 '                                    <option  value="" selected>Assigned To</option>\n' +
                 '                                    @foreach($sales as $sale)\n' +
@@ -257,7 +259,7 @@
                 '                                    @endforeach\n' +
                 '                                </select>\n' +
                 '                            </div>\n' +
-                '                   @endif \n' +
+                ' @endif \n' +
                 '<div class="col-3">\n' +
                 '<select class="form-control" id="" name="via_method">\n' +
                 ' <option selected value="">Select Method</option>\n' +
@@ -359,7 +361,7 @@
                     'title': 'Phone',
                 },
                 2: {
-                    'title': 'whatsApp',
+                    'title': 'WhatsApp',
                 },
                 3: {
                     'title': 'Email',
@@ -393,18 +395,18 @@
             };
             return '<div class="kt-user-card-v2">\
                         			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.detail.actionId].class + '">' + status[data.detail.actionId].title + ' At ' + data.detail.notificationDate + ' ' + data.detail.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
+                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.actionId].class + '">' + status[data.actionId].title + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
+                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.viaMethodId].title + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.summery].title + '  </p>\
                         		</div>\
                         		</div>\
                         		<div>\
                         		<input type="text" hidden class="user" value="' + data.id + '"> \
                         	<button type="button" class="getHistory btn btn-bold btn-label-brand btn-lg" style="width:160px; margin-bottom:10px">Load History</button>\
-                      <a  href="https://wa.me/'+ data.phone +'" target="_blank" class="whats btn btn-bold btn-label-success btn-lg" style="width:160px;">\
-                                    <i class="fab fa-whatsapp"></i>whatsApp</a>\
-                        		</div>\
-                        		';
+                            <a  href="https://wa.me/'+ data.phone +'" target="_blank" class="whats btn btn-bold btn-label-success btn-lg" style="width:160px;">\
+                             <i class="fab fa-whatsapp"></i>whatsApp</a>\
+                              </div>';
+
         }
     </script>
 
@@ -431,27 +433,30 @@
             var state = states[stateNo];
 
             return '<div class="kt-user-card-v2">\
-                        		<!--<div class="kt-user-card-v2__pic">\
-                        				<div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
-                        			</div>\-->\
-                        			<div class="kt-user-card-v2__details">\
-                        			<p class="kt-user-card-v2__name">Name : ' + data.name + '</p>\
-                        			<p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Phone : \
-                                           <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
-                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
-                        			@if(Auth::user()->role->name == 'admin')\
-                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.detail.saleName + '  </p>\
-                        			@endif\
-                        			<p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
-                        		</div>\
-                        		</div>';
+                <!--<div class="kt-user-card-v2__pic">\
+                        <div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
+                    </div>\-->\
+                    <div class="kt-user-card-v2__details">\
+                    <p class="kt-user-card-v2__name">Name : ' + data.name + '</p>\
+                    <p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
+                   <p class="kt-user-card-v2__name"> Phone : \
+                              <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
+                    <p class="kt-user-card-v2__name"> Interested Project : ' + data.projectName + '  </p>\
+                    <p class="kt-user-card-v2__name"> Job Title : ' + data.jobTitle + '  </p>\
+                    <p class="kt-user-card-v2__name"> Notes : ' + data.notes + '  </p>\
+                    @if(Auth::user()->role->name == 'admin')\
+                    <p class="kt-user-card-v2__name"> Assign To : ' + data.saleName + '  </p>\
+                    @endif\
+                    <p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
+                </div>\
+                </div>\
+                     ';
 
         }
 
     </script>
+    <script> URL = "{{ url('/') }}"; </script>
+    <script> user = "{{ Auth::user()->role->name }}"; </script>
     <script>
         var methods = {
 
@@ -463,7 +468,7 @@
                 'title': 'Phone',
             },
             2: {
-                'title': 'Whats Up',
+                'title': 'whatsApp',
             },
             3: {
                 'title': 'Email',
@@ -523,10 +528,7 @@
             );
         });
     </script>
-    <script> HREF = "{{ url('client/get_duplicated_data') }}"; </script>
-    <script> URL = "{{ url('/') }}"; </script>
     <script> title = "Last Action"; </script>
-    <script> user = "{{ Auth::user()->role->name }}"; </script>
     <script src="{{url('assets/js/pages/custom/user/list-datatable.js')}}" type="text/javascript"></script>
 
 @endsection
