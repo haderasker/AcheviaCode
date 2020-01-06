@@ -16,7 +16,7 @@ class MigrateOldDataTransform
     public function userTransform($user)
     {
         $model = DB::connection('mysql')->table('users');
-        $modelOld = DB::connection('old_data')->table('requests');
+//        $modelOld = DB::connection('old_data')->table('requests');
         $code = $user->in_code;
         $phoney = $user->r_mobile;
 
@@ -219,59 +219,4 @@ class MigrateOldDataTransform
         return $newProject;
     }
 
-
-
-    public function updateUserTransform($user){
-        $model = DB::connection('mysql')->table('users');
-        $code = $user->in_code;
-        $phoney = $user->r_mobile;
-
-        $countryCode = '20';
-        if ($code) {
-            $countryCode = str_replace('+', '', strstr($code, '+'));
-        }
-        $convertMob = strtr($phoney, array('i' => '1', 'o' => '0', ' ' => '', '٠' => '0', '١' => '1', '٢' => '2', '٣' => '3', '٤' => '4', '٥' => '5', '٦' => '6', '٧' => '7', '٨' => '8', '٩' => '9'));
-        preg_match_all('!\d+!', $convertMob, $matches);
-        $convertMob = implode('', $matches[0]);
-        $firstChar = substr($convertMob, 0, 1);
-        $firstTwoChar = substr($convertMob, 0, 2);
-        $firstThirdChar = substr($convertMob, 0, 3);
-        $firstFourChar = substr($convertMob, 0, 4);
-        $phone = $countryCode . $convertMob;
-
-
-        if ($firstTwoChar == '10') {
-            $phone = $countryCode . str_replace('10', '', $convertMob);
-        }
-        if ($firstThirdChar == '200') {
-            $phone = $countryCode . str_replace('200', '', $convertMob);
-        }
-        if ($firstTwoChar != '20' || $firstTwoChar != '96' || $firstTwoChar != '97') {
-            $phone = $countryCode . $convertMob;
-        }
-        if ($firstTwoChar == '20' || $firstTwoChar == '96' || $firstTwoChar == '97') {
-            $phone = $convertMob;
-        }
-        if ($firstFourChar == '2020') {
-            $phone = $countryCode . str_replace('2020', '', $convertMob);
-        }
-
-
-        if ($firstChar == '1') {
-            $phone = $countryCode . $convertMob;
-        }
-        if ($firstChar == '0') {
-            $phone = $countryCode . ltrim($convertMob, '0');
-        }
-        if ($firstTwoChar == '00') {
-            $phone = str_replace('00', '', $convertMob);
-        }
-
-        $userExist = $model->where('phone', $phone)->orWhere('email', $user->in_email)->first();
-
-        if ($userExist) {
-            return ['user' => $userExist, 'status' => 'existed'] ;
-
-        }
-    }
 }
