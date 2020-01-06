@@ -85,6 +85,8 @@ class MigrateOldDataTransform
             $newUsers['user']['phone'] = $phone;
             $newUsers['user']['roleId'] = 5;
             $newUsers['user']['createdBy'] = null;
+            $newUsers['user']['created_at'] = $user->created_at;
+            $newUsers['user']['updated_at'] = $user->updated_at;
             $newUsers['detail']['notes'] = $user->in_notes;
             $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
             $newUsers['detail']['addClientLinkId'] = $user->r_link;
