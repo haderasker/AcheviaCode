@@ -374,8 +374,7 @@ class ClientActionController extends Controller
         return View('client_action.transfered', compact('actionId', 'sales', 'actions', 'methods'));
     }
 
-    public
-    function getTransferedData(Request $request)
+    public function getTransferedData(Request $request)
     {
         $paginationOptions = $request->input('pagination');
         if ($paginationOptions['perpage'] == -1) {
@@ -400,7 +399,7 @@ class ClientActionController extends Controller
         }
 
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $query->with('detail')->whereHas('detail', function ($q, $filter) {
+            $data = $query->with('detail')->whereHas('detail', function ($q) use ($filter) {
                 if (isset($filter['sale']) && $filter['sale'] != 0) {
                     $q->where('transferred', 1)->where('assignToSaleManId', $filter['sale']);
                 } else {
