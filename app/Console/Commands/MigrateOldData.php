@@ -114,6 +114,30 @@ class MigrateOldData extends Command
 //        }
 
 //update date from old to new data
+//
+//        // select from old data base
+//        $model = DB::connection('old_data')->table('requests');
+//        $old_data = $model->select(['in_code', 'r_mobile', 'in_email', 'r_name', 'in_notes', 'r_assigned', 'r_state', 'r_link', 'r_id', 'created_at', 'updated_at'])->get();
+//        foreach ($old_data as $user) {
+//            // transform to new shape
+//            $transformedData = $this->migrate->userTransform($user);
+//            if (isset($transformedData['status']) && $transformedData['status'] == 'existed') {
+//
+//                // update into data base
+//                $newUser = DB::connection('mysql')->table('client_details');
+//                $myNewUser = $transformedData['user'];
+//
+//                $userUpdate = $newUser->where('userId', $myNewUser->id)
+//                    ->update(['created_at' => ($user->created_at),'updated_at' => ($user->updated_at)]);
+//
+//
+//                $this->info('user with id: ' . $myNewUser->id. ' has been updated');
+//            }
+//        }
+
+        //update notification date and time from old to new in table client detail
+
+        //then i need to view last action info from table history (last action === last created at )
 
         // select from old data base
         $model = DB::connection('old_data')->table('requests');
@@ -128,8 +152,8 @@ class MigrateOldData extends Command
                 $myNewUser = $transformedData['user'];
 
                 $userUpdate = $newUser->where('userId', $myNewUser->id)
-                    ->update(['created_at' => ($user->created_at),'updated_at' => ($user->updated_at)]);
-
+                    ->update(['notificationDate' => date($user->updated_at),
+                        'notificationTime' => date("H:i:s",strtotime($user->updated_at) )]);
 
                 $this->info('user with id: ' . $myNewUser->id. ' has been updated');
             }
