@@ -398,6 +398,7 @@
                         			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.detail.actionId].class + '">' + status[data.detail.actionId].title + ' At ' + data.detail.notificationDate + ' ' + data.detail.notificationTime + '</p>\
                         			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
                         			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Note : ' + data.detail.notes+ '  </p>\
                         		</div>\
                         		</div>\
                         		<div>\

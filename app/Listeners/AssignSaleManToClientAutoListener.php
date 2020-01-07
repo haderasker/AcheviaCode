@@ -54,7 +54,13 @@ class AssignSaleManToClientAutoListener
 //
                 foreach ($mySelectedSales as $sale) {
                     if (($sale['lastAssigned'] == 0 || $sale['weight'] > $sale['lastAssigned']) && $sale['assign'] == 0) {
-                        ClientDetail::where('userId', $client['userId'])->update(['assignToSaleManId' => $sale['id']]);
+                        ClientDetail::where('userId', $client['userId'])
+                            ->update([
+                                'assignToSaleManId' => $sale['id'],
+                                'assignedDate' => now()->format('Y-m-d'),
+                                'assignedTime' => now()->format('H:i:s'),
+                            ]);
+
                         $saleMan = User::where('id', $sale['id']);
                         $saleMan->update(['lastAssigned' => ($sale['lastAssigned'] + 1)]);
                         $history = ClientHistory::create([

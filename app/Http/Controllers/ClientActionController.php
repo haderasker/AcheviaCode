@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Events\PushNotificationEvent;
 
 class ClientActionController extends Controller
 {
@@ -489,8 +490,8 @@ class ClientActionController extends Controller
 
         if ((Auth::user()->role->name == 'admin')) {
             $query->when($filter['sale'], function ($query) use ($filter) {
-                    $query->where('assignToSaleManId', $filter['sale']);
-                });
+                $query->where('assignToSaleManId', $filter['sale']);
+            });
         } elseif ((Auth::user()->role->name == 'sale Man')) {
 
             $query->where('assignToSaleManId', $userId);
@@ -592,7 +593,16 @@ class ClientActionController extends Controller
         $clients = $request->ids;
         $saleId = $request->sale;
         foreach ($clients as $client) {
-            ClientDetail::where('userId', $client)->update(['assignToSaleManId' => $saleId]);
+            ClientDetail::where('userId', $client)->update([
+                'assignToSaleManId' => $saleId,
+                'transferred' => 1,
+                'assignedDate' => now()->format('Y-m-d'),
+                'assignedTime' => now()->format('H:i:s'),
+            ]);
+
+            $sale = User::where('id', $saleId)->first();
+            $user = User::where('id', $client)->first();
+            event(new PushNotificationEvent($sale, $user));
         }
         return 'done';
     }

@@ -95,9 +95,14 @@ class ClientController extends Controller
             if ($request->assignToSaleManId != 0) {
                 $saleManAssignedToClient = 1;
             }
+
+            $assignedDate = now()->format('Y-m-d');
+            $assignedTime = now()->format('H:i:s');
             $assignToSaleManId = $request->assignToSaleManId;
             if ($request->assignToSaleManId == 0) {
                 $assignToSaleManId = null;
+                $assignedDate = null;
+                $assignedTime = null;
             }
 
             $clientDetailsData = array(
@@ -121,8 +126,8 @@ class ClientController extends Controller
                 'city' => '',
                 'assignToSaleManId' => $assignToSaleManId,
                 'lastAssigned' => $saleManAssignedToClient,
-                'assignedDate' => now()->format('Y-m-d'),
-                'assignedTime' => now()->format('H:i:s'),
+                'assignedDate' => $assignedDate,
+                'assignedTime' => $assignedTime,
                 'platform' => $request->platform,
                 'campaignId' => $request->campaignId,
                 'marketerId' => $request->marketerId,
@@ -207,10 +212,16 @@ class ClientController extends Controller
         $userCreated = $created['user'];
         $exist = $created['exist'];
         if ($exist == 'no') {
+
+            $assignedDate = now()->format('Y-m-d');
+            $assignedTime = now()->format('H:i:s');
             $assignToSaleManId = $request->assignToSaleManId;
             if ($request->assignToSaleManId == 0) {
                 $assignToSaleManId = null;
+                $assignedDate = null;
+                $assignedTime = null;
             }
+
             $clientDetailsData = array(
                 'userId' => $user->id,
                 'jobTitle' => $request->jobTitle,
@@ -221,8 +232,11 @@ class ClientController extends Controller
                 'campaignId' => $request->campaignId,
                 'marketerId' => $request->marketerId,
                 'assignToSaleManId' => $assignToSaleManId,
+                'assignedDate' => $assignedDate,
+                'assignedTime' => $assignedTime,
+
             );
-//
+
 //        //insert record
             $user = $this->clientModel->create($clientDetailsData);
             if ($request->assignToSaleManId != 0) {
@@ -304,8 +318,8 @@ class ClientController extends Controller
             $projects = $this->project->all()->toArray();
             $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
             foreach ($projects as $key => $project) {
-                foreach ($projectsIgnore as  $ignore){
-                    if($ignore['id'] == $project['id'] ){
+                foreach ($projectsIgnore as $ignore) {
+                    if ($ignore['id'] == $project['id']) {
                         unset($projects[$key]);
                     }
                 }
@@ -631,8 +645,8 @@ class ClientController extends Controller
         $projects = $this->project->all()->toArray();
         $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
         foreach ($projects as $key => $project) {
-            foreach ($projectsIgnore as  $ignore){
-                if($ignore['id'] == $project['id'] ){
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
                     unset($projects[$key]);
                 }
             }

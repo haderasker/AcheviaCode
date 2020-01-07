@@ -10,6 +10,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Events\PushNotificationEvent;
 
 class HomeController extends Controller
 {
@@ -87,12 +88,16 @@ class HomeController extends Controller
         $projectId = Project::where('name', 'like', '%' . $projectName . '%')->get()->first()['id'];
         $phone = ltrim($request->phone, '+');
         $userExist = User::where('phone', $phone)->orWhere('email', $request->email)->first();
-        $actionId = ClientDetail::where('userId', $userExist['id'])->first()['actionId'];
+        $sale = ClientDetail::where('userId', $userExist['id'])->first();
+        $actionId = $sale['actionId'];
         if ($userExist && $actionId != null) {
             $model = User::find($userExist['id']);
             $countDuplicated = $userExist['duplicated'];
             $model->duplicated = $countDuplicated + 1;
             $user = $model->save();
+            $sale = User::where('id', $sale['assignToSaleManId'])->first();
+            $client = User::where('id', $userExist['id'])->first();
+            event(new PushNotificationEvent($sale, $client));
             return $model;
 
         } elseif ($userExist && $actionId == null) {

@@ -37,9 +37,14 @@ class ImportClients implements ToModel
         $cols = $this->myData;
         $phone = $row[$cols['codeCol'] - 1] . $row[$cols['phoneCol'] - 1];
         $userExist = User::where('phone', $phone)->orWhere('email', $row[$cols['emailCol'] - 1])->first();
-        $actionId = ClientDetail::where('userId', $userExist['id'])->first()['actionId'];
+        $sale = ClientDetail::where('userId', $userExist['id'])->first();
+        $actionId =  $sale['actionId'];
+
         if ($userExist && $actionId != null) {
             $userExist->duplicated = $userExist->duplicated + 1;
+            $sale = User::where('id', $sale['assignToSaleManId'])->first();
+            $client = User::where('id', $userExist['id'])->first();
+            event(new PushNotificationEvent($sale, $client));
             return $userExist;
         } elseif ($userExist && $actionId == null) {
             return $userExist;
@@ -66,8 +71,13 @@ class ImportClients implements ToModel
         $user = User::create($userData);
         $userCreated = $user;
         $assignToSaleManId = $cols['saleCol'];
+        $assignedDate = now()->format('Y-m-d');
+        $assignedTime = now()->format('H:i:s');
+
         if ($cols['saleCol'] == 0) {
             $assignToSaleManId = null;
+            $assignedDate = null;
+            $assignedTime = null;
         }
         $clientDetailsData = array(
             'userId' => $user->id,
@@ -79,6 +89,9 @@ class ImportClients implements ToModel
             'campaignId' => $cols['campaignCol'],
             'marketerId' => $cols['marketerCol'],
             'assignToSaleManId' => $assignToSaleManId,
+            'assignedDate' => $assignedDate,
+            'assignedTime' => $assignedTime,
+
         );
         $state = '';
         if ($cols['saleCol'] != 0) {

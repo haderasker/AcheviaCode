@@ -64,15 +64,17 @@ class MigrateOldDataTransform
         $userExist = $model->where('phone', $phone)->orWhere('email', $user->in_email)->first();
 
         if ($userExist) {
-            return ['user' => $userExist, 'status' => 'existed'] ;
+            return ['user' => $userExist, 'status' => 'existed'];
 
         } else {
             $link = DB::connection('old_data')->table('Links');
             $project = $link->where('l_id', $user->r_link)->first();
             $logs = DB::connection('old_data')->table('request_log');
             $history = $logs->where('rl_r_id', $user->r_id)->get()->toArray();
+            $lastHistory = $logs->where('rl_r_id', $user->r_id)->orderBy('created_at', 'desc')->first();
+
             $newUsers = [];
-            $email =  time() . Str::random(10) . '@gmail.com';
+            $email = time() . Str::random(10) . '@gmail.com';
             if ($user->in_email) {
                 $email = $user->in_email;
             }
@@ -87,11 +89,29 @@ class MigrateOldDataTransform
             $newUsers['user']['createdBy'] = null;
             $newUsers['user']['created_at'] = $user->created_at;
             $newUsers['user']['updated_at'] = $user->updated_at;
-            $newUsers['detail']['notes'] = $user->in_notes;
+//            $newUsers['detail']['notes'] = $user->in_notes;
             $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
             $newUsers['detail']['addClientLinkId'] = $user->r_link;
             $newUsers['detail']['projectId'] = $project->l_project;
             $newUsers['detail']['actionId'] = $this->replaceAction($user->r_state);
+            if ($lastHistory) {
+                if (is_null($lastHistory->rl_date)) {
+                    $date = date($lastHistory->created_at);
+                    $time = date("H:i:s", strtotime($lastHistory->created_at));
+                } else {
+                    $date = date($lastHistory->rl_date);
+                    $time = date("H:i:s", strtotime($lastHistory->rl_date));
+                }
+                $note = $lastHistory->rl_info;
+                $method = $lastHistory->rl_method;
+                $newUsers['detail']['notificationDate'] = $date;
+                $newUsers['detail']['notificationTime'] = $time;
+                $newUsers['detail']['notes'] = $note;
+                $newUsers['detail']['viaMethodId'] = $method;
+                $newUsers['detail']['assignedDate'] = date($user->created_at);
+                $newUsers['detail']['assignedTime'] = date("H:i:s", strtotime($user->created_at));
+            }
+
             foreach ($history as $key => $one) {
                 $newUsers['history'][$key]['actionId'] = $this->replaceAction($one->rl_type);
                 $newUsers['history'][$key]['date'] = $one->rl_date;
@@ -107,6 +127,7 @@ class MigrateOldDataTransform
 
                 $newUsers['history'][$key]['state'] = $state;
             }
+
 
 //            $modelOld->where('r_id',$user->r_id)->get();
 //            $modelOld->delete();
