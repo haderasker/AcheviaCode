@@ -67,54 +67,75 @@ var KTUserListDatatable = function () {
                 {
                     field: 'roleId',
                     title: 'Type',
+                    width:150,
                     template: function (data) {
                         return '<span class="btn btn-bold btn-sm btn-font-sm">  ' + data.role.name + ' </span>';
                     },
 
                 },
 
+                // {
+                //     field: 'image',
+                //     title: 'Image',
+                //     template: function (data) {
+                //
+                //         return '<span class="btn btn-bold btn-sm btn-font-sm">  <img width="200" height="100"  src="' + URL + '/images/' + data.image + '" /> </span>';
+                //     },
+                // },
+
                 {
-                    field: 'image',
-                    title: 'Image',
+                    field: 'id',
+                    title: 'Edit',
                     template: function (data) {
 
-                        return '<span class="btn btn-bold btn-sm btn-font-sm">  <img width="200" height="100"  src="' + URL + '/images/' + data.image + '" /> </span>';
-                    },
+                        return window.edited(data);
+                    }
                 },
 
                 {
-                    field: "Actions",
-                    width: 50,
-                    title: "Actions",
-                    sortable: false,
-                    autoHide: false,
-                    overflow: 'visible',
+                    field: '',
+                    title: 'Delete',
                     template: function (data) {
-                        return '\
-<div class="dropdown">\
-    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
-        <i class="flaticon-more-1"></i>\
-    </a>\
-    <div class="dropdown-menu dropdown-menu-right">\
-        <ul class="kt-nav">\
-            <li class="kt-nav__item">\
-                <a href="' + URL + '/project-edit/' + data.id + '" class="kt-nav__link">\
-                    <i class="kt-nav__link-icon flaticon2-contract"></i>\
-                    <span class="kt-nav__link-text">Edit</span>\
-                </a>\
-            </li>\
-            <!--	<li class="kt-nav__item">\
-                    <a href="#" class="kt-nav__link">\
-                        <i class="kt-nav__link-icon flaticon2-mail-1"></i>\
-                        <span class="kt-nav__link-text">Export</span>\
-                    </a>\
-                </li>\-->\
-        </ul>\
-    </div>\
-</div>\
-';
-                    },
-                }]
+
+                        return window.deleted(data);
+                    }
+                },
+
+//                 {
+//                     field: "Actions",
+//                     width: 50,
+//                     title: "Actions",
+//                     sortable: false,
+//                     autoHide: false,
+//                     overflow: 'visible',
+//                     template: function (data) {
+//                         return '\
+// <div class="dropdown">\
+//     <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
+//         <i class="flaticon-more-1"></i>\
+//     </a>\
+//     <div class="dropdown-menu dropdown-menu-right">\
+//         <ul class="kt-nav">\
+//             <li class="kt-nav__item">\
+//                 <a href="' + URL + '/user-edit/' + data.id + '" class="kt-nav__link">\
+//                     <i class="kt-nav__link-icon flaticon2-contract"></i>\
+//                     <span class="kt-nav__link-text">Edit</span>\
+//                 </a>\
+//             </li>\
+//             <!--	<li class="kt-nav__item">\
+//                     <a href="#" class="kt-nav__link">\
+//                         <i class="kt-nav__link-icon flaticon2-mail-1"></i>\
+//                         <span class="kt-nav__link-text">Export</span>\
+//                     </a>\
+//                 </li>\-->\
+//         </ul>\
+//     </div>\
+// </div>\
+// ';
+//                     },
+//                 }
+
+                ]
         });
     }
 

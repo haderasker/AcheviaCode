@@ -110,6 +110,8 @@ class MigrateOldDataTransform
                 $newUsers['detail']['viaMethodId'] = $method;
                 $newUsers['detail']['assignedDate'] = date($user->created_at);
                 $newUsers['detail']['assignedTime'] = date("H:i:s", strtotime($user->created_at));
+                $newUsers['detail']['created_at'] = $user->created_at;
+                $newUsers['detail']['updated_at'] = $user->updated_at;
             }
 
             foreach ($history as $key => $one) {

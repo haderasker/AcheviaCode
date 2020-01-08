@@ -47,12 +47,14 @@ class PushNotification extends Notification
             return [
                 'registration_ids' => [$deviceId],
                 'notification' => [
-                    'title' => 'New Assignation',
-                    'body' => 'You Assigned To Client: ' . $client['name'],
-                ]
+                    'title' => 'Assign Client',
+                    'body' => 'You Have New Client: ' . $client['name'],
+                    'icon' => url('/images/favicon.png')
+                ],
+                'data' => ['url' => url('/client-profile/' . $client['id'])]
             ];
         } else {
-            return ['notification' =>'notSend'];
+            return ['notification' => 'notSend'];
         }
     }
 

@@ -1,9 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
+
     @if(session()->has('message'))
-        <div class="alert alert-success">
+        <div class="alert alert-danger">
             {{ session()->get('message') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -62,6 +73,7 @@
             </div>
         </div>
 
+
         <!--end::Portlet-->
 
         <!--begin::Modal-->
@@ -96,7 +108,34 @@
 
 @section('script')
     <script> HREF = "{{ url('users/get_data') }}"; </script>
-    <script> URL  = "{{ url('/') }}"; </script>
+    <script> URL = "{{ url('/') }}"; </script>
+    <script>
+        function deleted(data) {
+            return '<div><form method="POST" action="' + URL + '/user-delete/' + data.id + '">\n' +
+                '          <button  type="submit" class="btn btn-danger" style="width:100px">\n' +
+                '          <i class="kt-menu__link-icon  flaticon-delete"></i>\n' +
+                '          Delete\n' +
+                '          </button>\n' +
+                '      {{ method_field('DELETE') }}\n' +
+                '      {{ csrf_field() }}\n' +
+                '</form></div>';
+        }
+    </script>
+
+    <script>
+        function edited(data) {
+            return '<div>\n' +
+                '            <a href="' + URL + '/user-edit/' + data.id + '" class="kt-nav__link">\n' +
+                '                <button class="btn btn-success" style="width:100px">\n' +
+                '                    <i class="kt-menu__link-icon  flaticon-edit"></i>Edit\n' +
+                '                </button>\n' +
+                '            </a>\n' +
+                '        </div>';
+        }
+    </script>
+
+
+
     <script src="{{url('assets/js/pages/custom/user/list-datatable-users.js')}}" type="text/javascript"></script>
 
 @endsection

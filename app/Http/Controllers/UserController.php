@@ -46,11 +46,11 @@ class UserController extends Controller
     public function getAllData(Request $request)
     {
         $paginationOptions = $request->input('pagination');
-        if($paginationOptions['perpage'] == -1){
+        if ($paginationOptions['perpage'] == -1) {
             $paginationOptions['perpage'] = 0;
         }
 
-        $data = $this->model->where('roleId','!=',5)->with('role')->whereHas('role')
+        $data = $this->model->where('roleId', '!=', 5)->with('role')->whereHas('role')
             ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
 
 
@@ -81,7 +81,7 @@ class UserController extends Controller
         $phone = $request->countryCode . ltrim($request->phone, '0');
         $userExist = $this->model->where('phone', $phone)->orWhere('email', $request->email)->first();
         $sale = ClientDetail::where('userId', $userExist['id'])->first();
-        $actionId =  $sale['actionId'];
+        $actionId = $sale['actionId'];
 
 
 //        $projectIdExist = $userExist->with('detail')->whereHas('detail')->first()['detail']['projectId'];
@@ -168,33 +168,31 @@ class UserController extends Controller
     function edit($id)
     {
         $requestData = $this->model->find($id);
+        $roles = Role::all()->toArray();
 
-        return View('users.edit', compact('requestData'));
+        return View('users.edit', compact('requestData', 'roles'));
     }
 
-    public
-    function updateUser($id, $request)
+    public function updateUser($id, $request)
     {
         $model = $this->model->find($id);
+        $password = $model['password'];
+        if ($request->password) {
+            $password = Hash::make($request->password);
+        }
+        $teamId = $model['teamId'];
+        if ($request->teamId) {
+            $teamId = $request->teamId;
+        }
+
         $model->name = $request->name;
         $model->email = $request->email;
-        $model->password = $request->password;
-        $model->userName = $request->userName;
+        $model->password = $password;
         $model->phone = $request->phone;
         $model->roleId = $request->roleId;
-        $model->teamId = $request->teamId;
-        $model->assignToSaleManId = $request->assignToSaleManId;
-        $model->mangerId = $request->mangerId;
+        $model->teamId = $teamId;
         $model->userStatus = 1;
-        $model->assign = $request->assign;
-        $model->saleManPunished = $request->saleManPunished;
-        $model->saleManAssignedToClient = $request->saleManAssignedToClient;
-        $model->saleManSendingMsgLimit = $request->saleManSendingMsgLimit;
-        $model->assignedTime = $request->assignedTime;
-        $model->assignedDate = $request->assignedDate;
-        $model->saleManAssignedToClient = $request->saleManAssignedToClient;
         $model->active = 1;
-
         $updated = $model->save();
         return $updated;
     }
@@ -202,38 +200,32 @@ class UserController extends Controller
     /**
      * update user
      */
-    public
-    function update($id, Request $request)
+    public function update(Request $request)
     {
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|unique:users|max:255',
-            'password' => 'required',
-            'userName' => 'required',
+            'email' => 'required|email|max:255|unique:users,email,' . $request->id,
             'phone' => 'required',
-            'roleId' => 'required',
-            'assign' => 'required',
-            'saleManPunished' => 'required',
-            'saleManAssignedToClient' => 'required',
-            'saleManSendingMsgLimit' => 'required',
+            'createdBy' => 'required',
+            'roleId' => 'required|not_in:0',
         ]);
 
-        $updated = $this->updateUser($id, $request);
+        $updated = $this->updateUser($request->id, $request);
 
-        return redirect('/users')->with('success', 'Updated successfully');
+        return redirect('/users')->withMessage('Updated successfully');
     }
 
     /**
      * delete user
      */
-    public
-    function destroy($id)
+    public function destroy($id)
     {
         $model = $this->model->find($id);
         $model->delete();
 
-        return redirect('/users')->with('success', 'Deleted successfully');
+        return redirect('/users')->withMessage('Deleted successfully');
     }
+
 
     public
     function dropDownTeams(Request $request)

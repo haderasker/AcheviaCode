@@ -20,7 +20,7 @@ var KTUserListDatatable = function () {
                     },
                 },
 
-                pageSize: 15, // display 20 records per page
+                pageSize: 10, // display 20 records per page
                 serverPaging: true,
                 serverFiltering: true,
                 serverSorting: true,
@@ -35,6 +35,7 @@ var KTUserListDatatable = function () {
 
             // column sorting
             sortable: true,
+            pagination: true,
 
             search: {
                 input: $('#generalSearch'),
@@ -167,7 +168,7 @@ var KTUserListDatatable = function () {
     // selection
     var selection = function () {
         // init form controls
-        //$('#kt_form_status, #kt_form_type').selectpicker();
+        $('#kt_form_status, #kt_form_type').selectpicker();
 
         // event handler on check and uncheck on records
         datatable.on('kt-datatable--on-check kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
@@ -199,7 +200,7 @@ var KTUserListDatatable = function () {
 
             setTimeout(function () {
                 loading.hide();
-            }, 1000);
+            }, 5000);
 
             // fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
@@ -376,7 +377,7 @@ var KTUserListDatatable = function () {
 
     var updateTotal = function () {
         datatable.on('kt-datatable--on-layout-updated', function () {
-            //$('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
+            $('#kt_subheader_total').html(datatable.getTotalRows() + ' Total');
         });
     };
 

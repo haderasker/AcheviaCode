@@ -110,12 +110,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('users', 'UserController@index');
         Route::get('user-create', 'UserController@create');
         Route::post('user-store', 'UserController@store');
-        Route::get('user-edit', 'UserController@edit');
-        Route::patch('user-update/{id}', 'UserController@update');
+        Route::get('user-edit/{id}', 'UserController@edit');
+        Route::post('user-update', 'UserController@update');
         Route::delete('user-delete/{id}', 'UserController@destroy');
         Route::get('users/get_data', 'UserController@getAllData');
         Route::get('api/dropdown/teams', 'UserController@dropDownTeams');
-
 
 
         /**
@@ -146,6 +145,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('client-update', 'ClientController@update');
         Route::post('client-form-update', 'ClientController@updateForm');
         Route::delete('client-delete', 'ClientController@destroy');
+        Route::get('client-profile/{id}', 'ClientController@profile');
+        Route::get('client/get-profile-data/{id}', 'ClientController@getProfileData');
 
         /**
          * client actions routes
@@ -157,6 +158,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('action-client/{id}', 'ClientActionController@actionClient');
         Route::get('client/get_todo_data', 'ClientActionController@getToDoData');
         Route::get('todo-data', 'ClientActionController@toDoClients');
+        Route::get('client/get_todo_hot_data', 'ClientActionController@getToDoHotData');
+        Route::get('todo-hot-data', 'ClientActionController@toDoHotClients');
         Route::get('history-clients/{id}', 'ClientActionController@history');
         Route::get('client/get_history/{id}', 'ClientActionController@getHistory');
         Route::get('duplicated-clients', 'ClientActionController@duplicated');

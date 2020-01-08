@@ -739,4 +739,42 @@ class ClientController extends Controller
 
     }
 
+    public function profile($id)
+    {
+        $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
+        $clientId = $id;
+        $methods = Method::all()->toArray();
+        $actions = Action::all()->sortBy('order')->toArray();
+        if ((Auth::user()->role->name == 'sale Man')) {
+            $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
+        }
+        return View('clients.profile', compact('sales', 'actions', 'methods' , 'clientId'));
+    }
+
+    /**
+     * view  index get data
+     */
+    public function getProfileData($id)
+    {
+        $data = User::where('id', $id)->with('detail')->whereHas('detail')->first();
+        $projectName = Project::where('id', $data['detail']['projectId'])->first()['name'];
+        $saleName = User::where('id', $data['detail']['assignToSaleManId'])->first()['name'];
+        $data['detail']['projectName'] = $projectName;
+        $data['detail']['saleName'] = $saleName;
+
+        $meta = [
+            "page" => '',
+            "pages" => '',
+            "perpage" => '',
+            "total" => '',
+        ];
+
+        $requestData = [
+            'meta' => $meta,
+            'data' => $data,
+        ];
+
+        return $requestData;
+    }
+
 }

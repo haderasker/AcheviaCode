@@ -108,6 +108,9 @@
                             {{--<li class="kt-menu__item " aria-haspopup="true"><a href="{{url('hot-data')}}" class="kt-menu__link "><i--}}
                                             {{--class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span--}}
                                             {{--class="kt-menu__link-text">Hot ToDo </span></a></li>--}}
+                            <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('todo-hot-data')}}" class="kt-menu__link "><i
+                                            class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
+                                            class="kt-menu__link-text">Hot ToDo </span></a></li>
                             <li class="kt-menu__item " aria-haspopup="true"><a href="{{url('todo-data')}}" class="kt-menu__link "><i
                                             class="kt-menu__link-bullet kt-menu__link-bullet--dot"><span></span></i><span
                                             class="kt-menu__link-text">VIP ToDo </span></a></li>

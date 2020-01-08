@@ -204,7 +204,7 @@
 
 
 @section('script')
-    <script> HREF = "{{ url('client/get_data/'.$actionId) }}"; </script>
+    <script> HREF = "{{ url('client/get_todo_hot_data') }}"; </script>
     <script>
         function output(data) {
             return '<form class="kt-form" id="updateForm" method="POST" action="{{url('/client-update')}}">\n' +
@@ -395,10 +395,10 @@
             };
             return '<div class="kt-user-card-v2">\
                         			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.detail.actionId].class + '">' + status[data.detail.actionId].title + ' At ' + data.detail.notificationDate + ' ' + data.detail.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Note : ' + data.detail.notes + '  </p>\
+                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.actionId].class + '">' + status[data.actionId].title + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
+                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.viaMethodId].title + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.summery].title + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Note : ' + data.notes + '  </p>\
                         		</div>\
                         		</div>\
                         		<div>\
@@ -442,11 +442,11 @@
                     <p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
                    <p class="kt-user-card-v2__name"> Phone : \
                               <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
-                    <p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
-                    <p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
-                    <p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
+                    <p class="kt-user-card-v2__name"> Interested Project : ' + data.projectName + '  </p>\
+                    <p class="kt-user-card-v2__name"> Job Title : ' + data.jobTitle + '  </p>\
+                    <p class="kt-user-card-v2__name"> Notes : ' + data.notes + '  </p>\
                     @if(Auth::user()->role->name == 'admin')\
-                    <p class="kt-user-card-v2__name"> Assign To : ' + data.detail.saleName + '  </p>\
+                    <p class="kt-user-card-v2__name"> Assign To : ' + data.saleName + '  </p>\
                     @endif\
                     <p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
                 </div>\
@@ -479,6 +479,7 @@
             },
 
         };
+
 
         var summery = {
 
