@@ -85,8 +85,10 @@ class ClientActionController extends Controller
                 $query->where('client_details.projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('users.name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('users.phone', 'like', '%' . $filter['name'] . '%');
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
             })
             ->select('users.*', 'client_details.*');
 
@@ -102,7 +104,6 @@ class ClientActionController extends Controller
             $data[$key]['saleName'] = $saleName;
             $key = $key + 1;
         }
-
 
         $meta = [
             "page" => $data->currentPage(),
@@ -148,7 +149,12 @@ class ClientActionController extends Controller
         $query = $this->model;
 
         if (isset($filter['name'])) {
-            $query = $query->where('name', 'like', $filter['name']);
+            $query->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
+            });
         }
 
         if (isset($filter['date'])) {
@@ -298,8 +304,10 @@ class ClientActionController extends Controller
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
             })
             ->select('users.*', 'client_details.*');
 
@@ -440,8 +448,10 @@ class ClientActionController extends Controller
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
             })
             ->select('users.*', 'client_details.*');
 
@@ -576,8 +586,10 @@ class ClientActionController extends Controller
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
             })
             ->select('users.*', 'client_details.*');
 
@@ -724,8 +736,10 @@ class ClientActionController extends Controller
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
             })
             ->orderBy('client_details.notificationDate', 'desc')
             ->orderBy('client_details.notificationTime', 'asc')
@@ -836,8 +850,10 @@ class ClientActionController extends Controller
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+                $query->where(function ($query) use ($filter) {
+                    $query->where('name','like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                });
             })
             ->orderBy('client_details.notificationDate', 'desc')
             ->orderBy('client_details.notificationTime', 'asc')
