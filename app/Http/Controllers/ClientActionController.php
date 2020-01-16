@@ -34,8 +34,17 @@ class ClientActionController extends Controller
     {
         $actionId = 'all';
         $sales = User::where('roleId', 4)->get()->toArray();
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
 
-        return View('client_action.all_clients', compact('actionId', 'sales'));
+        return View('client_action.all_clients', compact('actionId', 'sales', 'projects'));
     }
 
     public function getAllData(Request $request)
@@ -45,41 +54,51 @@ class ClientActionController extends Controller
             $paginationOptions['perpage'] = 0;
         }
 
+
         $userId = Auth::user()->id;
         $filter = $request->input('query');
-        $query = $this->model;
-
-        if (isset($filter['name'])) {
-            $query = $query->where('name', 'like', $filter['name']);
-        }
-
+        $from = date('Y-m-d H:i:s', strtotime('1970-01-01'));
+        $to = date('Y-m-d H:i:s');
         if (isset($filter['date'])) {
             $dates = explode(' - ', $filter['date'] ?? '');
-            $query = $query->whereDate('created_at', '>=', $dates[0]);
+            $from = $dates[0];
         }
 
         if (isset($dates[1])) {
-            $query = $query->whereDate('created_at', '<=', $dates[1]);
+            $to = $dates[1];
         }
+
+        $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
 
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $query->with('detail')->whereHas('detail', function ($q) use ($filter) {
-                if (isset($filter['sale']) && $filter['sale'] != 0) {
-                    $q->where('assignToSaleManId', $filter['sale']);
-                }
-            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+            $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
+                $query->where('assignToSaleManId', $filter['sale']);
+            });
+        } elseif ((Auth::user()->role->name == 'sale Man')) {
 
-        } elseif (Auth::user()->role->name == 'sale Man') {
-            $data = $query->with('detail')->whereHas('detail', function ($q) use ($userId) {
-                $q->where('assignToSaleManId', $userId);
-            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+            $query->where('assignToSaleManId', $userId);
         }
+
+        $query->whereDate('users.created_at', '>=', $from)
+            ->whereDate('users.created_at', '<=', $to)
+            ->when($filter['project'] ?? '', function ($query) use ($filter) {
+                $query->where('projectId', $filter['project']);
+            })
+            ->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+            })
+            ->select('users.*', 'client_details.*');
+
+        $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+
         $key = 0;
         foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
+            $projectName = Project::where('id', $one['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['assignToSaleManId'])->first()['name'];
+            $data[$key]['projectName'] = $projectName;
+            $data[$key]['saleName'] = $saleName;
             $key = $key + 1;
         }
 
@@ -183,10 +202,20 @@ class ClientActionController extends Controller
         $actionId = 0;
         $methods = Method::all()->toArray();
         $actions = Action::all()->sortBy('order')->toArray();
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
+
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
-        return View('client_action.new_clients', compact('sales', 'actionId', 'actions', 'methods'));
+        return View('client_action.new_clients', compact('projects','sales', 'actionId', 'actions', 'methods'));
     }
 
 
@@ -200,10 +229,20 @@ class ClientActionController extends Controller
 //        $requestData = $this->getData($actionId)['data'];
         $methods = Method::all()->toArray();
         $actions = Action::all()->sortBy('order')->toArray();
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
+
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
-        return View('client_action.action_client', compact('sales', 'actionId', 'actions', 'methods'));
+        return View('client_action.action_client', compact('projects','sales', 'actionId', 'actions', 'methods'));
 
     }
 
@@ -217,53 +256,106 @@ class ClientActionController extends Controller
         if ($paginationOptions['perpage'] == -1) {
             $paginationOptions['perpage'] = 0;
         }
-        $userId = Auth::user()->id;
 
         if ($id == 0) {
             $id = null;
         }
 
+        $userId = Auth::user()->id;
         $filter = $request->input('query');
-        $query = $this->model;
-
-        if (isset($filter['name'])) {
-            $query = $query->where('name', 'like', $filter['name']);
-        }
-
+        $from = date('Y-m-d H:i:s', strtotime('1970-01-01'));
+        $to = date('Y-m-d H:i:s');
         if (isset($filter['date'])) {
             $dates = explode(' - ', $filter['date'] ?? '');
-            $query = $query->whereDate('created_at', '>=', $dates[0]);
+            $from = $dates[0];
         }
 
         if (isset($dates[1])) {
-            $query = $query->whereDate('created_at', '<=', $dates[1]);
+            $to = $dates[1];
         }
+
+        $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
 
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $query->with('detail')->whereHas('detail', function ($q) use ($id, $filter) {
-                if (isset($filter['sale']) && $filter['sale'] != 0) {
-                    $q->where('actionId', $id)->where('assignToSaleManId', $filter['sale'])->where('transferred', '=', 0);
-                } else {
-                    $q->where('actionId', $id)->where('assignToSaleManId', '!=', null)->where('transferred', '=', 0);
-                }
-            })->where('duplicated', '=', 1)
-                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+            $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
+                $query->where('assignToSaleManId', $filter['sale']);
+            });
+
 
         } elseif ((Auth::user()->role->name == 'sale Man')) {
-            $data = $query->with('detail')->whereHas('detail', function ($q) use ($id, $userId) {
-                $q->where('actionId', $id)->where('assignToSaleManId', $userId)->where('transferred', '=', 0);
-            })->where('duplicated', '=', 1)
-                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+            $query->where('assignToSaleManId', $userId);
         }
+
+        $query->whereDate('users.created_at', '>=', $from)
+            ->whereDate('users.created_at', '<=', $to)
+            ->where('duplicated', '=', 1)
+            ->where('client_details.actionId', $id)
+            ->where('client_details.transferred', '=', 0)
+            ->where('client_details.assignToSaleManId', '!=', null)
+            ->when($filter['project'] ?? '', function ($query) use ($filter) {
+                $query->where('projectId', $filter['project']);
+            })
+            ->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+            })
+            ->select('users.*', 'client_details.*');
+
+        $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
 
         $key = 0;
         foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
+            $projectName = Project::where('id', $one['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['assignToSaleManId'])->first()['name'];
+            $data[$key]['projectName'] = $projectName;
+            $data[$key]['saleName'] = $saleName;
             $key = $key + 1;
         }
+
+//        $userId = Auth::user()->id;
+//        $filter = $request->input('query');
+//        $query = $this->model;
+//
+//        if (isset($filter['name'])) {
+//            $query = $query->where('name', 'like', $filter['name']);
+//        }
+//
+//        if (isset($filter['date'])) {
+//            $dates = explode(' - ', $filter['date'] ?? '');
+//            $query = $query->whereDate('created_at', '>=', $dates[0]);
+//        }
+//
+//        if (isset($dates[1])) {
+//            $query = $query->whereDate('created_at', '<=', $dates[1]);
+//        }
+//
+//        if ((Auth::user()->role->name == 'admin')) {
+//            $data = $query->with('detail')->whereHas('detail', function ($q) use ($id, $filter) {
+//                if (isset($filter['sale']) && $filter['sale'] != 0) {
+//                    $q->where('actionId', $id)->where('assignToSaleManId', $filter['sale'])->where('transferred', '=', 0);
+//                } else {
+//                    $q->where('actionId', $id)->where('assignToSaleManId', '!=', null)->where('transferred', '=', 0);
+//                }
+//            })->where('duplicated', '=', 1)
+//                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+//
+//        } elseif ((Auth::user()->role->name == 'sale Man')) {
+//            $data = $query->with('detail')->whereHas('detail', function ($q) use ($id, $userId) {
+//                $q->where('actionId', $id)->where('assignToSaleManId', $userId)->where('transferred', '=', 0);
+//            })->where('duplicated', '=', 1)
+//                ->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+//        }
+//
+//        $key = 0;
+//        foreach ($data as $one) {
+//            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+//            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+//            $data[$key]['detail']['projectName'] = $projectName;
+//            $data[$key]['detail']['saleName'] = $saleName;
+//            $key = $key + 1;
+//        }
 
         $meta = [
             "page" => $data->currentPage(),
@@ -293,8 +385,17 @@ class ClientActionController extends Controller
         $methods = Method::all()->toArray();
         $actions = Action::all()->sortBy('order')->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
 
-        return View('client_action.duplicated', compact('actionId', 'sales', 'actions', 'methods'));
+        return View('client_action.duplicated', compact('projects','actionId', 'sales', 'actions', 'methods'));
     }
 
     public
@@ -304,44 +405,95 @@ class ClientActionController extends Controller
         if ($paginationOptions['perpage'] == -1) {
             $paginationOptions['perpage'] = 0;
         }
+
         $userId = Auth::user()->id;
-
         $filter = $request->input('query');
-        $query = $this->model;
-
-        if (isset($filter['name'])) {
-            $query = $query->where('name', 'like', $filter['name']);
-        }
-
+        $from = date('Y-m-d H:i:s', strtotime('1970-01-01'));
+        $to = date('Y-m-d H:i:s');
         if (isset($filter['date'])) {
             $dates = explode(' - ', $filter['date'] ?? '');
-            $query = $query->whereDate('created_at', '>=', $dates[0]);
+            $from = $dates[0];
         }
 
         if (isset($dates[1])) {
-            $query = $query->whereDate('created_at', '<=', $dates[1]);
+            $to = $dates[1];
         }
 
+        $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
 
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $query->where('duplicated', '>', 1)->with('detail')->whereHas('detail', function ($q) use ($userId, $filter) {
-                if (isset($filter['sale']) && $filter['sale'] != 0) {
-                    $q->where('assignToSaleManId', $filter['sale']);
-                }
-            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+            $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
+                $query->where('assignToSaleManId', $filter['sale']);
+            });
+
+
         } elseif ((Auth::user()->role->name == 'sale Man')) {
-            $data = $query->where('duplicated', '>', 1)->with('detail')->whereHas('detail', function ($q) use ($userId) {
-                $q->where('assignToSaleManId', $userId);
-            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+            $query->where('assignToSaleManId', $userId);
         }
+
+        $query->where('duplicated', '>', 1)
+            ->whereDate('users.created_at', '>=', $from)
+            ->whereDate('users.created_at', '<=', $to)
+            ->when($filter['project'] ?? '', function ($query) use ($filter) {
+                $query->where('projectId', $filter['project']);
+            })
+            ->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+            })
+            ->select('users.*', 'client_details.*');
+
+        $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+
         $key = 0;
         foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
+            $projectName = Project::where('id', $one['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['assignToSaleManId'])->first()['name'];
+            $data[$key]['projectName'] = $projectName;
+            $data[$key]['saleName'] = $saleName;
             $key = $key + 1;
         }
+
+//
+//        $userId = Auth::user()->id;
+//        $filter = $request->input('query');
+//        $query = $this->model;
+//
+//        if (isset($filter['name'])) {
+//            $query = $query->where('name', 'like', $filter['name']);
+//        }
+//
+//        if (isset($filter['date'])) {
+//            $dates = explode(' - ', $filter['date'] ?? '');
+//            $query = $query->whereDate('created_at', '>=', $dates[0]);
+//        }
+//
+//        if (isset($dates[1])) {
+//            $query = $query->whereDate('created_at', '<=', $dates[1]);
+//        }
+//
+//
+//        if ((Auth::user()->role->name == 'admin')) {
+//            $data = $query->where('duplicated', '>', 1)->with('detail')->whereHas('detail', function ($q) use ($userId, $filter) {
+//                if (isset($filter['sale']) && $filter['sale'] != 0) {
+//                    $q->where('assignToSaleManId', $filter['sale']);
+//                }
+//            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+//        } elseif ((Auth::user()->role->name == 'sale Man')) {
+//            $data = $query->where('duplicated', '>', 1)->with('detail')->whereHas('detail', function ($q) use ($userId) {
+//                $q->where('assignToSaleManId', $userId);
+//            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+//        }
+//        $key = 0;
+//        foreach ($data as $one) {
+//            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+//            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+//            $data[$key]['detail']['projectName'] = $projectName;
+//            $data[$key]['detail']['saleName'] = $saleName;
+//            $key = $key + 1;
+//        }
 
         $meta = [
             "page" => $data->currentPage(),
@@ -370,8 +522,17 @@ class ClientActionController extends Controller
         $methods = Method::all()->toArray();
         $actions = Action::all()->sortBy('order')->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
 
-        return View('client_action.transfered', compact('actionId', 'sales', 'actions', 'methods'));
+        return View('client_action.transfered', compact('projects','actionId', 'sales', 'actions', 'methods'));
     }
 
     public function getTransferedData(Request $request)
@@ -380,45 +541,96 @@ class ClientActionController extends Controller
         if ($paginationOptions['perpage'] == -1) {
             $paginationOptions['perpage'] = 0;
         }
+
         $userId = Auth::user()->id;
-
         $filter = $request->input('query');
-        $query = $this->model;
-
-        if (isset($filter['name'])) {
-            $query = $query->where('name', 'like', $filter['name']);
-        }
-
+        $from = date('Y-m-d H:i:s', strtotime('1970-01-01'));
+        $to = date('Y-m-d H:i:s');
         if (isset($filter['date'])) {
             $dates = explode(' - ', $filter['date'] ?? '');
-            $query = $query->whereDate('created_at', '>=', $dates[0]);
+            $from = $dates[0];
         }
 
         if (isset($dates[1])) {
-            $query = $query->whereDate('created_at', '<=', $dates[1]);
+            $to = $dates[1];
         }
 
+        $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
+
         if ((Auth::user()->role->name == 'admin')) {
-            $data = $query->with('detail')->whereHas('detail', function ($q) use ($filter) {
-                if (isset($filter['sale']) && $filter['sale'] != 0) {
-                    $q->where('transferred', 1)->where('assignToSaleManId', $filter['sale']);
-                } else {
-                    $q->where('transferred', 1);
-                }
-            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+            $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
+                $query->where('assignToSaleManId', $filter['sale']);
+            });
+
+
         } elseif ((Auth::user()->role->name == 'sale Man')) {
-            $data = $query->with('detail')->whereHas('detail', function ($q) use ($userId) {
-                $q->where('transferred', 1)->where('assignToSaleManId', $userId);
-            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+            $query->where('assignToSaleManId', $userId);
         }
+
+        $query->whereDate('users.created_at', '>=', $from)
+            ->whereDate('users.created_at', '<=', $to)
+            ->where('client_details.transferred', 1)
+            ->when($filter['project'] ?? '', function ($query) use ($filter) {
+                $query->where('projectId', $filter['project']);
+            })
+            ->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+            })
+            ->select('users.*', 'client_details.*');
+
+        $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
+
         $key = 0;
         foreach ($data as $one) {
-            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
-            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
-            $data[$key]['detail']['projectName'] = $projectName;
-            $data[$key]['detail']['saleName'] = $saleName;
+            $projectName = Project::where('id', $one['projectId'])->first()['name'];
+            $saleName = User::where('id', $one['assignToSaleManId'])->first()['name'];
+            $data[$key]['projectName'] = $projectName;
+            $data[$key]['saleName'] = $saleName;
             $key = $key + 1;
         }
+
+
+//        $userId = Auth::user()->id;
+//        $filter = $request->input('query');
+//        $query = $this->model;
+//
+//        if (isset($filter['name'])) {
+//            $query = $query->where('name', 'like', $filter['name']);
+//        }
+//
+//        if (isset($filter['date'])) {
+//            $dates = explode(' - ', $filter['date'] ?? '');
+//            $query = $query->whereDate('created_at', '>=', $dates[0]);
+//        }
+//
+//        if (isset($dates[1])) {
+//            $query = $query->whereDate('created_at', '<=', $dates[1]);
+//        }
+//
+//        if ((Auth::user()->role->name == 'admin')) {
+//            $data = $query->with('detail')->whereHas('detail', function ($q) use ($filter) {
+//                if (isset($filter['sale']) && $filter['sale'] != 0) {
+//                    $q->where('transferred', 1)->where('assignToSaleManId', $filter['sale']);
+//                } else {
+//                    $q->where('transferred', 1);
+//                }
+//            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+//        } elseif ((Auth::user()->role->name == 'sale Man')) {
+//            $data = $query->with('detail')->whereHas('detail', function ($q) use ($userId) {
+//                $q->where('transferred', 1)->where('assignToSaleManId', $userId);
+//            })->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+//        }
+//        $key = 0;
+//        foreach ($data as $one) {
+//            $projectName = Project::where('id', $one['detail']['projectId'])->first()['name'];
+//            $saleName = User::where('id', $one['detail']['assignToSaleManId'])->first()['name'];
+//            $data[$key]['detail']['projectName'] = $projectName;
+//            $data[$key]['detail']['saleName'] = $saleName;
+//            $key = $key + 1;
+//        }
         $meta = [
             "page" => $data->currentPage(),
             "pages" => intval($data->total() / $data->perPage()),
@@ -449,7 +661,16 @@ class ClientActionController extends Controller
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
-        return View('client_action.todo_client', compact('sales', 'actionId', 'actions', 'methods'));
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
+        return View('client_action.todo_client', compact('projects','sales', 'actionId', 'actions', 'methods'));
 
     }
 
@@ -481,10 +702,8 @@ class ClientActionController extends Controller
             $to = date('Y-m-d H:i:s');
         }
 
-        $query = User::join('client_details', 'users.id', '=', 'client_details.userId')
-            ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', $filter['name']);
-            });
+        $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
+
 
         if ((Auth::user()->role->name == 'admin')) {
             $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
@@ -500,11 +719,19 @@ class ClientActionController extends Controller
             ->whereIn('client_details.actionId', [2, 3, 4, 5, 11])
             ->whereDate('client_details.notificationDate', '>=', $from)
             ->whereDate('client_details.notificationDate', '<=', $to)
+            ->when($filter['project'] ?? '', function ($query) use ($filter) {
+                $query->where('projectId', $filter['project']);
+            })
+            ->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+            })
             ->orderBy('client_details.notificationDate', 'desc')
             ->orderBy('client_details.notificationTime', 'asc')
             ->select('users.*', 'client_details.*');
 
         $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
+
         $key = 0;
         foreach ($data as $one) {
             $projectName = Project::where('id', $one['projectId'])->first()['name'];
@@ -544,7 +771,16 @@ class ClientActionController extends Controller
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
-        return View('client_action.todo_hot_client', compact('sales', 'actionId', 'actions', 'methods'));
+        $projects = Project::all()->toArray();
+        $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
+        foreach ($projects as $key => $project) {
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
+                    unset($projects[$key]);
+                }
+            }
+        }
+        return View('client_action.todo_hot_client', compact('projects','sales', 'actionId', 'actions', 'methods'));
 
     }
 
@@ -576,10 +812,8 @@ class ClientActionController extends Controller
             $to = date('Y-m-d H:i:s');
         }
 
-        $query = User::join('client_details', 'users.id', '=', 'client_details.userId')
-            ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', $filter['name']);
-            });
+        $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
+
 
         if ((Auth::user()->role->name == 'admin')) {
             $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
@@ -596,6 +830,13 @@ class ClientActionController extends Controller
                 $query->where('users.duplicated', '>', 1)
                     ->orWhere('client_details.transferred', 1)
                     ->orWhere('client_details.actionId', null);
+            })
+            ->when($filter['project'] ?? '', function ($query) use ($filter) {
+                $query->where('projectId', $filter['project']);
+            })
+            ->when($filter['name'] ?? '', function ($query) use ($filter) {
+                $query->where('name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
             })
             ->orderBy('client_details.notificationDate', 'desc')
             ->orderBy('client_details.notificationTime', 'asc')

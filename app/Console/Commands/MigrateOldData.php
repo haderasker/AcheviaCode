@@ -91,6 +91,23 @@ class MigrateOldData extends Command
             // transform to new shape
             $transformedData = $this->migrate->userTransform($user);
             if (isset($transformedData['status']) && $transformedData['status'] == 'existed') {
+
+                // add all history
+                $history = DB::connection('mysql')->table('client_history');
+                if (isset($transformedData['newUser']['history'])) {
+                    foreach ($transformedData['newUser']['history'] as $one) {
+                        $one['userId'] = $transformedData['user']->id;
+                        $history->insert($one);
+                    }
+                }
+
+                //update last history
+                $client = DB::connection('mysql')->table('client_details');
+                if (isset($transformedData['newUser']['detail'])) {
+                    $id = $transformedData['user']->id;
+                    $client->where('userId', $id)->update($transformedData['newUser']['detail']);
+                }
+
                 $this->error('user exist with email is : ' . $transformedData['user']->email . 'and phone is:' . $transformedData['user']->phone);
             } else {
                 // insert into data base

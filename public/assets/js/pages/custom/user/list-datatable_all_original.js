@@ -3,14 +3,14 @@
 
 var KTUserListDatatable = function () {
 
-    // variables
+// variables
     var datatable;
 
-    // init
+// init
     var init = function () {
-        // init the datatables. Learn more: https://keenthemes.com/metronic/?page=docs&section=datatable
+// init the datatables. Learn more: https://keenthemes.com/metronic/?page=docs&section=datatable
         datatable = $('#kt_apps_user_list_datatable').KTDatatable({
-            // datasource definition
+// datasource definition
             data: {
                 type: 'remote',
                 source: {
@@ -27,14 +27,15 @@ var KTUserListDatatable = function () {
             },
 
 
-            // layout definition
+// layout definition
             layout: {
                 scroll: false, // enable/disable datatable scroll both horizontal and vertical when needed.
                 footer: false, // display/hide footer
             },
 
-            // column sorting
+// column sorting
             sortable: true,
+
             pagination: true,
 
             search: {
@@ -51,50 +52,173 @@ var KTUserListDatatable = function () {
                 delay: 500,
             },
 
-            // columns definition
+// columns definition
             columns: [
                 {
                     field: 'id',
                     title: '#',
+                    sortable: false,
                     width: 20,
                     textAlign: 'center',
                     selector: {
                         class: 'kt-checkbox--solid'
-                    }
+                    },
                 },
-
                 {
                     field: "name",
-                    title: "Client Info",
-                    width: 240,
-                    // callback function support for column rendering
+                    title: "name",
+                    width:260,
+// callback function support for column rendering
                     template: function (data, i) {
+                        var pos = data.roleId;
+                        var position = [
+                            'none',
+                            'Root',
+                            'Admin',
+                            'TeamLeader',
+                            'SaleMan',
+                            'Client',
+                        ];
+                        var stateNo = KTUtil.getRandomInt(0, 6);
+                        var states = [
+                            'success',
+                            'brand',
+                            'danger',
+                            'warning',
+                            'primary',
+                            'info'
+                        ];
+                        var state = states[stateNo];
+                        var output = '';
 
-                        return window.info(data);
+                        output = '<div class="kt-user-card-v2">\
+    <div class="kt-user-card-v2__pic">\
+        <div class="kt-badge kt-badge--xl kt-badge--' + state + '">' + data.name.substring(0, 1) + '</div>\
+    </div>\
+    <div class="kt-user-card-v2__details">\
+       <!-- <a href="#" class="kt-user-card-v2__name">' + data.name + '</a>-->\
+       \<span class="kt-user-card-v2__name">' + data.name + '</span>\
+        <span class="kt-user-card-v2__desc"> Phone : ' + data.phone + '</span></br>\
+        <span class="kt-user-card-v2__desc"> Email : ' + data.email + '</span>\
+        <span class="kt-user-card-v2__desc"> Project : ' + data.projectName + '</span>\
+    </div>\
+</div>';
+
+                        return output;
+
                     }
                 },
 
+
+// {
+//     field: 'jobTitle',
+//     title: 'Job Title',
+//     template: function (data) {
+//         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.detail.jobTitle + '</span>';
+//     },
+// // },
+//                 {
+//                     field: 'projectId',
+//                     title: 'Project',
+//
+//                     template: function (data) {
+//                         return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.projectName + '</span>';
+//                     },
+//
+//                 },
+
+
+                {
+                    field: 'assignToSaleManId',
+                    title: 'Assign To',
+                    template: function (data) {
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.saleName + '</span>';
+                    },
+                },
+
+
+                {
+                    field: 'assignedDate',
+                    title: 'Assign Date',
+                    type: 'date',
+                    template: function (data) {
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + data.assignedDate + '</span>';
+                    },
+                },
 
                 {
                     field: "actionId",
-                    title: window.title,
-                    width: 230,
-                    class: 'last',
-                    // callback function support for column rendering
+                    title: "Status",
+// callback function support for column rendering
+                    template: function (row) {
+                        var status = {
+                            0: {
+                                'title': 'new',
+                                'class': ' btn-label-brand'
+                            },
+
+                            null: {
+                                'title': 'new',
+                                'class': ' btn-label-brand'
+                            },
+
+                            1: {
+                                'title': 'done',
+                                'class': ' btn-label-success'
+                            },
+                            2: {
+                                'title': 'following',
+                                'class': ' btn-label-success'
+                            },
+                            3: {
+                                'title': 'comingVisit',
+                                'class': ' btn-label-info'
+                            },
+                            4: {
+                                'title': 'meeting',
+                                'class': ' btn-label-info'
+                            },
+                            5: {
+                                'title': 'Scouting',
+                                'class': ' btn-label-primary'
+                            },
+                            6: {
+                                'title': 'Convert to another project',
+                                'class': ' btn-label-primary'
+                            },
+
+                            7: {
+                                'title': 'No Answer',
+                                'class': ' btn-label-warning'
+                            },
+                            8: {
+                                'title': 'Not Available Or Closed',
+                                'class': ' btn-label-warning'
+                            },
+                            9: {
+                                'title': 'Low Budget',
+                                'class': ' btn-label-warning'
+                            },
+                            10: {
+                                'title': 'Trash',
+                                'class': ' btn-label-danger'
+                            },
+                            11: {
+                                'title': 'Invitation',
+                                'class': ' btn-label-info'
+                            },
+
+                        };
+                        return '<span class="btn btn-bold btn-sm btn-font-sm ' + status[row.actionId].class + '">' + status[row.actionId].title + '</span>';
+                    }
+                },
+                {
+                    field: '',
+                    title: 'History',
+
                     template: function (data) {
 
                         return window.last(data);
-                    }
-                },
-
-                {
-                    field: '',
-                    title: 'Next Action',
-                    width: 650,
-
-                    template: function (data) {
-
-                        return window.output(data);
                     }
                 },
 
@@ -107,48 +231,46 @@ var KTUserListDatatable = function () {
                     overflow: 'visible',
                     template: function (data) {
                         return '\
-							<div class="dropdown">\
-								<a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
-									<i class="flaticon-more-1"></i>\
-								</a>\
-								<div class="dropdown-menu dropdown-menu-right">\
-									<ul class="kt-nav">\
-										<!-- <li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-expand"></i>\
-												<span class="kt-nav__link-text">View</span>\
-											</a>\
-										</li>\ -->\
-										<li class="kt-nav__item">\
-											<a href="' + URL + '/client-edit/' + data.id + '" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-contract"></i>\
-												<span class="kt-nav__link-text">Edit</span>\
-											</a>\
-										</li>\
-										<li class="kt-nav__item">\
-										<a href="' + URL + '/history-clients/' + data.id + '" class="kt-nav__link">\
-                                          <i class="kt-nav__link-icon flaticon2-trash"></i>\
-                                            <span class="kt-nav__link-text">History</span>\
-                                            </a>\
-										    </li>\
-									<!--	<li class="kt-nav__item">\
-											<a href="#" class="kt-nav__link">\
-												<i class="kt-nav__link-icon flaticon2-mail-1"></i>\
-												<span class="kt-nav__link-text">Export</span>\
-											</a>\
-										</li>\-->\
-									</ul>\
-								</div>\
-							</div>\
-						';
+<div class="dropdown">\
+    <a href="javascript:;" class="btn btn-sm btn-clean btn-icon btn-icon-md" data-toggle="dropdown">\
+        <i class="flaticon-more-1"></i>\
+    </a>\
+    <div class="dropdown-menu dropdown-menu-right">\
+        <ul class="kt-nav">\
+            <!-- <li class="kt-nav__item">\
+                <a href="#" class="kt-nav__link">\
+                    <i class="kt-nav__link-icon flaticon2-expand"></i>\
+                    <span class="kt-nav__link-text">View</span>\
+                </a>\
+            </li>\ -->\
+            <li class="kt-nav__item">\
+                <a href="' + URL + '/client-edit/' + data.id + '" class="kt-nav__link">\
+                    <i class="kt-nav__link-icon flaticon2-contract"></i>\
+                    <span class="kt-nav__link-text">Edit</span>\
+                </a>\
+            </li>\
+            <li class="kt-nav__item">\
+                <a href="' + URL + '/history-clients/' + data.id + '" class="kt-nav__link">\
+                    <i class="kt-nav__link-icon flaticon2-list"></i>\
+                    <span class="kt-nav__link-text">History</span>\
+                </a>\
+            </li>\
+            <!--	<li class="kt-nav__item">\
+                    <a href="#" class="kt-nav__link">\
+                        <i class="kt-nav__link-icon flaticon2-mail-1"></i>\
+                        <span class="kt-nav__link-text">Export</span>\
+                    </a>\
+                </li>\-->\
+        </ul>\
+    </div>\
+</div>\
+';
                     },
-                }
-            ]
+                }]
         });
-    };
+    }
 
-
-    var listners = function () {
+    var listners = function() {
         window.addEventListener('date', function (elem) {
             datatable.search(elem.detail.range, "date");
         }, false);
@@ -176,49 +298,49 @@ var KTUserListDatatable = function () {
         });
     }
 
-    // selection
+
+// selection
     var selection = function () {
-        // init form controls
+// init form controls
         $('#kt_form_status, #kt_form_type').selectpicker();
 
-        // event handler on check and uncheck on records
-        datatable.on('kt-datatable--on-check kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
-                var checkedNodes = datatable.rows('.kt-datatable__row--active').nodes(); // get selected records
-                var count = checkedNodes.length; // selected records count
+// event handler on check and uncheck on records
+        datatable.on('kt-datatable--on-check  kt-datatable--on-uncheck kt-datatable--on-layout-updated', function (e) {
+            var checkedNodes = datatable.rows('.kt-datatable__row--active').nodes(); // get selected records
+            var count = checkedNodes.length; // selected records count
 
-                $('#kt_subheader_group_selected_rows').html(count);
-
-                if (window.user == 'admin') {
-                    if (count > 0) {
-                        $('#kt_subheader_search').addClass('kt-hidden');
-                        $('#kt_subheader_group_actions').removeClass('kt-hidden');
-                    } else {
-                        $('#kt_subheader_search').removeClass('kt-hidden');
-                        $('#kt_subheader_group_actions').addClass('kt-hidden');
-                    }
+            var x = $('#kt_subheader_group_selected_rows').html(count);
+            if (window.user == 'admin') {
+                if (count > 0) {
+                    $('#kt_subheader_search').addClass('kt-hidden');
+                    $('#kt_subheader_group_actions').removeClass('kt-hidden');
+                } else {
+                    $('#kt_subheader_search').removeClass('kt-hidden');
+                    $('#kt_subheader_group_actions').addClass('kt-hidden');
                 }
             }
-        );
+        });
     }
+
 
 // fetch selected records
     var selectedFetch = function () {
-        // event handler on selected records fetch modal launch
+// event handler on selected records fetch modal launch
         $('#kt_datatable_records_fetch_modal').on('show.bs.modal', function (e) {
-            // show loading dialog
+// show loading dialog
             var loading = new KTDialog({'type': 'loader', 'placement': 'top center', 'message': 'Loading ...'});
             loading.show();
 
             setTimeout(function () {
                 loading.hide();
-            }, 5000);
+            }, 50000);
 
-            // fetch selected IDs
+// fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {
                 return $(chk).val();
             });
 
-            // populate selected IDs
+// populate selected IDs
             var c = document.createDocumentFragment();
 
             for (var i = 0; i < ids.length; i++) {
@@ -234,7 +356,6 @@ var KTUserListDatatable = function () {
         });
     };
 
-// selected records status update
 // selected records status update
     var selectedStatusUpdate = function () {
         $('#kt_subheader_group_actions_status_change a.kt-nav__link').on('click', function () {
@@ -334,6 +455,7 @@ var KTUserListDatatable = function () {
                     cancelButtonClass: "btn btn-sm btn-bold btn-brand"
                 }).then(function (result) {
                     if (result.value) {
+
                         $.ajaxSetup({
                             headers: {
                                 'X-CSRF-TOKEN': $('input[name="_token"]').attr('value')
@@ -342,6 +464,7 @@ var KTUserListDatatable = function () {
 
                         $.ajax({
                             type: "DELETE",
+                            headers: {"Authorization": localStorage.getItem('token')},
                             url: URL + '/client-delete',
                             data: {
                                 ids: ids.toArray(),
@@ -392,7 +515,7 @@ var KTUserListDatatable = function () {
     };
 
     return {
-        // public functions
+// public functions
         init: function () {
             init();
             search();
@@ -406,8 +529,7 @@ var KTUserListDatatable = function () {
             updateTotal();
         },
     };
-}
-();
+}();
 
 // On document ready
 KTUtil.ready(function () {

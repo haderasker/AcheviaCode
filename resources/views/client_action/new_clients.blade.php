@@ -62,6 +62,14 @@
                             </div>
                         @endif
                         {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
+                            {{--<select class="form-control" id="projectFilter">--}}
+                                {{--<option value="0">Select Project</option>--}}
+                                {{--@foreach($projects as $project)--}}
+                                    {{--<option value=" {{$project['id']}}">  {{$project['name']}} </option>--}}
+                                {{--@endforeach--}}
+                            {{--</select>--}}
+                        {{--</div>--}}
+                        {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
                         {{--<input type="date" class="form-control" placeholder="Search..." id="fromDateFilter">--}}
                         {{--</div>--}}
                         {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
@@ -337,7 +345,7 @@
     <script>
         function last(data) {
 
-            return '<input type="text" hidden class="user" value="' + data.id + '"> \
+            return '<input type="text" hidden class="user" value="' + data.userId + '"> \
                <a  href="https://wa.me/'+ data.phone +'" class="whats btn btn-bold btn-label-success btn-lg" target="_blank" style="width:160px;">\
                     <i class="fab fa-whatsapp"></i>whatsApp</a>\
                  ';
@@ -375,11 +383,11 @@
                         			<p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
                         			<p class="kt-user-card-v2__name"> Phone : \
                                            <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
-                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.projectName + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.jobTitle + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Notes : ' + data.notes + '  </p>\
                         			@if(Auth::user()->role->name == 'admin')\
-                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.detail.saleName + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.saleName + '  </p>\
                         			@endif\
                         			<p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
                         		</div>\

@@ -61,6 +61,14 @@
                                 </select>
                             </div>
                         @endif
+                        <div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+                            <select class="form-control" id="projectFilter">
+                                <option value="0">Select Project</option>
+                                @foreach($projects as $project)
+                                    <option value=" {{$project['id']}}">  {{$project['name']}} </option>
+                                @endforeach
+                            </select>
+                        </div>
                         {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
                         {{--<input type="date" class="form-control" placeholder="Search..." id="fromDateFilter">--}}
                         {{--</div>--}}
@@ -395,14 +403,14 @@
             };
             return '<div class="kt-user-card-v2">\
                         			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.detail.actionId].class + '">' + status[data.detail.actionId].title + ' At ' + data.detail.notificationDate + ' ' + data.detail.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.detail.viaMethodId].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.detail.summery].title + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Note : ' + data.detail.notes+ '  </p>\
+                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.actionId].class + '">' + status[data.actionId].title + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
+                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.viaMethodId].title + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.summery].title + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Note : ' + data.notes+ '  </p>\
                         		</div>\
                         		</div>\
                         		<div>\
-                        		<input type="text" hidden class="user" value="' + data.id + '"> \
+                        		<input type="text" hidden class="user" value="' + data.userId + '"> \
                         		<button type="button" class="getHistory btn btn-bold btn-label-brand btn-lg" style="width:160px; margin-bottom:10px">Load History</button>\
                                  <a  href="https://wa.me/'+ data.phone +'"  class="whats btn btn-bold btn-label-success btn-lg" target="_blank" style="width:160px;">\
                                              <i class="fab fa-whatsapp"></i>whatsApp</a>\
@@ -442,11 +450,11 @@
                         			<p class="kt-user-card-v2__name"> Email : ' + data.email + '  </p>\
                         			<p class="kt-user-card-v2__name"> Phone : \
                                            <a href="tel:' + data.phone + '">' + data.phone + '</a>  </p>\
-                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.detail.projectName + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.detail.jobTitle + '  </p>\
-                        			<p class="kt-user-card-v2__name"> Notes : ' + data.detail.notes + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Interested Project : ' + data.projectName + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Job Title : ' + data.jobTitle + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Notes : ' + data.notes + '  </p>\
                         			@if(Auth::user()->role->name == 'admin')\
-                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.detail.saleName + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Assign To : ' + data.saleName + '  </p>\
                         			@endif\
                         			<p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
                         		</div>\

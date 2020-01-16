@@ -60,6 +60,14 @@
                                 </select>
                             </div>
                         @endif
+                        <div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+                            <select class="form-control" id="projectFilter">
+                                <option value="0">Select Project</option>
+                                @foreach($projects as $project)
+                                    <option value=" {{$project['id']}}">  {{$project['name']}} </option>
+                                @endforeach
+                            </select>
+                        </div>
 
                     </form>
                 </div>
@@ -402,7 +410,7 @@
                         		</div>\
                         		</div>\
                         		<div>\
-                        		<input type="text" hidden class="user" value="' + data.id + '"> \
+                        		<input type="text" hidden class="user" value="' + data.userId + '"> \
                         	<button type="button" class="getHistory btn btn-bold btn-label-brand btn-lg" style="width:160px; margin-bottom:10px">Load History</button>\
                             <a  href="https://wa.me/'+ data.phone +'" target="_blank" class="whats btn btn-bold btn-label-success btn-lg" style="width:160px;">\
                              <i class="fab fa-whatsapp"></i>whatsApp</a>\
@@ -526,7 +534,7 @@
 
                     $('#kt_modal_4').modal('show');
                 }
-            );
+            );ئ
         });
     </script>
     <script> title = "Last Action"; </script>

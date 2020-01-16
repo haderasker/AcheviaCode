@@ -52,6 +52,14 @@
                                 </select>
                             </div>
                         @endif
+                        <div class="kt-input-icon kt-input-icon--right kt-subheader__search">
+                            <select class="form-control" id="projectFilter">
+                                <option value="0">Select Project</option>
+                                @foreach($projects as $project)
+                                    <option value=" {{$project['id']}}">  {{$project['name']}} </option>
+                                @endforeach
+                            </select>
+                        </div>
                         {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
                         {{--<input type="date" class="form-control" placeholder="Search..." id="fromDateFilter">--}}
                         {{--</div>--}}
@@ -142,6 +150,33 @@
         <!--end::Portlet-->
 
         <!--begin::Modal-->
+        <div class="modal fade" id="kt_modal_4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--end::Modal-->
+
+        <!--begin::Modal-->
         <div class="modal fade" id="kt_datatable_records_fetch_modal" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -175,7 +210,87 @@
     <script> HREF = "{{ url('client/get_all_data') }}"; </script>
     <script> URL = "{{ url('/') }}"; </script>
     <script> user = "{{ Auth::user()->role->name }}"; </script>
-    <script src="{{url('assets/js/pages/custom/user/list-datatable_original.js')}}" type="text/javascript"></script>
+    <script>
+        function last(data) {
+
+            return ' <div>\
+                       <input type="text" hidden class="user" value="' + data.userId + '"> \
+                        	<button type="button" class="getHistory btn btn-bold btn-label-brand btn-lg" style="width:160px; margin-bottom:10px">Load History</button>\
+                              </div>';
+
+        }
+    </script>
+    <script>
+        var methods = {
+
+            null: {
+                'title': '-',
+            },
+
+            1: {
+                'title': 'Phone',
+            },
+            2: {
+                'title': 'whatsApp',
+            },
+            3: {
+                'title': 'Email',
+            },
+            4: {
+                'title': 'Visit',
+            },
+
+        };
+
+        var summery = {
+
+            null: {
+                'title': '-',
+            },
+
+            1: {
+                'title': 'Replied',
+            },
+            2: {
+                'title': 'Switched Off',
+            },
+            3: {
+                'title': 'No Answer',
+            },
+            4: {
+                'title': 'Wrong Number',
+            },
+
+        };
+
+        $(document).on('click', 'button.getHistory', function () {
+
+            $.get(
+                "{{ url('client/load-history')}}",
+                {
+                    option: $(this).parent().find('input.user').val()
+                },
+                function (data) {
+                    var modalBody = $('#kt_modal_4 .modal-body .row');
+
+                    modalBody.empty();
+                    $.each(data, function (index, element) {
+                        modalBody.append("<div class='col-lg-3'>" +
+                            "<p>" + element.actionName + " </p>" +
+                            "<p>" + element.created_at + " </p>" +
+                            "<p>" + methods[element.viaMethodId].title + " </p>" +
+                            "<p>" + summery[element.summery].title+ " </p>" +
+                            "<p>" + element.state + " </p>" +
+                            "<p>" + element.notes + " </p>" +
+                            "</div>");
+                    });
+
+                    $('#kt_modal_4').modal('show');
+                }
+            );
+        });
+    </script>
+    <script src="{{url('assets/js/pages/custom/user/list-datatable_all_original.js')}}" type="text/javascript"></script>
 @endsection
 
 

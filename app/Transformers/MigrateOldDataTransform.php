@@ -64,7 +64,49 @@ class MigrateOldDataTransform
         $userExist = $model->where('phone', $phone)->orWhere('email', $user->in_email)->first();
 
         if ($userExist) {
-            return ['user' => $userExist, 'status' => 'existed'];
+            $logs = DB::connection('old_data')->table('request_log');
+            $history = $logs->where('rl_r_id', $user->r_id)->get()->toArray();
+            $lastHistory = $logs->where('rl_r_id', $user->r_id)->orderBy('created_at', 'desc')->first();
+            $newUsers = [];
+            if ($lastHistory) {
+                if (is_null($lastHistory->rl_date)) {
+                    $date = date($lastHistory->created_at);
+                    $time = date("H:i:s", strtotime($lastHistory->created_at));
+                } else {
+                    $date = date($lastHistory->rl_date);
+                    $time = date("H:i:s", strtotime($lastHistory->rl_date));
+                }
+                $note = $lastHistory->rl_info;
+                $method = $lastHistory->rl_method;
+                $newUsers['detail']['notificationDate'] = $date;
+                $newUsers['detail']['notificationTime'] = $time;
+                $newUsers['detail']['notes'] = $note;
+                $newUsers['detail']['viaMethodId'] = $method;
+                $newUsers['detail']['assignedDate'] = date($user->created_at);
+                $newUsers['detail']['assignedTime'] = date("H:i:s", strtotime($user->created_at));
+                $newUsers['detail']['created_at'] = $user->created_at;
+                $newUsers['detail']['updated_at'] = $user->updated_at;
+                $newUsers['detail']['assignToSaleManId'] = $user->r_assigned;
+                $newUsers['detail']['actionId'] = $this->replaceAction($user->r_state);
+            }
+
+            foreach ($history as $key => $one) {
+                $newUsers['history'][$key]['actionId'] = $this->replaceAction($one->rl_type);
+                $newUsers['history'][$key]['date'] = $one->rl_date;
+                $newUsers['history'][$key]['created_at'] = $one->rl_date;
+                $newUsers['history'][$key]['viaMethodId'] = $one->rl_method;
+                $newUsers['history'][$key]['notes'] = $one->rl_info;
+                $newUsers['history'][$key]['createdBy'] = null;
+                if ($one->rl_action == 4) {
+                    $state = 'Reassigned';
+                } elseif ($one->rl_action == 3) {
+                    $state = 'Change State';
+                }
+
+                $newUsers['history'][$key]['state'] = $state;
+            }
+
+            return ['user' => $userExist, 'status' => 'existed' , 'newUser' =>$newUsers];
 
         } else {
             $link = DB::connection('old_data')->table('Links');

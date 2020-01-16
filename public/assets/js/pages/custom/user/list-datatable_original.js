@@ -47,6 +47,10 @@ var KTUserListDatatable = function () {
                 input: $('#saleFilter'),
                 delay: 500,
             },
+            projectFilter: {
+                input: $('#projectFilter'),
+                delay: 500,
+            },
 
 // columns definition
             columns: [
@@ -275,6 +279,13 @@ var KTUserListDatatable = function () {
         });
     }
 
+    // filter
+    var projectFilter = function () {
+        $('#projectFilter').on('change', function () {
+            datatable.search($(this).val(), "project");
+        });
+    }
+
 
 // selection
     var selection = function () {
@@ -497,6 +508,7 @@ var KTUserListDatatable = function () {
             init();
             search();
             filterSale();
+            projectFilter();
             listners();
             selection();
             selectedFetch();
