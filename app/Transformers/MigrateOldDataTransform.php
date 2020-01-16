@@ -106,7 +106,7 @@ class MigrateOldDataTransform
                 $newUsers['history'][$key]['state'] = $state;
             }
 
-            return ['user' => $userExist, 'status' => 'existed' , 'newUser' =>$newUsers];
+            return ['user' => $userExist, 'status' => 'existed', 'newUser' => $newUsers];
 
         } else {
             $link = DB::connection('old_data')->table('Links');
@@ -183,42 +183,59 @@ class MigrateOldDataTransform
     public function replaceAction($state)
     {
         $actionId = null;
+        //alraqeem
+//        switch ($state) {
+//            case 1:
+//            case 2:
+//            case 17:
+//                $actionId = 2;
+//                break;
+//            case 3:
+//            case 18:
+//                $actionId = 4;
+//                break;
+//            case 6:
+//            case 19:
+//            case 26:
+//                $actionId = 7;
+//                break;
+//            case 7:
+//            case 20:
+//                $actionId = 1;
+//                break;
+//            case 8:
+//            case 21:
+//                $actionId = 9;
+//                break;
+//
+//            case 4:
+//            case 5:
+//            case 25:
+//                $actionId = 11;
+//                break;
+//            case 24:
+//                $actionId = 8;
+//                break;
+//            case 23:
+//            case 9:
+//            case 22:
+//                $actionId = 10;
+//                break;
+//        }
+
+        //kimit
         switch ($state) {
             case 1:
-            case 2:
-            case 17:
                 $actionId = 2;
                 break;
-            case 3:
-            case 18:
+            case 2:
                 $actionId = 4;
                 break;
-            case 6:
-            case 19:
-            case 26:
-                $actionId = 7;
-                break;
-            case 7:
-            case 20:
-                $actionId = 1;
-                break;
-            case 8:
-            case 21:
-                $actionId = 9;
-                break;
-
             case 4:
+                $actionId = 5;
+                break;
             case 5:
-            case 25:
-                $actionId = 11;
-                break;
-            case 24:
-                $actionId = 8;
-                break;
-            case 23:
-            case 9:
-            case 22:
-                $actionId = 10;
+                $actionId = 1;
                 break;
         }
 
@@ -261,25 +278,28 @@ class MigrateOldDataTransform
         $newProject['description'] = $project->p_desc;
         $newProject['image'] = $project->p_icon;
 
-        switch ($project->p_id) {
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-            case 17:
-                $idParent = null;
-                break;
-            case 15:
-            case 16:
-                $idParent = 14;
-                break;
-            case 18:
-            case 19:
-                $idParent = 17;
-                break;
-        }
+        //alraqeem
+//        switch ($project->p_id) {
+//            case 11:
+//            case 12:
+//            case 13:
+//            case 14:
+//            case 17:
+//                $idParent = null;
+//                break;
+//            case 15:
+//            case 16:
+//                $idParent = 14;
+//                break;
+//            case 18:
+//            case 19:
+//                $idParent = 17;
+//                break;
+//        }
+//        $newProject['idParent'] = $idParent;
 
-        $newProject['idParent'] = $idParent;
+        // kimit
+        $newProject['idParent'] = null;
 
         return $newProject;
     }
