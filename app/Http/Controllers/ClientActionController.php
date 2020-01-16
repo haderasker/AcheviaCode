@@ -215,7 +215,7 @@ class ClientActionController extends Controller
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
-        return View('client_action.new_clients', compact('projects','sales', 'actionId', 'actions', 'methods'));
+        return View('client_action.new_clients', compact('projects', 'sales', 'actionId', 'actions', 'methods'));
     }
 
 
@@ -242,7 +242,7 @@ class ClientActionController extends Controller
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
-        return View('client_action.action_client', compact('projects','sales', 'actionId', 'actions', 'methods'));
+        return View('client_action.action_client', compact('projects', 'sales', 'actionId', 'actions', 'methods'));
 
     }
 
@@ -395,7 +395,7 @@ class ClientActionController extends Controller
             }
         }
 
-        return View('client_action.duplicated', compact('projects','actionId', 'sales', 'actions', 'methods'));
+        return View('client_action.duplicated', compact('projects', 'actionId', 'sales', 'actions', 'methods'));
     }
 
     public
@@ -532,7 +532,7 @@ class ClientActionController extends Controller
             }
         }
 
-        return View('client_action.transfered', compact('projects','actionId', 'sales', 'actions', 'methods'));
+        return View('client_action.transfered', compact('projects', 'actionId', 'sales', 'actions', 'methods'));
     }
 
     public function getTransferedData(Request $request)
@@ -670,7 +670,7 @@ class ClientActionController extends Controller
                 }
             }
         }
-        return View('client_action.todo_client', compact('projects','sales', 'actionId', 'actions', 'methods'));
+        return View('client_action.todo_client', compact('projects', 'sales', 'actionId', 'actions', 'methods'));
 
     }
 
@@ -780,7 +780,7 @@ class ClientActionController extends Controller
                 }
             }
         }
-        return View('client_action.todo_hot_client', compact('projects','sales', 'actionId', 'actions', 'methods'));
+        return View('client_action.todo_hot_client', compact('projects', 'sales', 'actionId', 'actions', 'methods'));
 
     }
 
@@ -939,8 +939,8 @@ class ClientActionController extends Controller
             $sale = User::where('id', $saleId)->first();
             $user = User::where('id', $client)->first();
             event(new PushNotificationEvent($sale, $user));
+            return 'done';
         }
-        return 'done';
     }
 
     public

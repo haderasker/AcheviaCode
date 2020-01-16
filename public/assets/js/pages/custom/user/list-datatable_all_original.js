@@ -55,7 +55,7 @@ var KTUserListDatatable = function () {
 // columns definition
             columns: [
                 {
-                    field: 'id',
+                    field: 'userId',
                     title: '#',
                     sortable: false,
                     width: 20,
@@ -333,7 +333,7 @@ var KTUserListDatatable = function () {
 
             setTimeout(function () {
                 loading.hide();
-            }, 50000);
+            }, 5000);
 
 // fetch selected IDs
             var ids = datatable.rows('.kt-datatable__row--active').nodes().find('.kt-checkbox--single > [type="checkbox"]').map(function (i, chk) {

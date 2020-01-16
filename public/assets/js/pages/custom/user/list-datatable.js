@@ -54,7 +54,7 @@ var KTUserListDatatable = function () {
             // columns definition
             columns: [
                 {
-                    field: 'id',
+                    field: 'userId',
                     title: '#',
                     width: 20,
                     textAlign: 'center',
