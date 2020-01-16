@@ -82,14 +82,15 @@ class ClientActionController extends Controller
         $query->whereDate('users.created_at', '>=', $from)
             ->whereDate('users.created_at', '<=', $to)
             ->when($filter['project'] ?? '', function ($query) use ($filter) {
-                $query->where('projectId', $filter['project']);
+                $query->where('client_details.projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
-                $query->where('name', 'like', '%' . $filter['name'] . '%')
-                    ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
+                $query->where('users.name', 'like', '%' . $filter['name'] . '%')
+                    ->orWhere('users.phone', 'like', '%' . $filter['name'] . '%');
             })
             ->select('users.*', 'client_details.*');
 
+//        dd($query->toSql());
         $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
 
 
@@ -939,8 +940,8 @@ class ClientActionController extends Controller
             $sale = User::where('id', $saleId)->first();
             $user = User::where('id', $client)->first();
             event(new PushNotificationEvent($sale, $user));
-            return 'done';
         }
+        return 'done';
     }
 
     public
