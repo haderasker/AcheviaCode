@@ -227,10 +227,10 @@
                 'title': '-',
             },
 
-            1: {
+            2: {
                 'title': 'Phone',
             },
-            2: {
+            1: {
                 'title': 'whatsApp',
             },
             3: {
@@ -277,7 +277,7 @@
                     $.each(data, function (index, element) {
                         modalBody.append("<div class='col-lg-3'>" +
                             "<p>" + element.actionName + " </p>" +
-                            "<p>" + element.created_at + " </p>" +
+                            "<p>" + element.date + " </p>" +
                             "<p>" + methods[element.viaMethodId].title + " </p>" +
                             "<p>" + summery[element.summery].title+ " </p>" +
                             "<p>" + element.state + " </p>" +

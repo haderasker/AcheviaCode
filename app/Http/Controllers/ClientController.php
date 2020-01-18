@@ -560,7 +560,6 @@ class ClientController extends Controller
 
         $notes = $client['notes'];
         if ($request->notes) {
-
             $notes = $request->notes;
         }
 
@@ -610,7 +609,9 @@ class ClientController extends Controller
                 'viaMethodId' => $request->via_method,
                 'createdBy' => Auth::user()->id,
                 'state' => $state,
-                'notes' => $request->notes,
+                'notes' => $notes,
+                'date' => $client['notificationDate'] .' '. $client['notificationTime'],
+
             ]);
         }
         if ($request->notes != '') {

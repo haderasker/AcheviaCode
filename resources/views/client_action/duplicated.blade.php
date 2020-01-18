@@ -215,7 +215,7 @@
         function output(data) {
             return '<form class="kt-form" id="updateForm" method="POST" action="{{url('/client-update')}}">\n' +
                 '    @csrf\n' +
-                '                    <input name="_id" type="text" hidden value="' + data.id + '">\n' +
+                '                    <input name="_id" type="text" hidden value="' + data.userId + '">\n' +
                 '                    <div class="form-group row">\n' +
                 '                        <div class="col-lg-4">\n' +
                 '                            <div class="input-group date">\n' +
@@ -256,16 +256,6 @@
                 '</div>\n' +
                 ' </div>\n' +
                 '                        <div class="form-group row">\n' +
-                '                    @if(Auth::user()->role->name == 'admin')\n' +
-                ' <div class="col-lg-3">\n' +
-                '                                <select id="" name="assignToSaleManId" class="form-control">\n' +
-                '                                    <option  value="" selected>Assigned To</option>\n' +
-                '                                    @foreach($sales as $sale)\n' +
-                '                                        <option value="{{$sale['id']}}">{{$sale['name']}}</option>\n' +
-                '                                    @endforeach\n' +
-                '                                </select>\n' +
-                '                            </div>\n' +
-                '                   @endif \n' +
                 '<div class="col-3">\n' +
                 '<select class="form-control" id="" name="via_method">\n' +
                 ' <option selected value="">Select Method</option>\n' +
@@ -363,10 +353,10 @@
                     'title': 'Not Yet',
                 },
 
-                1: {
+                2: {
                     'title': 'Phone',
                 },
-                2: {
+                1: {
                     'title': 'whatsApp',
                 },
                 3: {
@@ -468,10 +458,10 @@
                 'title': 'Not Yet',
             },
 
-            1: {
+            2: {
                 'title': 'Phone',
             },
-            2: {
+            1: {
                 'title': 'Whats Up',
             },
             3: {
@@ -520,7 +510,8 @@
                     $.each(data, function (index, element) {
                         modalBody.append("<div class='col-lg-3'>" +
                             "<p>" + element.actionName + " </p>" +
-                            "<p>" + element.created_at +' | ' + methods[element.viaMethodId].title + " </p>" +
+                            "<p>" + element.date + " </p>" +
+                            "<p>" + methods[element.viaMethodId].title + " </p>" +
                             "<p>" + summery[element.summery].title+ " </p>" +
                             "<p>" + element.createdBy + " </p>" +
                             "<p>" + element.state + " </p>" +
