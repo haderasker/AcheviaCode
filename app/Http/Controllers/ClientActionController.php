@@ -78,17 +78,19 @@ class ClientActionController extends Controller
             $query->where('assignToSaleManId', $userId);
         }
 
-        $query->whereDate('users.created_at', '>=', $from)
-            ->whereDate('users.created_at', '<=', $to)
+        $query->whereDate('client_details.notificationDate', '>=', $from)
+            ->whereDate('client_details.notificationDate', '<=', $to)
             ->when($filter['project'] ?? '', function ($query) use ($filter) {
                 $query->where('client_details.projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
             })
+            ->orderBy('client_details.notificationDate', 'asc')
+            ->orderBy('client_details.notificationTime', 'asc')
             ->select('users.*', 'client_details.*');
 
 //        dd($query->toSql());
@@ -154,8 +156,8 @@ class ClientActionController extends Controller
         if (isset($filter['name'])) {
             $query->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
             });
         }
@@ -300,20 +302,34 @@ class ClientActionController extends Controller
             $query->where('assignToSaleManId', $userId);
         }
 
-        $query->whereDate('users.created_at', '>=', $from)
-            ->whereDate('users.created_at', '<=', $to)
-            ->where('duplicated', '=', 1)
+        if ($id == null) {
+            $query->whereDate('client_details.assignedDate', '>=', $from)
+                ->whereDate('client_details.assignedDate', '<=', $to);
+        } else {
+            $query->whereDate('client_details.notificationDate', '>=', $from)
+                ->whereDate('client_details.notificationDate', '<=', $to)
+                ->where('client_details.transferred', '=', 0);
+        }
+
+        $query->where('duplicated', '=', 1)
             ->where('client_details.actionId', $id)
-            ->where('client_details.transferred', '=', 0)
             ->where('client_details.assignToSaleManId', '!=', null)
             ->when($filter['project'] ?? '', function ($query) use ($filter) {
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
+            })
+
+            ->when($id == null, function ($query) {
+                $query->orderBy('client_details.assignedDate', 'asc')
+                    ->orderBy('client_details.assignedTime', 'asc');
+            }, function ($query) {
+                $query->orderBy('client_details.notificationDate', 'asc')
+                    ->orderBy('client_details.notificationTime', 'asc');
             })
             ->select('users.*', 'client_details.*');
 
@@ -409,17 +425,19 @@ class ClientActionController extends Controller
         }
 
         $query->where('duplicated', '>', 1)
-            ->whereDate('users.created_at', '>=', $from)
-            ->whereDate('users.created_at', '<=', $to)
+            ->whereDate('client_details.assignedDate', '>=', $from)
+            ->whereDate('client_details.assignedDate', '<=', $to)
             ->when($filter['project'] ?? '', function ($query) use ($filter) {
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
             })
+            ->orderBy('client_details.assignedDate', 'asc')
+            ->orderBy('client_details.assignedTime', 'asc')
             ->select('users.*', 'client_details.*');
 
         $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
@@ -511,18 +529,20 @@ class ClientActionController extends Controller
             $query->where('assignToSaleManId', $userId);
         }
 
-        $query->whereDate('users.created_at', '>=', $from)
-            ->whereDate('users.created_at', '<=', $to)
+        $query->whereDate('client_details.assignedDate', '>=', $from)
+            ->whereDate('client_details.assignedDate', '<=', $to)
             ->where('client_details.transferred', 1)
             ->when($filter['project'] ?? '', function ($query) use ($filter) {
                 $query->where('projectId', $filter['project']);
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
             })
+            ->orderBy('client_details.assignedDate', 'asc')
+            ->orderBy('client_details.assignedTime', 'asc')
             ->select('users.*', 'client_details.*');
 
         $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);
@@ -614,7 +634,6 @@ class ClientActionController extends Controller
 
         $query = User::join('client_details', 'users.id', '=', 'client_details.userId');
 
-
         if ((Auth::user()->role->name == 'admin')) {
             $query->when($filter['sale'] ?? '', function ($query) use ($filter) {
                 $query->where('assignToSaleManId', $filter['sale']);
@@ -626,7 +645,7 @@ class ClientActionController extends Controller
 
         $query->where('users.duplicated', '=', 1)
             ->where('client_details.transferred', '=', 0)
-            ->whereIn('client_details.actionId', [2, 3, 4, 5, 11])
+            ->whereIn('client_details.actionId', [2, 3, 4, 5, 11, 12])
             ->whereDate('client_details.notificationDate', '>=', $from)
             ->whereDate('client_details.notificationDate', '<=', $to)
             ->when($filter['project'] ?? '', function ($query) use ($filter) {
@@ -634,11 +653,11 @@ class ClientActionController extends Controller
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
             })
-            ->orderBy('client_details.notificationDate', 'desc')
+            ->orderBy('client_details.notificationDate', 'asc')
             ->orderBy('client_details.notificationTime', 'asc')
             ->select('users.*', 'client_details.*');
 
@@ -718,8 +737,7 @@ class ClientActionController extends Controller
             $dates = explode(' - ', $filter['date'] ?? '');
             $from = $dates[0];
         } else {
-            $time = strtotime(date('Y-m-d') . ' -6 days');
-            $from = date('Y-m-d H:i:s', $time);
+            $from = date('Y-m-d H:i:s', strtotime('1970-01-01'));
         }
 
         if (isset($dates[1])) {
@@ -740,8 +758,8 @@ class ClientActionController extends Controller
             $query->where('assignToSaleManId', $userId);
         }
 
-        $query->whereDate('client_details.notificationDate', '>=', $from)
-            ->whereDate('client_details.notificationDate', '<=', $to)
+        $query->whereDate('client_details.assignedDate', '>=', $from)
+            ->whereDate('client_details.assignedDate', '<=', $to)
             ->where(function ($query) {
                 $query->where('users.duplicated', '>', 1)
                     ->orWhere('client_details.transferred', 1)
@@ -752,12 +770,12 @@ class ClientActionController extends Controller
             })
             ->when($filter['name'] ?? '', function ($query) use ($filter) {
                 $query->where(function ($query) use ($filter) {
-                    $query->where('name','like', '%' . $filter['name'] . '%')
-                        ->orWhere('phone','like', '%' . $filter['name'] . '%');
+                    $query->where('name', 'like', '%' . $filter['name'] . '%')
+                        ->orWhere('phone', 'like', '%' . $filter['name'] . '%');
                 });
             })
-            ->orderBy('client_details.notificationDate', 'desc')
-            ->orderBy('client_details.notificationTime', 'asc')
+            ->orderBy('client_details.assignedDate', 'asc')
+            ->orderBy('client_details.assignedTime', 'asc')
             ->select('users.*', 'client_details.*');
 
         $data = $query->paginate($paginationOptions['perpage'], ['*'], 'page', $paginationOptions['page']);

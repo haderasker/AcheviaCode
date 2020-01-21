@@ -360,6 +360,7 @@
                         			<p class="kt-user-card-v2__name"> Assign To : ' + data.saleName + '  </p>\
                         			@endif\
                         			<p class="kt-user-card-v2__name"> Join Date: ' + data.created_at + '  </p>\
+                        			<p class="kt-user-card-v2__name"> Assign Date: ' + data.assignedDate + ' ' + data.assignedTime + '  </p>\
                         		</div>\
                         		</div>';
 

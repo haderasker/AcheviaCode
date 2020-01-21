@@ -309,10 +309,62 @@
                 },
 
             };
+            var status = {
+
+                null: {
+                    'class': 'btn-label-brand',
+                },
+
+                1 : {
+                    'class': 'btn-label-success',
+                },
+                2: {
+                    'class': 'btn-label-brand',
+                },
+                3: {
+                    'class': 'btn-label-success',
+                },
+                4: {
+                    'class': 'btn-label-primary',
+                },
+                5: {
+                    'class': 'btn-label-primary',
+                },
+                6: {
+                    'class': 'btn-label-warning',
+                },
+
+                7 : {
+                    'class': 'btn-label-warning',
+                },
+                8: {
+                    'class': 'btn-label-danger',
+                },
+                9: {
+                    'class': 'btn-label-info',
+                },
+                10: {
+                    'class': 'btn-label-danger',
+                },
+                11: {
+                    'class': 'btn-label-primary',
+                },
+                12 : {
+                    'class': 'btn-label-brand',
+                },
+                13: {
+                    'class': 'btn-label-success',
+                },
+                14: {
+                    'class': 'btn-label-danger',
+                },
+
+            };
             return '<div class="kt-user-card-v2">\
                         			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ">' + data.statusName + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + data.methodName + '  </p>\
+                        		   <p class="kt-user-card-v2__name"> Assigned At : ' + data.assignedDate + '  ' + data.assignedTime + '  </p>\
+                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.actionId].class + ' ">' + data.statusName + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
+                        		   <p class="kt-user-card-v2__name"> Via : ' + data.methodName + '  </p>\
                         			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.summery].title + '  </p>\
                         			<p class="kt-user-card-v2__name"> Note : ' + data.notes + '  </p>\
                         		</div>\

@@ -151,7 +151,60 @@ var KTUserListDatatable = function () {
                     title: "Status",
 // callback function support for column rendering
                     template: function (row) {
-                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + row.statusName + '</span>';
+                        var status = {
+
+                            null: {
+                                'class': 'btn-label-brand',
+                            },
+
+                            1 : {
+                                'class': 'btn-label-success',
+                            },
+                            2: {
+                                'class': 'btn-label-brand',
+                            },
+                            3: {
+                                'class': 'btn-label-success',
+                            },
+                            4: {
+                                'class': 'btn-label-primary',
+                            },
+                            5: {
+                                'class': 'btn-label-primary',
+                            },
+                            6: {
+                                'class': 'btn-label-warning',
+                            },
+
+                            7 : {
+                                'class': 'btn-label-warning',
+                            },
+                            8: {
+                                'class': 'btn-label-danger',
+                            },
+                            9: {
+                                'class': 'btn-label-info',
+                            },
+                            10: {
+                                'class': 'btn-label-danger',
+                            },
+                            11: {
+                                'class': 'btn-label-primary',
+                            },
+                            12 : {
+                                'class': 'btn-label-brand',
+                            },
+                            13: {
+                                'class': 'btn-label-success',
+                            },
+                            14: {
+                                'class': 'btn-label-danger',
+                            },
+
+                        };
+                        return '<span class="btn btn-bold btn-sm btn-font-sm ' + status[row.actionId].class + '">' + row.statusName + '</span></br>' +
+                            '<span class="btn btn-bold btn-sm btn-font-sm">' + row.notificationDate + '</span>' +
+                            '<span class="btn btn-bold btn-sm btn-font-sm">' + row.notificationTime + '</span>';
                     }
                 },
                 {
