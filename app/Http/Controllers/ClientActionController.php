@@ -215,7 +215,7 @@ class ClientActionController extends Controller
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $actionId = 0;
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         $projects = Project::all()->toArray();
         $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
         foreach ($projects as $key => $project) {
@@ -240,9 +240,8 @@ class ClientActionController extends Controller
     {
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $actionId = $id;
-//        $requestData = $this->getData($actionId)['data'];
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         $projects = Project::all()->toArray();
         $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
         foreach ($projects as $key => $project) {
@@ -360,7 +359,7 @@ class ClientActionController extends Controller
     {
         $actionId = 'duplicated';
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $projects = Project::all()->toArray();
         $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
@@ -464,7 +463,7 @@ class ClientActionController extends Controller
     {
         $actionId = 'transfered';
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $projects = Project::all()->toArray();
         $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
@@ -568,7 +567,7 @@ class ClientActionController extends Controller
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $actionId = 'todo';
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }
@@ -684,7 +683,7 @@ class ClientActionController extends Controller
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $actionId = 'todo';
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }

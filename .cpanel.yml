@@ -5,7 +5,6 @@ deployment:
     - php composer dumpautoload -o
 #    - php artisan migrate:fresh --seed
     - php artisan migrate
-    - php artisan db:seed --class=ActionsTableSeeder
 #    - php artisan migrate:old-data
     - php artisan view:clear
     - php artisan route:clear

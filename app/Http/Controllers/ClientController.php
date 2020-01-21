@@ -276,7 +276,7 @@ class ClientController extends Controller
         $projects = [];
         $requestData = $this->model->where('id', $id)->with('detail')->whereHas('detail')->first()->toArray();
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         $projects = $this->project->all()->toArray();
         $projectsIgnore = $this->project->with('parentProject')->whereHas('parentProject')->get()->toArray();
         foreach ($projects as $key => $project) {
@@ -745,7 +745,7 @@ class ClientController extends Controller
         $sales = $this->model->where('roleId', 4)->get(['id', 'name']);
         $clientId = $id;
         $methods = Method::all()->toArray();
-        $actions = Action::all()->sortBy('order')->toArray();
+        $actions = Action::where('active', 1)->orderBy('order')->get()->toArray();
         if ((Auth::user()->role->name == 'sale Man')) {
             $sales = $this->model->where('id', Auth::user()->id)->get(['id', 'name']);
         }

@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('layouts/aside', function ($view) {
-            $list = Action::all()->sortBy('order')->toArray();
+            $list = Action::where('active', 1)->orderBy('order')->get()->toArray();
             $view->with('list', $list);
         });
     }
