@@ -36,22 +36,7 @@
 													</span>
 												</span>
                         </div>
-                        {{--@if((Auth::user()->role->name == 'admin'))--}}
-                            {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
-                                {{--<select class="form-control" id="saleFilter">--}}
-                                    {{--<option value="0">Select SaleMan</option>--}}
-                                    {{--@foreach($sales as $sale)--}}
-                                        {{--<option value=" {{$sale['id']}}">  {{$sale['name']}} </option>--}}
-                                    {{--@endforeach--}}
-                                {{--</select>--}}
-                            {{--</div>--}}
-                        {{--@endif--}}
-                        {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
-                        {{--<input type="date" class="form-control" placeholder="Search..." id="fromDateFilter">--}}
-                        {{--</div>--}}
-                        {{--<div class="kt-input-icon kt-input-icon--right kt-subheader__search">--}}
-                        {{--<input type="date" class="form-control" placeholder="Search..." id="toDateFilter">--}}
-                        {{--</div>--}}
+
                     </form>
                 </div>
                 @if((Auth::user()->role->name == 'admin'))

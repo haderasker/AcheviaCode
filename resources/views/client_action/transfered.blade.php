@@ -290,86 +290,6 @@
 
     <script>
         function last(data) {
-            var status = {
-                0: {
-                    'title': 'new',
-                    'class': ' btn-label-brand'
-                },
-
-                null: {
-                    'title': 'new',
-                    'class': ' btn-label-brand'
-                },
-
-                1: {
-                    'title': 'done',
-                    'class': ' btn-label-success'
-                },
-                2: {
-                    'title': 'following',
-                    'class': ' btn-label-success'
-                },
-                3: {
-                    'title': 'comingVisit',
-                    'class': ' btn-label-info'
-                },
-                4: {
-                    'title': 'meeting',
-                    'class': ' btn-label-info'
-                },
-                5: {
-                    'title': 'Scouting',
-                    'class': ' btn-label-primary'
-                },
-                6: {
-                    'title': 'Convert to another project',
-                    'class': ' btn-label-primary'
-                },
-
-                7: {
-                    'title': 'No Answer',
-                    'class': ' btn-label-warning'
-                },
-                8: {
-                    'title': 'Not Available Or Closed',
-                    'class': ' btn-label-warning'
-                },
-                9: {
-                    'title': 'Low Budget',
-                    'class': ' btn-label-warning'
-                },
-                10: {
-                    'title': 'Trash',
-                    'class': ' btn-label-danger'
-                },
-                11: {
-                    'title': 'Invitation',
-                    'class': ' btn-label-info'
-                },
-
-            };
-
-            var methods = {
-
-                null: {
-                    'title': 'Not Yet',
-                },
-
-                2: {
-                    'title': 'Phone',
-                },
-                1: {
-                    'title': 'whatsApp',
-                },
-                3: {
-                    'title': 'Email',
-                },
-                4: {
-                    'title': 'Visit',
-                },
-
-            };
-
 
             var summery = {
 
@@ -393,8 +313,8 @@
             };
             return '<div class="kt-user-card-v2">\
                         			<div class="kt-user-card-v2__details">\
-                        			<p class="btn btn-bold btn-sm btn-font-sm ' + status[data.actionId].class + '">' + status[data.actionId].title + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
-                        			<p class="kt-user-card-v2__name"> Via ' + methods[data.viaMethodId].title + '  </p>\
+                        			<p class="btn btn-bold btn-sm btn-font-sm">' + data.statusName + ' At ' + data.notificationDate + ' ' + data.notificationTime + '</p>\
+                        			<p class="kt-user-card-v2__name"> Via ' + data.methodName + '  </p>\
                         			<p class="kt-user-card-v2__name"> Summery : ' + summery[data.summery].title + '  </p>\
                         			<p class="kt-user-card-v2__name"> Note : ' + data.notes+ '  </p>\
                         		</div>\
@@ -454,27 +374,6 @@
 
     </script>
     <script>
-        var methods = {
-
-            null: {
-                'title': 'Not Yet',
-            },
-
-            2: {
-                'title': 'Phone',
-            },
-            1: {
-                'title': 'Whats Up',
-            },
-            3: {
-                'title': 'Email',
-            },
-            4: {
-                'title': 'Visit',
-            },
-
-        };
-
 
         var summery = {
 
@@ -513,7 +412,7 @@
                         modalBody.append("<div class='col-lg-3'>" +
                             "<p>" + element.actionName + " </p>" +
                             "<p>" + element.date + " </p>" +
-                            "<p>" + methods[element.viaMethodId].title + " </p>" +
+                            "<p>" + data.methodName + " </p>" +
                             "<p>" + summery[element.summery].title+ " </p>" +
                             "<p>" + element.createdBy + " </p>" +
                             "<p>" + element.state + " </p>" +

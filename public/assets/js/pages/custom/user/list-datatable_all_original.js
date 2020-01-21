@@ -151,65 +151,7 @@ var KTUserListDatatable = function () {
                     title: "Status",
 // callback function support for column rendering
                     template: function (row) {
-                        var status = {
-                            0: {
-                                'title': 'new',
-                                'class': ' btn-label-brand'
-                            },
-
-                            null: {
-                                'title': 'new',
-                                'class': ' btn-label-brand'
-                            },
-
-                            1: {
-                                'title': 'done',
-                                'class': ' btn-label-success'
-                            },
-                            2: {
-                                'title': 'following',
-                                'class': ' btn-label-success'
-                            },
-                            3: {
-                                'title': 'comingVisit',
-                                'class': ' btn-label-info'
-                            },
-                            4: {
-                                'title': 'meeting',
-                                'class': ' btn-label-info'
-                            },
-                            5: {
-                                'title': 'Scouting',
-                                'class': ' btn-label-primary'
-                            },
-                            6: {
-                                'title': 'Convert to another project',
-                                'class': ' btn-label-primary'
-                            },
-
-                            7: {
-                                'title': 'No Answer',
-                                'class': ' btn-label-warning'
-                            },
-                            8: {
-                                'title': 'Not Available Or Closed',
-                                'class': ' btn-label-warning'
-                            },
-                            9: {
-                                'title': 'Low Budget',
-                                'class': ' btn-label-warning'
-                            },
-                            10: {
-                                'title': 'Trash',
-                                'class': ' btn-label-danger'
-                            },
-                            11: {
-                                'title': 'Invitation',
-                                'class': ' btn-label-info'
-                            },
-
-                        };
-                        return '<span class="btn btn-bold btn-sm btn-font-sm ' + status[row.actionId].class + '">' + status[row.actionId].title + '</span>';
+                        return '<span class="btn btn-bold btn-sm btn-font-sm">' + row.statusName + '</span>';
                     }
                 },
                 {

@@ -17,6 +17,7 @@ class CreateActionsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('order');
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

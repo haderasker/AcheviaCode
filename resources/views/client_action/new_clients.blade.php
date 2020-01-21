@@ -186,27 +186,6 @@
 
 @section('script')
     <script>
-        var methods = {
-
-            null: {
-                'title': 'Not Yet',
-            },
-
-            2: {
-                'title': 'Phone',
-            },
-            1: {
-                'title': 'Whats Up',
-            },
-            3: {
-                'title': 'Email',
-            },
-            4: {
-                'title': 'Visit',
-            },
-
-        };
-
 
         var summery = {
 
@@ -245,7 +224,7 @@
                         modalBody.append("<div class='col-lg-3'>" +
                             "<p>" + element.actionName + " </p>" +
                             "<p>" + element.date + " </p>" +
-                            "<p>" + methods[element.viaMethodId].title + " </p>" +
+                            "<p>" + data.methodName + " </p>" +
                             "<p>" + summery[element.summery].title+ " </p>" +
                             "<p>" + element.createdBy + " </p>" +
                             "<p>" + element.state + " </p>" +
