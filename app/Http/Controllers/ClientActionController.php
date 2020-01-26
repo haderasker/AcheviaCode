@@ -614,7 +614,7 @@ class ClientActionController extends Controller
         $date = new DateTime();
         $timeZone = $date->getTimezone();
         date_default_timezone_set($timeZone->getName());
-dd($timeZone->getName());
+        dd($timeZone->getName());
         $paginationOptions = $request->input('pagination');
         if ($paginationOptions['perpage'] == -1) {
             $paginationOptions['perpage'] = 0;
