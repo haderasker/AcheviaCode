@@ -47,8 +47,8 @@ class HomeController extends Controller
         $projects = Project::all()->toArray();
         $projectsIgnore = Project::with('parentProject')->whereHas('parentProject')->get()->toArray();
         foreach ($projects as $key => $project) {
-            foreach ($projectsIgnore as  $ignore){
-                if($ignore['id'] == $project['id'] ){
+            foreach ($projectsIgnore as $ignore) {
+                if ($ignore['id'] == $project['id']) {
                     unset($projects[$key]);
                 }
             }
@@ -113,13 +113,22 @@ class HomeController extends Controller
                 'roleId' => 5,
                 'userStatus' => 1,
                 'active' => 1,
-                'createdBy' => 0,
+                'createdBy' => null,
+                'notes' => $request->notes,
+                'jobTitle' => $request->jobTitle,
             ];
 
             $user = User::create($userData);
             $clientDetailsData = [
                 'userId' => $user->id,
                 'projectId' => $projectId,
+                'property' => $request->property,
+                'propertyLocation' => $request->propertyLocation,
+                'propertyUtility' => $request->propertyUtility,
+                'areaFrom' => $request->areaFrom,
+                'areaTo' => $request->areaTo,
+                'budget' => $request->budget,
+                'deliveryDateId' => $request->deliveryDateId,
             ];
 
             $userClient = ClientDetail::create($clientDetailsData);
