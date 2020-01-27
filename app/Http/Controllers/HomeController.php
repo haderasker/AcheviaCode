@@ -114,8 +114,6 @@ class HomeController extends Controller
                 'userStatus' => 1,
                 'active' => 1,
                 'createdBy' => null,
-                'notes' => $request->notes,
-                'jobTitle' => $request->jobTitle,
             ];
 
             $user = User::create($userData);
@@ -129,6 +127,8 @@ class HomeController extends Controller
                 'areaTo' => $request->areaTo,
                 'budget' => $request->budget,
                 'deliveryDateId' => $request->deliveryDateId,
+                'notes' => $request->notes,
+                'jobTitle' => $request->jobTitle,
             ];
 
             $userClient = ClientDetail::create($clientDetailsData);
