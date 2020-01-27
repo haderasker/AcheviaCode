@@ -610,6 +610,8 @@ class ClientActionController extends Controller
      */
     public function getToDoData(Request $request)
     {
+        date_default_timezone_set('Africa/Cairo');
+        
         $paginationOptions = $request->input('pagination');
         if ($paginationOptions['perpage'] == -1) {
             $paginationOptions['perpage'] = 0;
